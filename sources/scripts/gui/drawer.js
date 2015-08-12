@@ -8,7 +8,8 @@ var Drawer = function()
 	this.addChild(this.graphicsBlack)
 	this.addChild(this.graphicsWhite)
 
- 	this.outline = 2
+	this.showBull = true
+	this.debug = false
 
  	this.Clear = function ()
  	{
@@ -18,17 +19,21 @@ var Drawer = function()
 		this.graphicsBlack.beginFill(0x000000)
 	}
 
- 	this.Boid = function (boid)
- 	{
- 		var radius = boid.size * 0.75
-		this.graphicsBlack.drawCircle(boid.x, boid.y + this.outline / 2, radius + this.outline)
-		this.graphicsWhite.drawCircle(boid.x, boid.y, radius)
- 	}
-
  	this.Bull = function (x, y, radius)
  	{
-		this.graphicsBlack.drawCircle(x, y + this.outline / 2, radius + this.outline)
-		this.graphicsWhite.drawCircle(x, y, radius)
+ 		if (this.showBull)
+ 		{
+			this.graphicsBlack.drawCircle(x, y + BULL_OUTLINE / 2, radius + BULL_OUTLINE)
+			this.graphicsWhite.drawCircle(x, y, radius)
+		}
+ 	}
+
+ 	this.Line = function (pos, dir, color)
+ 	{
+		this.graphicsBlack.lineStyle(2, color)
+		this.graphicsBlack.moveTo(pos.x, pos.y)
+		this.graphicsBlack.lineTo(dir.x * 1000 + pos.x, dir.y * 1000 + pos.y)
+		this.graphicsBlack.lineStyle(0, color)
  	}
 
  	this.EndFill = function ()

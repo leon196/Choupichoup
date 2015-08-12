@@ -6,7 +6,6 @@ var stage = new PIXI.Container()
 var drawer = new Drawer()
 var mouse = new Point()
 var message
-var isDrawDebug = false
 
 stage.interactive = true;
 stage.on('mousemove', onMove)
@@ -24,9 +23,14 @@ function fontLoaded()
 function init()
 {
 
-	new Button("Toggle Debug Draw", function ()
+	new Button("Debug", function ()
 	{
-		isDrawDebug = !isDrawDebug 
+		drawer.debug = !drawer.debug 
+	})
+
+	new Button("Bull", function ()
+	{
+		drawer.showBull = !drawer.showBull 
 	})
 
 	// Setup message
@@ -44,10 +48,11 @@ function init()
 	stage.addChildAt(drawer, 0)
 
 	// Setup (?) boids
-	for (var i = 0; i < 16; ++i)
+	for (var i = 0; i < 5; ++i)
 	{
 		var letter = new Letter("?")
 		letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
+		letter.avoidScale = 0.01
 		stage.addChild(letter)
 		message.letters.push(letter)
 	}
@@ -71,7 +76,7 @@ function onMove(event)
 function update()
 {
 	timeElapsed = new Date() - timeStarted / 1000;
-
+	
 	drawer.Clear()
 
 	message.x = mouse.x
@@ -83,7 +88,7 @@ function update()
 	{
 		var boid = message.letters[current]
 
-		drawer.Boid(boid)
+		drawer.Bull(boid.x, boid.y, boid.size * 0.75)
 
 		var near = new Point()
 		var global = new Point()
@@ -91,15 +96,23 @@ function update()
 		var target = new Point(renderer.width / 2 - boid.x, renderer.height / 2 - boid.y)
 		var grid = new Point()
 
-		var midPoint = new Point()
-		var midBullSize = 0
+		if (boid instanceof Letter && boid.isFromMessage)
+		{
+			grid.x = message.GetX() + boid.gridX - boid.x
+			grid.y = message.GetY() + boid.gridY - boid.y
+
+			grid.x *= DEFAULT_GRID_SCALE
+			grid.y *= DEFAULT_GRID_SCALE
+
+			target = new Point(mouse.x - boid.x, mouse.y - boid.y)
+		}
 
 		for (var other = 0; other < boidCount; ++other)
 		{
 			if (current != other && (other instanceof Message) == false )
 			{
 				var boidOther = message.letters[other]
-				var dist = boid.distanceTo(boidOther)
+				var dist = distanceBetween(boid, boidOther)
 				var shouldAvoid = dist < (boid.size + boidOther.size) * 0.5
 				var shouldFollow = dist < 100
 				// shouldAvoid = shouldAvoid && 
@@ -110,11 +123,11 @@ function update()
 					avoid.x += boid.x - boidOther.x
 					avoid.y	+= boid.y - boidOther.y
 				}
-				if (shouldFollow)
-				{
+				// if (shouldFollow)
+				// {
 					global.x += boidOther.x
 					global.y += boidOther.y
-				}
+				// }
 			
 				near.x += boidOther.velocity.x
 				near.y += boidOther.velocity.y
@@ -124,40 +137,18 @@ function update()
 		global.x = global.x / boidCount - boid.x
 		global.y = global.y / boidCount - boid.y
 
-		target.x *= 0.0001
-		target.y *= 0.0001
-		avoid.x *= 0.001
-		avoid.y *= 0.001
-		global.x *= 0.0001
-		global.y *= 0.0001
-		near.x *= 0.00001
-		near.y *= 0.00001
+		avoid.scale(boid.avoidScale)
+		global.scale(boid.globalScale)
+		near.scale(boid.nearScale)
+		target.scale(boid.targetScale)
 
-		if (boid instanceof Letter && boid.isFromMessage)
+		if (drawer.debug)
 		{
-			grid.x = message.GetX() + boid.gridX - boid.x
-			grid.y = message.GetY() + boid.gridY - boid.y
-
-			grid.x *= 0.005
-			grid.y *= 0.005
-
-			target = new Point(mouse.x - boid.x, mouse.y - boid.y)
-			target.x *= 0.001
-			target.y *= 0.001
-
-			global.x = 0
-			global.y = 0
-			near.x = 0
-			near.y = 0
-		}
-
-		if (isDrawDebug)
-		{
-			boid.debug(grid, 0xff0000)
-			boid.debug(target, 0x00ff00)
-			boid.debug(avoid, 0x0000ff)
-			boid.debug(near, 0x00ffff)
-			boid.debug(global, 0xffffff)
+			drawer.Line(boid, grid, 0xff0000)
+			drawer.Line(boid, target, 0x00ff00)
+			drawer.Line(boid, avoid, 0x0000ff)
+			drawer.Line(boid, near, 0x00ffff)
+			drawer.Line(boid, global, 0xffffff)
 		}
 
 		// Apply to Boid
@@ -170,16 +161,17 @@ function update()
 		{
 			if (boid.x < 0 || boid.x > renderer.width)
 			{
-				boid.velocity.x *= -1
+				boid.velocity.x *= -boid.frictionCollision
+				boid.Rumble()
 			}
 			if (boid.y < 0 || boid.y > renderer.height)
 			{
-				boid.velocity.y *= -1
+				boid.velocity.y *= -boid.frictionCollision
+				boid.Rumble()
 			}
 			boid.x = clamp(boid.x, 0, renderer.width)
 			boid.y = clamp(boid.y, 0, renderer.height)
 		}
 	}
-
 	drawer.EndFill()
 }
