@@ -35,7 +35,7 @@ function init()
 
 	// Setup message
 	message = new Message(
-		"Hello\nCoucou",
+		"Bubble\nLetter",
 	{ 
 		fontSizeMin: this.fontMin,
 		fontSizeMax: this.fontMax,
@@ -52,7 +52,28 @@ function init()
 	{
 		var letter = new Letter("?")
 		letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
-		letter.avoidScale = 0.01
+		letter.avoidScale = 0.005
+		stage.addChild(letter)
+		message.letters.push(letter)
+	}
+
+	for (var i = 0; i < 5; ++i)
+	{
+		var letter = new Letter("!")
+		letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
+		letter.avoidScale = 0.1
+		letter.targetScale = 0.01
+		stage.addChild(letter)
+		message.letters.push(letter)
+	}
+
+	for (var i = 0; i < 5; ++i)
+	{
+		var letter = new Letter("...")
+		letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
+		letter.avoidScale = 0.1
+		letter.targetScale = 0.01
+		letter.friction = 0.9
 		stage.addChild(letter)
 		message.letters.push(letter)
 	}
