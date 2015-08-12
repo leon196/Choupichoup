@@ -24,8 +24,6 @@ var Letter = function (character, style)
 	// Game Logic
 	this.isFromMessage = false
 
-	// isDefined(style) ? console.log(style):0//style.fontSizeMin + Math.random() * (style.fontSizeMax - style.fontSizeMin)) : 0
-
 	// Position on message grid
 	this.gridX = 0
 	this.gridY = 0

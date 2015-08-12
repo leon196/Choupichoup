@@ -6,6 +6,7 @@ var stage = new PIXI.Container()
 var drawer = new Drawer()
 var mouse = new Point()
 var message
+var isDrawDebug = false
 
 stage.interactive = true;
 stage.on('mousemove', onMove)
@@ -22,6 +23,11 @@ function fontLoaded()
 
 function init()
 {
+
+	new Button("Toggle Debug Draw", function ()
+	{
+		isDrawDebug = !isDrawDebug 
+	})
 
 	// Setup message
 	message = new Message(
@@ -145,11 +151,14 @@ function update()
 			near.y = 0
 		}
 
-		boid.debug(grid, 0xff0000)
-		boid.debug(target, 0x00ff00)
-		boid.debug(avoid, 0x0000ff)
-		boid.debug(near, 0x00ffff)
-		boid.debug(global, 0xffffff)
+		if (isDrawDebug)
+		{
+			boid.debug(grid, 0xff0000)
+			boid.debug(target, 0x00ff00)
+			boid.debug(avoid, 0x0000ff)
+			boid.debug(near, 0x00ffff)
+			boid.debug(global, 0xffffff)
+		}
 
 		// Apply to Boid
 		boid.update(

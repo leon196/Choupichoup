@@ -33,3 +33,15 @@ http://emojisymbols.com/
     text-decoration: none;
     font-style: normal;
 }
+
+.button
+{
+    font-family: sans-serif;
+    font-family: 20px;
+    
+    display: block;
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    padding: 4px;
+}
