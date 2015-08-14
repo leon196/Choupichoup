@@ -8,6 +8,7 @@ var Point = function(x, y)
 	{
 		this.x *= scalar
 		this.y *= scalar
+		return this
 	}
 
 	this.normalize = function()
@@ -17,6 +18,7 @@ var Point = function(x, y)
 			this.x = this.x / this.magnitude()
 			this.y = this.y / this.magnitude()
 		}
+		return this
 	}
 
 	this.magnitude = function ()
@@ -28,19 +30,26 @@ var Point = function(x, y)
 	{
 		return Math.sqrt((other.x-this.x)*(other.x-this.x)+(other.y-this.y)*(other.y-this.y))
 	}
-	
-	this.ApplyLinearRatio = function (max)
+
+	this.getClamp = function (min, max)
 	{
+		var p = { x: 0, y: 0}
 		if (max != 0)
 		{
-			ratio = Math.min(this.magnitude(), max) / max
-			this.x = clamp(this.x, -max * ratio, ratio * max)
-			this.y = clamp(this.y, -max * ratio, ratio * max)
+			var ratio = clamp(this.magnitude(), min, max)//Math.min(this.magnitude(), max) / max
+			var angle = Math.atan2(this.y, this.x)
+			p.x = min + Math.cos(angle) * (max - min) * ratio
+			p.y = min + Math.sin(angle) * (max - min) * ratio
 		}
-		else
+		return p
+	}
+
+	this.getNormal = function ()
+	{
+		if (this.magnitude() > 0)
 		{
-			this.x = 0
-			this.y = 0
+			return new Point(this.x / this.magnitude(), this.y / this.magnitude())
 		}
+		return new Point()
 	}
 }

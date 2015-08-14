@@ -47,7 +47,6 @@ function init()
 	stage.addChildAt(message, 0)
 	stage.addChildAt(drawer, 0)
 
-	// Setup (?) boids
 	for (var i = 0; i < 5; ++i)
 	{
 		var letter = new Letter("?")
@@ -61,18 +60,20 @@ function init()
 	{
 		var letter = new Letter("!")
 		letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
+		// letter.avoidScale = 0.1
 		letter.avoidScale = 0.1
 		letter.targetScale = 0.01
 		stage.addChild(letter)
 		message.letters.push(letter)
 	}
 
-	for (var i = 0; i < 5; ++i)
+	for (var i = 0; i < 1; ++i)
 	{
 		var letter = new Letter("...")
 		letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
-		letter.avoidScale = 0.1
-		letter.targetScale = 0.01
+		// letter.avoidScale = 0.1
+		letter.avoidScale = 0.01
+		letter.targetScale = 0.005
 		letter.friction = 0.9
 		stage.addChild(letter)
 		message.letters.push(letter)
@@ -165,11 +166,11 @@ function update()
 
 		if (drawer.debug)
 		{
-			drawer.Line(boid, grid, 0xff0000)
-			drawer.Line(boid, target, 0x00ff00)
-			drawer.Line(boid, avoid, 0x0000ff)
-			drawer.Line(boid, near, 0x00ffff)
-			drawer.Line(boid, global, 0xffffff)
+			drawer.Arrow(boid, grid.getNormal(), grid.magnitude() * 100 + 0.1, 10, 0xff0000)
+			drawer.Arrow(boid, target.getNormal(), target.magnitude() * 100 + 0.1, 10, 0x00ff00)
+			drawer.Arrow(boid, avoid.getNormal(), avoid.magnitude() * 100 + 0.1, 10, 0x0000ff)
+			drawer.Arrow(boid, near.getNormal(), near.magnitude() * 100 + 0.1, 10, 0x00ffff)
+			drawer.Arrow(boid, global.getNormal(), global.magnitude() * 100 + 0.1, 10, 0xffffff)
 		}
 
 		// Apply to Boid
