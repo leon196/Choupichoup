@@ -13,7 +13,7 @@ var Message = function(text, style)
 	// Display params
 	this.offsetX = 0
 	this.offsetY = 0
-	this.lineHeight = 60
+	this.lineHeight = 40
 
 	// Setup data and create boids
 	var lineWidth = 0
@@ -33,6 +33,8 @@ var Message = function(text, style)
 			letter.indexLine = idxLine
 			letter.indexLetter = idxLetter
 			letter.isFromMessage = true
+
+			letter.friction = 0.98
 
 			// Add to update stack
 			boidList.push(letter)

@@ -4,7 +4,7 @@ var Drawer = function()
 	PIXI.Container.call(this)
 
 	this.background = new PIXI.Sprite(PIXI.Texture.fromImage('images/background.jpg'))
-	this.addChild(this.background)
+	// this.addChild(this.background)
 
 	this.graphicsBlack = new PIXI.Graphics()
 	this.graphicsWhite = new PIXI.Graphics()
@@ -14,7 +14,7 @@ var Drawer = function()
 	this.addChild(this.graphicsDebug)
 
 	this.showBull = true
-	this.debug = true
+	this.debug = false
 
  	this.Clear = function ()
  	{

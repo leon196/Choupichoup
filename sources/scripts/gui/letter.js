@@ -5,10 +5,11 @@ var Letter = function (character, style)
 
 	// The actual string
 	this.character = getDefaultIfUndefined(character, randomLetter())
-	this.size = 20+Math.random()*20
+	this.size = 10+Math.random()*20
 
 	// Font stuff
-	var css = getDefaultIfUndefined(style, { font: this.size+'px Snippet', fill: '020202', align: 'left' })
+	// var css = getDefaultIfUndefined(style, { font: this.size +'px Snippet', fill: '020202', align: 'left' })
+	var css = { font: this.size * LETTER_FONT_SCALE +'px Shadows Into Light', fill: '020202', align: 'left' }
 
 	// The Pixi Text display
 	this.text = new PIXI.Text(this.character, css)
@@ -31,10 +32,10 @@ var Letter = function (character, style)
 	this.BounceFromCircleCollider = function (collider)
 	{
 		var angle = Math.atan2(this.y - collider.y, this.x - collider.x)
-		this.x = collider.x + Math.cos(angle) * (collider.radius + this.size)
-		this.y = collider.y + Math.sin(angle) * (collider.radius + this.size)
-		this.velocity.x = Math.cos(angle) * this.velocity.magnitude()
-		this.velocity.y = Math.sin(angle) * this.velocity.magnitude()
+		this.x = collider.x + Math.cos(angle) * (collider.size + this.size)
+		this.y = collider.y + Math.sin(angle) * (collider.size + this.size)
+		this.velocity.x += Math.cos(angle) * collider.velocity.magnitude()
+		this.velocity.y += Math.sin(angle) * collider.velocity.magnitude()
 	}
 
 	this.Rumble = function ()
@@ -42,6 +43,11 @@ var Letter = function (character, style)
 		var randomAngle = Math.random() * Math.PI * 2
 		this.velocity.x += Math.cos(randomAngle)
 		this.velocity.y += Math.sin(randomAngle)
+	}
+
+	this.circleCollision = function (letter)
+	{
+		return distanceBetween(this, letter) < this.size + letter.size
 	}
 }
 

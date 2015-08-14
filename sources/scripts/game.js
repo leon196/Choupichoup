@@ -1,11 +1,18 @@
 
-var renderer = new PIXI.CanvasRenderer(window.innerWidth, window.innerHeight,{backgroundColor : 0x1099bb})
+var renderer = new PIXI.CanvasRenderer(window.innerWidth, window.innerHeight,
+	{
+		backgroundColor : 0x1099bb
+		, transparent: true
+	})
 document.body.appendChild(renderer.view)
+
+window.onresize = function(event) {
+    renderer.resize(window.innerWidth, window.innerHeight)
+};
 
 var stage = new PIXI.Container()
 var mouse = new Point()
-
-var drawer, message, collider
+var drawer, phylactere
 var boidList = []
 
 stage.interactive = true;
@@ -46,35 +53,21 @@ function init()
 {
 	drawer = new Drawer()
 	interface = new Interface()
-	interface.addButton("Debug", function () { drawer.debug = !drawer.debug })
-	interface.addButton("Bull", function () { drawer.showBull = !drawer.showBull })
-	interface.addButton("Interface", function () { interface.visible = !interface.visible })
-	interface.addLabels(['message', 'target', 'avoid','velocity']
-		,[COLOR_GRID_STR, COLOR_TARGET_STR, COLOR_AVOID_STR, COLOR_BOID_STR])
+	// interface.addButton("Debug", function () { drawer.debug = !drawer.debug })
+	// interface.addButton("Bull", function () { drawer.showBull = !drawer.showBull })
+	// interface.addButton("Labels", function () { interface.visible = !interface.visible })
+	// interface.addLabels(['grid', 'target', 'avoid','velocity']
+	// 	,[COLOR_GRID_STR, COLOR_TARGET_STR, COLOR_AVOID_STR, COLOR_BOID_STR])
 
-	// Setup message
-	message = new Message(
-		"Letters",
-	{ 
-		fontSizeMin: this.fontMin,
-		fontSizeMax: this.fontMax,
-		font: 'Shadows Into Light', 
-		color: '020202', 
-		align: 'left' 
-	})
+	phylactere = new Phylactere("Bubble Letters\nBoids Prototype\nFloating Though")
 
-
-	stage.addChildAt(message, 0)
+	stage.addChildAt(phylactere, 0)
 	stage.addChildAt(interface, 0)
 	stage.addChildAt(drawer, 0)
 
-	collider = new Collider()
-	collider.x = renderer.width / 2
-	collider.y = renderer.height / 2
-
-	Model.Curious(4)
-	Model.Nervous(3)
-	Model.Septic(2)
+	// Model.Curious(4)
+	// Model.Nervous(3)
+	// Model.Septic(2)
 
 	timeStarted = new Date()
 	animate()
@@ -98,34 +91,37 @@ function update()
 	
 	drawer.Clear()
 
-	message.x = mouse.x
-	message.y = mouse.y
+	phylactere.x = mouse.x
+	phylactere.y = mouse.y
 
-	drawer.Bull(collider.x, collider.y, collider.radius)
+	phylactere.update()
 
 	var boidCount = boidList.length
 
+	// For all active boids
 	for (var current = 0; current < boidCount; ++current)
 	{
 		var boid = boidList[current]
 
+		// Draw that bull
+		drawer.Bull(boid.x, boid.y, boid.size)
+
 		var near = new Point()
 		var global = new Point()
 		var avoid = new Point()
-		var target = new Point(renderer.width / 2 - boid.x, renderer.height / 2 - boid.y)
+		var target = new Point(boid.target.x - boid.x, boid.target.y - boid.y)
 		var grid = new Point()
 
+		// Message Letter
 		if (boid instanceof Letter && boid.isFromMessage)
 		{
-			grid.x = message.GetX() + boid.gridX - boid.x
-			grid.y = message.GetY() + boid.gridY - boid.y
+			grid.x = phylactere.GetX() + boid.gridX - boid.x
+			grid.y = phylactere.GetY() + boid.gridY - boid.y
 
 			grid.x *= DEFAULT_GRID_SCALE
 			grid.y *= DEFAULT_GRID_SCALE
 
 			target = new Point(mouse.x - boid.x, mouse.y - boid.y)
-
-			drawer.Bull(boid.x, boid.y, boid.size)
 		}
 
 		for (var other = 0; other < boidCount; ++other)
@@ -168,15 +164,9 @@ function update()
 			target.x + near.x + global.x + avoid.x + grid.x,
 			target.y + near.y + global.y + avoid.y + grid.y)
 
-
 		// Collision
 		if (boid instanceof Letter)
 		{
-			// Obstacles
-			if (collider.circleTest(boid.x, boid.y, boid.size))
-			{
-				boid.BounceFromCircleCollider(collider)
-			}
 			// Window borders Collision
 			if (boid.isFromMessage)
 			{
@@ -193,16 +183,27 @@ function update()
 				boid.x = clamp(boid.x, 0, renderer.width)
 				boid.y = clamp(boid.y, 0, renderer.height)
 			}
+			else
+			{
+				for (var c = 0; c < phylactere.letters.length; ++c)
+				{
+					var collider = phylactere.letters[c]
+					if (collider.circleCollision(boid))
+					{
+						boid.BounceFromCircleCollider(collider)
+					}	
+				}
+			}
 		}
 
 		if (drawer.debug)
 		{
-			drawer.Arrow(boid, grid.getNormal(), grid.magnitude() * 100, 10, COLOR_GRID_HEX)
-			drawer.Arrow(boid, target.getNormal(), target.magnitude() * 100, 10, COLOR_TARGET_HEX)
-			drawer.Arrow(boid, avoid.getNormal(), avoid.magnitude() * 100, 10, COLOR_AVOID_HEX)
-			drawer.Arrow(boid, near.getNormal(), near.magnitude() * 100, 10, COLOR_NEAR_HEX)
-			drawer.Arrow(boid, global.getNormal(), global.magnitude() * 100, 10, COLOR_GLOBAL_HEX)
-			drawer.Arrow(boid, boid.velocity.getNormal(), boid.velocity.magnitude() * 10, 10, COLOR_BOID_HEX)
+			drawer.Arrow(boid, grid.getNormal(), grid.magnitude() * 50, 10, COLOR_GRID_HEX)
+			drawer.Arrow(boid, target.getNormal(), target.magnitude() * 50, 10, COLOR_TARGET_HEX)
+			drawer.Arrow(boid, avoid.getNormal(), avoid.magnitude() * 50, 10, COLOR_AVOID_HEX)
+			drawer.Arrow(boid, near.getNormal(), near.magnitude() * 50, 10, COLOR_NEAR_HEX)
+			drawer.Arrow(boid, global.getNormal(), global.magnitude() * 50, 10, COLOR_GLOBAL_HEX)
+			drawer.Arrow(boid, boid.velocity.getNormal(), boid.velocity.magnitude() * 5, 10, COLOR_BOID_HEX)
 		}
 	}
 	drawer.EndFill()

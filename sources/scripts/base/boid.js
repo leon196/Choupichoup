@@ -3,6 +3,9 @@ var Boid = function()
 {
 	PIXI.Container.call(this)
 
+	this.size = 4+Math.random()*16
+	this.target = new Point(renderer.width / 2, renderer.height / 2)
+
 	// Init velocity vector with random seed
 	var randomAngle = Math.random() * Math.PI * 2
 	this.velocity = new Point(Math.cos(randomAngle), Math.sin(randomAngle))
@@ -25,8 +28,8 @@ var Boid = function()
 		this.velocity.y += moveY
 
 		// Apply
-		this.x += this.velocity.x * this.speed
-		this.y += this.velocity.y * this.speed
+		this.x += this.velocity.x * this.speed / this.size
+		this.y += this.velocity.y * this.speed / this.size
 
 		// Friction
 		this.velocity.x *= this.friction

@@ -28,6 +28,7 @@ var Interface = function ()
 				})
 			text.x = this.labelAnchor.x
 			text.y = this.labelAnchor.y + (this.labelFontSize + this.margin) * i
+			text.visible = false
 			this.addChild(text)
 		}
 	}

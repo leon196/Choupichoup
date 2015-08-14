@@ -1,7 +1,7 @@
 
 window.WebFontConfig = {
     google: {
-        families: ['Snippet', 'Arvo:700italic', 'Podkova:700', 'Shadows Into Light', 'Permanent Marker']
+        families: ['Snippet', 'Arvo:700italic', 'Podkova:700', 'Shadows Into Light', 'Permanent Marker', 'Luckiest Guy']
     },
 
     active: function() {
