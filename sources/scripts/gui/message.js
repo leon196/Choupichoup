@@ -25,7 +25,8 @@ var Message = function(text, style)
 		for (var idxLetter = 0; idxLetter < wordLetters.length; ++idxLetter)
 		{
 			// Boid Creation
-			var letter = new Letter(wordLetters[idxLetter])
+			var style = { font: 20+Math.random()*20+'px Shadows Into Light', fill: '020202', align: 'left' }
+			var letter = new Letter(wordLetters[idxLetter], style)
 			letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
 
 			// Letter logic
@@ -34,6 +35,9 @@ var Message = function(text, style)
 			letter.isFromMessage = true
 
 			// Add to update stack
+			boidList.push(letter)
+
+			// Store own letters
 			this.letters.push(letter)
 
 			// Add to scene to be displayed

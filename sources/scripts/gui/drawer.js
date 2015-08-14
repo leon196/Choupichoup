@@ -3,6 +3,9 @@ var Drawer = function()
 {
 	PIXI.Container.call(this)
 
+	this.background = new PIXI.Sprite(PIXI.Texture.fromImage('images/background.jpg'))
+	this.addChild(this.background)
+
 	this.graphicsBlack = new PIXI.Graphics()
 	this.graphicsWhite = new PIXI.Graphics()
 	this.graphicsDebug = new PIXI.Graphics()
@@ -41,18 +44,21 @@ var Drawer = function()
 
  	this.Arrow = function (origin, dir, length, thinckness, color)
  	{
- 		var forward = { x: dir.x * length, y: dir.y * length }
- 		var peak = { x: dir.x * (length + 10), y: dir.y * (length + 10) }
- 		var offset = { x: dir.y, y: -dir.x }
- 		var triangle = { x: dir.y * Math.min(thinckness, 30), y: -dir.x * Math.min(thinckness, 30) }
-		this.graphicsDebug.beginFill(color)
-		this.graphicsDebug.moveTo(origin.x - offset.x, origin.y - offset.y)
-		this.graphicsDebug.lineTo(origin.x + forward.x - offset.x, origin.y + forward.y - offset.y)
-		this.graphicsDebug.lineTo(origin.x + forward.x - triangle.x, origin.y + forward.y - triangle.y)
-		this.graphicsDebug.lineTo(origin.x + peak.x, origin.y + peak.y)
-		this.graphicsDebug.lineTo(origin.x + forward.x + triangle.x, origin.y + forward.y + triangle.y)
-		this.graphicsDebug.lineTo(origin.x + forward.x + offset.x, origin.y + forward.y + offset.y)
-		this.graphicsDebug.lineTo(origin.x + offset.x, origin.y + offset.y)
+ 		if (length > 10)
+ 		{
+	 		var forward = { x: dir.x * length, y: dir.y * length }
+	 		var peak = { x: dir.x * (length + 10), y: dir.y * (length + 10) }
+	 		var offset = { x: dir.y, y: -dir.x }
+	 		var triangle = { x: dir.y * Math.min(thinckness, 30), y: -dir.x * Math.min(thinckness, 30) }
+			this.graphicsDebug.beginFill(color)
+			this.graphicsDebug.moveTo(origin.x - offset.x, origin.y - offset.y)
+			this.graphicsDebug.lineTo(origin.x + forward.x - offset.x, origin.y + forward.y - offset.y)
+			this.graphicsDebug.lineTo(origin.x + forward.x - triangle.x, origin.y + forward.y - triangle.y)
+			this.graphicsDebug.lineTo(origin.x + peak.x, origin.y + peak.y)
+			this.graphicsDebug.lineTo(origin.x + forward.x + triangle.x, origin.y + forward.y + triangle.y)
+			this.graphicsDebug.lineTo(origin.x + forward.x + offset.x, origin.y + forward.y + offset.y)
+			this.graphicsDebug.lineTo(origin.x + offset.x, origin.y + offset.y)
+ 		}
  	}
 
  	this.EndFill = function ()

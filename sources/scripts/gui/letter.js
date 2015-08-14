@@ -8,7 +8,7 @@ var Letter = function (character, style)
 	this.size = 20+Math.random()*20
 
 	// Font stuff
-	var css = getDefaultIfUndefined(style, { font: this.size+'px Permanent Marker', fill: '020202', align: 'left' })
+	var css = getDefaultIfUndefined(style, { font: this.size+'px Snippet', fill: '020202', align: 'left' })
 
 	// The Pixi Text display
 	this.text = new PIXI.Text(this.character, css)
@@ -27,6 +27,15 @@ var Letter = function (character, style)
 	// Position on message grid
 	this.gridX = 0
 	this.gridY = 0
+
+	this.BounceFromCircleCollider = function (collider)
+	{
+		var angle = Math.atan2(this.y - collider.y, this.x - collider.x)
+		this.x = collider.x + Math.cos(angle) * (collider.radius + this.size)
+		this.y = collider.y + Math.sin(angle) * (collider.radius + this.size)
+		this.velocity.x = Math.cos(angle) * this.velocity.magnitude()
+		this.velocity.y = Math.sin(angle) * this.velocity.magnitude()
+	}
 
 	this.Rumble = function ()
 	{

@@ -3,9 +3,10 @@ var renderer = new PIXI.CanvasRenderer(window.innerWidth, window.innerHeight,{ba
 document.body.appendChild(renderer.view)
 
 var stage = new PIXI.Container()
-var drawer = new Drawer()
 var mouse = new Point()
-var message
+
+var drawer, message, collider
+var boidList = []
 
 stage.interactive = true;
 stage.on('mousemove', onMove)
@@ -15,27 +16,45 @@ stage.on('mousemove', onMove)
 var timeElapsed = 0
 var timeStarted = 0
 
+var imageReady = false
+var fontReady = false
+
+PIXI.loader
+.add('images/background.jpg')
+.once('complete', imageLoaded)
+.load();
+
+function imageLoaded()
+{
+	imageReady = true
+	if (fontReady)
+	{
+		init()
+	}
+}
+
 function fontLoaded()
 {
-	init()
+	fontReady = true
+	if (imageReady)
+	{
+		init()
+	}
 }
 
 function init()
 {
-
-	new Button("Debug", function ()
-	{
-		drawer.debug = !drawer.debug 
-	})
-
-	new Button("Bull", function ()
-	{
-		drawer.showBull = !drawer.showBull 
-	})
+	drawer = new Drawer()
+	interface = new Interface()
+	interface.addButton("Debug", function () { drawer.debug = !drawer.debug })
+	interface.addButton("Bull", function () { drawer.showBull = !drawer.showBull })
+	interface.addButton("Interface", function () { interface.visible = !interface.visible })
+	interface.addLabels(['message', 'target', 'avoid','velocity']
+		,[COLOR_GRID_STR, COLOR_TARGET_STR, COLOR_AVOID_STR, COLOR_BOID_STR])
 
 	// Setup message
 	message = new Message(
-		"Bubble\nLetter",
+		"Letters",
 	{ 
 		fontSizeMin: this.fontMin,
 		fontSizeMax: this.fontMax,
@@ -44,40 +63,18 @@ function init()
 		align: 'left' 
 	})
 
+
 	stage.addChildAt(message, 0)
+	stage.addChildAt(interface, 0)
 	stage.addChildAt(drawer, 0)
 
-	for (var i = 0; i < 5; ++i)
-	{
-		var letter = new Letter("?")
-		letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
-		letter.avoidScale = 0.005
-		stage.addChild(letter)
-		message.letters.push(letter)
-	}
+	collider = new Collider()
+	collider.x = renderer.width / 2
+	collider.y = renderer.height / 2
 
-	for (var i = 0; i < 5; ++i)
-	{
-		var letter = new Letter("!")
-		letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
-		// letter.avoidScale = 0.1
-		letter.avoidScale = 0.1
-		letter.targetScale = 0.01
-		stage.addChild(letter)
-		message.letters.push(letter)
-	}
-
-	for (var i = 0; i < 1; ++i)
-	{
-		var letter = new Letter("...")
-		letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
-		// letter.avoidScale = 0.1
-		letter.avoidScale = 0.01
-		letter.targetScale = 0.005
-		letter.friction = 0.9
-		stage.addChild(letter)
-		message.letters.push(letter)
-	}
+	Model.Curious(4)
+	Model.Nervous(3)
+	Model.Septic(2)
 
 	timeStarted = new Date()
 	animate()
@@ -104,13 +101,13 @@ function update()
 	message.x = mouse.x
 	message.y = mouse.y
 
-	var boidCount = message.letters.length
+	drawer.Bull(collider.x, collider.y, collider.radius)
+
+	var boidCount = boidList.length
 
 	for (var current = 0; current < boidCount; ++current)
 	{
-		var boid = message.letters[current]
-
-		drawer.Bull(boid.x, boid.y, boid.size * 0.75)
+		var boid = boidList[current]
 
 		var near = new Point()
 		var global = new Point()
@@ -127,13 +124,15 @@ function update()
 			grid.y *= DEFAULT_GRID_SCALE
 
 			target = new Point(mouse.x - boid.x, mouse.y - boid.y)
+
+			drawer.Bull(boid.x, boid.y, boid.size)
 		}
 
 		for (var other = 0; other < boidCount; ++other)
 		{
 			if (current != other && (other instanceof Message) == false )
 			{
-				var boidOther = message.letters[other]
+				var boidOther = boidList[other]
 				var dist = distanceBetween(boid, boidOther)
 				var shouldAvoid = dist < (boid.size + boidOther.size) * 0.5
 				var shouldFollow = dist < 100
@@ -164,35 +163,46 @@ function update()
 		near.scale(boid.nearScale)
 		target.scale(boid.targetScale)
 
-		if (drawer.debug)
-		{
-			drawer.Arrow(boid, grid.getNormal(), grid.magnitude() * 100 + 0.1, 10, 0xff0000)
-			drawer.Arrow(boid, target.getNormal(), target.magnitude() * 100 + 0.1, 10, 0x00ff00)
-			drawer.Arrow(boid, avoid.getNormal(), avoid.magnitude() * 100 + 0.1, 10, 0x0000ff)
-			drawer.Arrow(boid, near.getNormal(), near.magnitude() * 100 + 0.1, 10, 0x00ffff)
-			drawer.Arrow(boid, global.getNormal(), global.magnitude() * 100 + 0.1, 10, 0xffffff)
-		}
-
 		// Apply to Boid
 		boid.update(
 			target.x + near.x + global.x + avoid.x + grid.x,
 			target.y + near.y + global.y + avoid.y + grid.y)
 
+
 		// Collision
-		if (boid instanceof Letter && boid.isFromMessage)
+		if (boid instanceof Letter)
 		{
-			if (boid.x < 0 || boid.x > renderer.width)
+			// Obstacles
+			if (collider.circleTest(boid.x, boid.y, boid.size))
 			{
-				boid.velocity.x *= -boid.frictionCollision
-				boid.Rumble()
+				boid.BounceFromCircleCollider(collider)
 			}
-			if (boid.y < 0 || boid.y > renderer.height)
+			// Window borders Collision
+			if (boid.isFromMessage)
 			{
-				boid.velocity.y *= -boid.frictionCollision
-				boid.Rumble()
+				if (boid.x < 0 || boid.x > renderer.width)
+				{
+					boid.velocity.x *= -boid.frictionCollision
+					boid.Rumble()
+				}
+				if (boid.y < 0 || boid.y > renderer.height)
+				{
+					boid.velocity.y *= -boid.frictionCollision
+					boid.Rumble()
+				}
+				boid.x = clamp(boid.x, 0, renderer.width)
+				boid.y = clamp(boid.y, 0, renderer.height)
 			}
-			boid.x = clamp(boid.x, 0, renderer.width)
-			boid.y = clamp(boid.y, 0, renderer.height)
+		}
+
+		if (drawer.debug)
+		{
+			drawer.Arrow(boid, grid.getNormal(), grid.magnitude() * 100, 10, COLOR_GRID_HEX)
+			drawer.Arrow(boid, target.getNormal(), target.magnitude() * 100, 10, COLOR_TARGET_HEX)
+			drawer.Arrow(boid, avoid.getNormal(), avoid.magnitude() * 100, 10, COLOR_AVOID_HEX)
+			drawer.Arrow(boid, near.getNormal(), near.magnitude() * 100, 10, COLOR_NEAR_HEX)
+			drawer.Arrow(boid, global.getNormal(), global.magnitude() * 100, 10, COLOR_GLOBAL_HEX)
+			drawer.Arrow(boid, boid.velocity.getNormal(), boid.velocity.magnitude() * 10, 10, COLOR_BOID_HEX)
 		}
 	}
 	drawer.EndFill()
