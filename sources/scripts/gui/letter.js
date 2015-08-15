@@ -5,7 +5,7 @@ var Letter = function (character, style)
 
 	// The actual string
 	this.character = getDefaultIfUndefined(character, randomLetter())
-	this.size = 15+Math.random()*10
+	this.size = 10+Math.random()*15
 
 	// Font stuff
 	// var css = getDefaultIfUndefined(style, { font: this.size +'px Snippet', fill: '020202', align: 'left' })

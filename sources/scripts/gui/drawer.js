@@ -13,6 +13,24 @@ var Drawer = function()
 	this.addChild(this.graphicsDebug)
 	this.addChild(this.graphicsWhite)
 
+	this.bullBlackList = []
+	this.bullWhiteList = []
+	for (var b = 0; b < boidList.length; ++b)
+	{
+		var boid = boidList[b]
+		var graphB = new PIXI.Graphics()
+		graphB.beginFill(0x000000)
+		graphB.drawCircle(0, BULL_OUTLINE / 2, boid.size + BULL_OUTLINE)
+		this.bullBlackList.push(graphB)
+		layerBlack.addChild(graphB)
+
+		var graphW = new PIXI.Graphics()
+		graphW.beginFill(0xffffff)
+		graphW.drawCircle(0, 0, boid.size)
+		this.bullWhiteList.push(graphW)
+		layerWhite.addChild(graphW)
+	}
+
 	this.showBull = true
 	this.debug = false
 

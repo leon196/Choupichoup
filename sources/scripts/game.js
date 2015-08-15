@@ -1,8 +1,8 @@
 
 var renderer = new PIXI.CanvasRenderer(window.innerWidth, window.innerHeight,
+// var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight,
 	{
-		backgroundColor : 0x1099bb
-		, transparent: true
+		transparent: true
 	})
 document.body.appendChild(renderer.view)
 
@@ -11,14 +11,19 @@ window.onresize = function(event) {
 };
 
 var stage = new PIXI.Container()
-var mouse = new Point()
+var layerBlack = new PIXI.Container()
+var layerWhite = new PIXI.Container()
+stage.addChild(layerBlack)
+stage.addChild(layerWhite)
 var drawer, phylactere
 var boidList = []
+var mouse = new Point()
 
 stage.interactive = true;
 stage.on('mousemove', onMove)
      .on('touchstart', onMove)
      .on('touchmove', onMove)
+
 
 var timeElapsed = 0
 var timeStarted = 0
@@ -51,10 +56,9 @@ function fontLoaded()
 
 function init()
 {
-	drawer = new Drawer()
 	interface = new Interface()
 	interface.addButton("Draw Debug", function () { drawer.debug = !drawer.debug; interface.visible = !interface.visible })
-	interface.addButton("Draw Bull", function () { drawer.showBull = !drawer.showBull })
+	interface.addButton("Draw Bull", function () { layerWhite.visible = !layerWhite.visible; layerBlack.visible = !layerBlack.visible })
 	interface.addButton("Algo Boids", function () {}, "https://en.wikipedia.org/wiki/Boids")
 	interface.addButton("Pixi.js", function () {}, "http://www.pixijs.com/")
 	interface.addButton("Code Sources", function () {}, "https://github.com/leon196/BubbleLetter")
@@ -64,13 +68,15 @@ function init()
 
 	phylactere = new Phylactere("Boids prototype for\nfloating thoughts")
 
-	stage.addChildAt(phylactere, 0)
-	stage.addChildAt(interface, 0)
-	stage.addChildAt(drawer, 0)
-
 	// Model.Curious(4)
 	// Model.Nervous(3)
 	// Model.Septic(2)
+
+	drawer = new Drawer()
+
+	stage.addChildAt(phylactere, 0)
+	stage.addChildAt(interface, 0)
+	stage.addChildAt(drawer, 0)
 
 	timeStarted = new Date()
 	animate()
@@ -106,9 +112,6 @@ function update()
 	{
 		var boid = boidList[current]
 
-		// Draw that bull
-		drawer.Bull(boid.x, boid.y, boid.size)
-
 		var near = new Point()
 		var global = new Point()
 		var globalCount = 0
@@ -117,18 +120,15 @@ function update()
 		var grid = new Point()
 
 		// Message Letter
-		if (boid instanceof Letter)
+		if (boid instanceof Letter && boid.isFromMessage)
 		{
 			target = new Point(phylactere.x - boid.x, phylactere.y - boid.y)
 
-			if (boid.isFromMessage)
-			{
-				grid.x = phylactere.GetX() + boid.gridX - boid.x
-				grid.y = phylactere.GetY() + boid.gridY - boid.y
+			grid.x = phylactere.GetX() + boid.gridX - boid.x
+			grid.y = phylactere.GetY() + boid.gridY - boid.y
 
-				grid.x *= DEFAULT_GRID_SCALE
-				grid.y *= DEFAULT_GRID_SCALE
-			}
+			grid.x *= DEFAULT_GRID_SCALE
+			grid.y *= DEFAULT_GRID_SCALE
 		}
 
 		for (var other = 0; other < boidCount; ++other)
@@ -137,25 +137,21 @@ function update()
 			{
 				var boidOther = boidList[other]
 				var dist = distanceBetween(boid, boidOther)
-				var shouldAvoid = dist < (boid.size + boidOther.size) * 0.5
-				var shouldFollow = dist < 100
-				// shouldAvoid = shouldAvoid && 
-				// ((typeof boid.letter === "undefined")
-				// || (typeof boid.letter !== "undefined" && typeof boidOther.letter !== "undefined"))
-				if (shouldAvoid)
+				if (dist < (boid.size + boidOther.size) * BULL_COLLISION_BIAS)
 				{
 					avoid.x += boid.x - boidOther.x
 					avoid.y	+= boid.y - boidOther.y
 				}
-				// if (shouldFollow)
-				// {
-					global.x += boidOther.x
-					global.y += boidOther.y
-					++globalCount
-				// }
+				if (dist < 100)
+				{
+					near.x += boidOther.velocity.x
+					near.y += boidOther.velocity.y
+				}
+
+				global.x += boidOther.x
+				global.y += boidOther.y
+				++globalCount
 			
-				near.x += boidOther.velocity.x
-				near.y += boidOther.velocity.y
 			}
 		}
 
@@ -203,6 +199,12 @@ function update()
 			// 	}
 			// }
 		}
+
+		// Update graphics positions
+		drawer.bullBlackList[current].x = boid.x
+		drawer.bullBlackList[current].y = boid.y
+		drawer.bullWhiteList[current].x = boid.x
+		drawer.bullWhiteList[current].y = boid.y
 
 		if (drawer.debug)
 		{
