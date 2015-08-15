@@ -3,8 +3,12 @@ var Drawer = function()
 {
 	PIXI.Container.call(this)
 
-	this.background = new PIXI.Sprite(PIXI.Texture.fromImage('images/background.jpg'))
-	// this.addChild(this.background)
+	this.background = new PIXI.Sprite(PIXI.Texture.fromImage('images/head.png'))
+	this.background.anchor.x = 0.55
+	this.background.anchor.y = 1
+	this.background.x = renderer.width / 2 
+	this.background.y = renderer.height
+	this.addChild(this.background)
 
 	this.graphicsBlack = new PIXI.Graphics()
 	this.graphicsWhite = new PIXI.Graphics()
@@ -31,7 +35,7 @@ var Drawer = function()
 		layerWhite.addChild(graphW)
 	}
 
-	this.showBull = true
+	this.showBubble = true
 	this.debug = false
 
  	this.Clear = function ()
@@ -42,15 +46,6 @@ var Drawer = function()
 		this.graphicsWhite.beginFill(0xffffff)
 		this.graphicsBlack.beginFill(0x000000)
 	}
-
- 	this.Bull = function (x, y, radius)
- 	{
- 		if (this.showBull)
- 		{
-			this.graphicsBlack.drawCircle(x, y + BULL_OUTLINE / 2, radius + BULL_OUTLINE)
-			this.graphicsWhite.drawCircle(x, y, radius)
-		}
- 	}
 
  	this.Line = function (pos, dir, thinckness, color)
  	{

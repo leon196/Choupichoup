@@ -32,7 +32,8 @@ var imageReady = false
 var fontReady = false
 
 PIXI.loader
-.add('images/background.jpg')
+.add('images/test.png')
+.add('images/head.png')
 .once('complete', imageLoaded)
 .load();
 
@@ -58,7 +59,7 @@ function init()
 {
 	interface = new Interface()
 	interface.addButton("Draw Debug", function () { drawer.debug = !drawer.debug; interface.visible = !interface.visible })
-	interface.addButton("Draw Bull", function () { layerWhite.visible = !layerWhite.visible; layerBlack.visible = !layerBlack.visible })
+	interface.addButton("Draw Bubble", function () { layerWhite.visible = !layerWhite.visible; layerBlack.visible = !layerBlack.visible })
 	interface.addButton("Algo Boids", function () {}, "https://en.wikipedia.org/wiki/Boids")
 	interface.addButton("Pixi.js", function () {}, "http://www.pixijs.com/")
 	interface.addButton("Code Sources", function () {}, "https://github.com/leon196/BubbleLetter")

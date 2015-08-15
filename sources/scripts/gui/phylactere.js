@@ -4,22 +4,25 @@ var Phylactere = function(text, style)
 	Message.call(this, text, style)
 
 	this.tailBoidList = []
-	for (var i = 0; i < 32; ++i)
+	for (var i = 0; i < 8; ++i)
 	{
+		var ratio = i / 8
 		var boid = new Boid()
 		boid.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
 		boid.friction = 0.9
+		boid.size = 8 + Math.sin(ratio * PI2) * 2
 		stage.addChild(boid)
 		boidList.push(boid)
 		this.tailBoidList.push(boid)
 	}
 
 	this.cloudBoidList = []
-	for (var i = 0; i < 16; ++i)
+	for (var i = 0; i < 8; ++i)
 	{
+		var ratio = i / 8
 		var letter = new Letter(" ")
 		letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
-		letter.size = 4 + Math.random() * 20
+		letter.size = 15 + Math.sin(ratio * PI2) * 10
 		stage.addChild(letter)
 		boidList.push(letter)
 		this.cloudBoidList.push(letter)
@@ -31,8 +34,8 @@ var Phylactere = function(text, style)
 		{
 			var boid = this.tailBoidList[i]
 			var ratio = i / this.tailBoidList.length
-			boid.target.x = mix(0, this.x, ratio)
-			boid.target.y = mix(0, this.y, ratio)
+			boid.target.x = mix(renderer.width / 2, this.x, ratio)
+			boid.target.y = mix(renderer.height - 85, this.y, ratio)
 			if (distanceTo(this) != 0)
 			{
 				boid.target.x += (this.y / distanceTo(this)) * Math.sin(ratio * PI2) * 40
