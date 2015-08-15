@@ -10,8 +10,8 @@ var Drawer = function()
 	this.graphicsWhite = new PIXI.Graphics()
 	this.graphicsDebug = new PIXI.Graphics()
 	this.addChild(this.graphicsBlack)
-	this.addChild(this.graphicsWhite)
 	this.addChild(this.graphicsDebug)
+	this.addChild(this.graphicsWhite)
 
 	this.showBull = true
 	this.debug = false
@@ -48,8 +48,8 @@ var Drawer = function()
  		{
 	 		var forward = { x: dir.x * length, y: dir.y * length }
 	 		var peak = { x: dir.x * (length + 10), y: dir.y * (length + 10) }
-	 		var offset = { x: dir.y, y: -dir.x }
-	 		var triangle = { x: dir.y * Math.min(thinckness, 30), y: -dir.x * Math.min(thinckness, 30) }
+	 		var offset = { x: dir.y * thinckness / 4, y: -dir.x * thinckness / 4 }
+	 		var triangle = { x: dir.y * thinckness, y: -dir.x * thinckness }
 			this.graphicsDebug.beginFill(color)
 			this.graphicsDebug.moveTo(origin.x - offset.x, origin.y - offset.y)
 			this.graphicsDebug.lineTo(origin.x + forward.x - offset.x, origin.y + forward.y - offset.y)

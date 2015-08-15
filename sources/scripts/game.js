@@ -53,13 +53,16 @@ function init()
 {
 	drawer = new Drawer()
 	interface = new Interface()
-	// interface.addButton("Debug", function () { drawer.debug = !drawer.debug })
-	// interface.addButton("Bull", function () { drawer.showBull = !drawer.showBull })
-	// interface.addButton("Labels", function () { interface.visible = !interface.visible })
-	// interface.addLabels(['grid', 'target', 'avoid','velocity']
-	// 	,[COLOR_GRID_STR, COLOR_TARGET_STR, COLOR_AVOID_STR, COLOR_BOID_STR])
+	interface.addButton("Draw Debug", function () { drawer.debug = !drawer.debug; interface.visible = !interface.visible })
+	interface.addButton("Draw Bull", function () { drawer.showBull = !drawer.showBull })
+	interface.addButton("Algo Boids", function () {}, "https://en.wikipedia.org/wiki/Boids")
+	interface.addButton("Pixi.js", function () {}, "http://www.pixijs.com/")
+	interface.addButton("Code Sources", function () {}, "https://github.com/leon196/BubbleLetter")
+	interface.addLabels(['grid', 'target', 'avoid','near', 'global']
+		,[COLOR_GRID_STR, COLOR_TARGET_STR, COLOR_AVOID_STR, COLOR_NEAR_STR, COLOR_GLOBAL_STR])
+	interface.visible = false
 
-	phylactere = new Phylactere("Bubble Letters\nBoids Prototype\nFloating Though")
+	phylactere = new Phylactere("Boids prototype for\nfloating thoughts")
 
 	stage.addChildAt(phylactere, 0)
 	stage.addChildAt(interface, 0)
@@ -108,20 +111,24 @@ function update()
 
 		var near = new Point()
 		var global = new Point()
+		var globalCount = 0
 		var avoid = new Point()
 		var target = new Point(boid.target.x - boid.x, boid.target.y - boid.y)
 		var grid = new Point()
 
 		// Message Letter
-		if (boid instanceof Letter && boid.isFromMessage)
+		if (boid instanceof Letter)
 		{
-			grid.x = phylactere.GetX() + boid.gridX - boid.x
-			grid.y = phylactere.GetY() + boid.gridY - boid.y
+			target = new Point(phylactere.x - boid.x, phylactere.y - boid.y)
 
-			grid.x *= DEFAULT_GRID_SCALE
-			grid.y *= DEFAULT_GRID_SCALE
+			if (boid.isFromMessage)
+			{
+				grid.x = phylactere.GetX() + boid.gridX - boid.x
+				grid.y = phylactere.GetY() + boid.gridY - boid.y
 
-			target = new Point(mouse.x - boid.x, mouse.y - boid.y)
+				grid.x *= DEFAULT_GRID_SCALE
+				grid.y *= DEFAULT_GRID_SCALE
+			}
 		}
 
 		for (var other = 0; other < boidCount; ++other)
@@ -144,6 +151,7 @@ function update()
 				// {
 					global.x += boidOther.x
 					global.y += boidOther.y
+					++globalCount
 				// }
 			
 				near.x += boidOther.velocity.x
@@ -151,8 +159,8 @@ function update()
 			}
 		}
 
-		global.x = global.x / boidCount - boid.x
-		global.y = global.y / boidCount - boid.y
+		global.x = global.x / globalCount - boid.x
+		global.y = global.y / globalCount - boid.y
 
 		avoid.scale(boid.avoidScale)
 		global.scale(boid.globalScale)
@@ -183,27 +191,27 @@ function update()
 				boid.x = clamp(boid.x, 0, renderer.width)
 				boid.y = clamp(boid.y, 0, renderer.height)
 			}
-			else
-			{
-				for (var c = 0; c < phylactere.letters.length; ++c)
-				{
-					var collider = phylactere.letters[c]
-					if (collider.circleCollision(boid))
-					{
-						boid.BounceFromCircleCollider(collider)
-					}	
-				}
-			}
+			// else
+			// {
+			// 	for (var c = 0; c < phylactere.letters.length; ++c)
+			// 	{
+			// 		var collider = phylactere.letters[c]
+			// 		if (collider.circleCollision(boid))
+			// 		{
+			// 			boid.BounceFromCircleCollider(collider)
+			// 		}	
+			// 	}
+			// }
 		}
 
 		if (drawer.debug)
 		{
-			drawer.Arrow(boid, grid.getNormal(), grid.magnitude() * 50, 10, COLOR_GRID_HEX)
-			drawer.Arrow(boid, target.getNormal(), target.magnitude() * 50, 10, COLOR_TARGET_HEX)
-			drawer.Arrow(boid, avoid.getNormal(), avoid.magnitude() * 50, 10, COLOR_AVOID_HEX)
-			drawer.Arrow(boid, near.getNormal(), near.magnitude() * 50, 10, COLOR_NEAR_HEX)
-			drawer.Arrow(boid, global.getNormal(), global.magnitude() * 50, 10, COLOR_GLOBAL_HEX)
-			drawer.Arrow(boid, boid.velocity.getNormal(), boid.velocity.magnitude() * 5, 10, COLOR_BOID_HEX)
+			drawer.Arrow(boid, grid.getNormal(), boid.size + 10, 2 + 10 * grid.magnitude()/40, COLOR_GRID_HEX)
+			drawer.Arrow(boid, target.getNormal(), boid.size + 10, 2 + 10 * target.magnitude()/40, COLOR_TARGET_HEX)
+			drawer.Arrow(boid, avoid.getNormal(), boid.size + 10, 2 + 10 * avoid.magnitude()/40, COLOR_AVOID_HEX)
+			drawer.Arrow(boid, near.getNormal(), boid.size + 10, 2 + 10 * near.magnitude()/40, COLOR_NEAR_HEX)
+			drawer.Arrow(boid, global.getNormal(), boid.size + 10, 2 + 10 * global.magnitude()/40, COLOR_GLOBAL_HEX)
+			// drawer.Arrow(boid, boid.velocity.getNormal(), boid.velocity.magnitude() * 5, 10, COLOR_BOID_HEX)
 		}
 	}
 	drawer.EndFill()

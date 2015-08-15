@@ -17,16 +17,16 @@ var Message = function(text, style)
 
 	// Setup data and create boids
 	var lineWidth = 0
-	var lineWidthMax = 0
+	this.lineWidthMax = 0
 	for (var idxLine = 0; idxLine < this.lines.length; ++idxLine)
 	{
 		var word = this.lines[idxLine].split(" ")
 		var wordLetters = word.join(" ")
+		lineWidth = 0
 		for (var idxLetter = 0; idxLetter < wordLetters.length; ++idxLetter)
 		{
 			// Boid Creation
-			var style = { font: 20+Math.random()*20+'px Shadows Into Light', fill: '020202', align: 'left' }
-			var letter = new Letter(wordLetters[idxLetter], style)
+			var letter = new Letter(wordLetters[idxLetter])
 			letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
 
 			// Letter logic
@@ -34,6 +34,7 @@ var Message = function(text, style)
 			letter.indexLetter = idxLetter
 			letter.isFromMessage = true
 
+			letter.avoidScale = 0.01
 			letter.friction = 0.98
 
 			// Add to update stack
@@ -47,7 +48,7 @@ var Message = function(text, style)
 
 			lineWidth += letter.size
 		}
-		lineWidthMax = Math.max(lineWidthMax, lineWidth)
+		this.lineWidthMax = Math.max(this.lineWidthMax, lineWidth)
 	}
 
 	// Setup position
@@ -55,15 +56,15 @@ var Message = function(text, style)
 	for (var l = 0; l < this.letters.length; ++l)
 	{
 		var boid = this.letters[l]
-		var center = lineWidthMax / 2 * boid.size
-		var offset = (lineWidthMax - wordLetters.length) / 2 * boid.size
+		// var center = Math.ceil(this.lineWidthMax / 2) * boid.size
+		// var offset = (this.lineWidthMax - wordLetters.length) / 2 * boid.size
 
 		// Reset incrementation if letter is at the begining of line
 		lineWidth = boid.indexLetter == 0 ? 0 : lineWidth
 
 		// Setup message grid position
-		boid.gridX = lineWidth// - center + offset
-		boid.gridY = boid.indexLine * this.lineHeight
+		boid.gridX = lineWidth - this.lineWidthMax / 2
+		boid.gridY = boid.indexLine * this.lineHeight - this.lineHeight * this.lines.length / 2
 
 		// Increment
 		lineWidth += boid.size

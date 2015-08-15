@@ -9,9 +9,9 @@ var Interface = function ()
 	this.margin = 4
 	this.labelAnchor = new Point(this.margin, this.margin)
 
-	this.addButton = function (text, callback)
+	this.addButton = function (text, callback, url)
 	{
-		var button = new Button(text, callback)
+		var button = new Button(text, callback, url)
 		this.buttonList.push(button)
 		this.labelAnchor.y = button.DOM.offsetHeight + this.margin * 2
 	}
@@ -28,7 +28,6 @@ var Interface = function ()
 				})
 			text.x = this.labelAnchor.x
 			text.y = this.labelAnchor.y + (this.labelFontSize + this.margin) * i
-			text.visible = false
 			this.addChild(text)
 		}
 	}

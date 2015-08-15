@@ -16,19 +16,32 @@ var Phylactere = function(text, style)
 		this.tailBoidList.push(boid)
 	}
 
+	this.cloudBoidList = []
+
+	for (var i = 0; i < 8; ++i)
+	{
+		var letter = new Letter(" ")
+		letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
+		// letter.targetScale = 0.1
+		// letter.friction = 0.9
+		letter.size = 4 + Math.random() * 20
+		stage.addChild(letter)
+		boidList.push(letter)
+		this.cloudBoidList.push(letter)
+	}
+
 	this.update = function ()
 	{
 		for (var i = 0; i < this.tailBoidList.length; ++i)
 		{
 			var boid = this.tailBoidList[i]
 			var ratio = i / this.tailBoidList.length
-			var target = this.letters[0]
-			boid.target.x = mix(0, target.x, ratio)
-			boid.target.y = mix(0, target.y, ratio)
-			if (distanceTo(target) != 0)
+			boid.target.x = mix(0, this.x, ratio)
+			boid.target.y = mix(0, this.y, ratio)
+			if (distanceTo(this) != 0)
 			{
-				boid.target.x += (target.y / distanceTo(target)) * Math.sin(ratio * PI2) * 40
-				boid.target.y += (-target.x / distanceTo(target)) * Math.sin(ratio * PI2) * 40
+				boid.target.x += (this.y / distanceTo(this)) * Math.sin(ratio * PI2) * 40
+				boid.target.y += (-this.x / distanceTo(this)) * Math.sin(ratio * PI2) * 40
 			}
 		}
 	}
