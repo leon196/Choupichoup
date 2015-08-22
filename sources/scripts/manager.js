@@ -17,7 +17,10 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
   Manager.boidList = []
 
   // Game Elements
-  Manager.phylactere
+  Manager.player
+  Manager.thinker
+
+  // Display Tool
   Manager.drawer
 
   // Interactivity

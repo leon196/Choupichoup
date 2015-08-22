@@ -1,4 +1,4 @@
-define(['lib/pixi', 'base/manager', 'base/renderer', 'base/utils', 'settings'], function(PIXI, Manager, renderer, Utils, Settings)
+define(['lib/pixi', 'manager', 'base/renderer', 'base/utils', 'settings'], function(PIXI, Manager, renderer, Utils, Settings)
 {
   var Collider = function ()
   {

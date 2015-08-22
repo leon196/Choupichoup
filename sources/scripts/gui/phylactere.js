@@ -1,9 +1,12 @@
 
-define(['base/Boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/renderer', 'base/manager', 'base/point'], function(Boid, Engine, Message, Letter, Utils, renderer, Manager, Point)
+define(['base/Boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/renderer', 'manager', 'base/point'], function(Boid, Engine, Message, Letter, Utils, renderer, Manager, Point)
 {
 	var Phylactere = function(text, style)
 	{
 		Message.call(this, text, style)
+
+		this.anchorX = 0
+		this.anchorY = 0
 
 		this.tailBoidList = []
 		for (var i = 0; i < 8; ++i)
@@ -36,8 +39,8 @@ define(['base/Boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 			{
 				var boid = this.tailBoidList[i]
 				var ratio = i / this.tailBoidList.length
-				boid.target.x = Utils.mix(renderer.width / 2, this.x, ratio)
-				boid.target.y = Utils.mix(renderer.height - 85, this.y, ratio)
+				boid.target.x = Utils.mix(this.anchorX, this.x, ratio)
+				boid.target.y = Utils.mix(this.anchorY, this.y, ratio)
 				if (Utils.distanceTo(this) != 0)
 				{
 					boid.target.x += (this.y / Utils.distanceTo(this)) * Math.sin(ratio * Utils.PI2) * 40
@@ -49,6 +52,14 @@ define(['base/Boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 				var boid = this.cloudBoidList[i]
 				var p = new Point(this.x - boid.x, this.y - boid.y)
 				var dist = Math.max(0, p.magnitude() - 60)
+				var norm = p.getNormal()
+				boid.target.x = norm.x * dist + boid.x
+				boid.target.y = norm.y * dist + boid.y
+			}
+			for (var i = 0; i < this.letters.length; ++i)
+			{
+				var boid = this.letters[i]
+				var p = new Point(this.x - boid.x, this.y - boid.y)
 				var norm = p.getNormal()
 				boid.target.x = norm.x * dist + boid.x
 				boid.target.y = norm.y * dist + boid.y

@@ -1,5 +1,5 @@
 
-define(['engine', 'base/renderer', 'base/manager', 'settings', 'color', 'base/point', 'gui/letter', 'gui/message', 'base/utils', 'gui/collider'],function(Engine, renderer, Manager, Settings, Color, Point, Letter, Message, Utils, Collider)
+define(['engine', 'base/renderer', 'manager', 'settings', 'color', 'base/point', 'gui/letter', 'gui/message', 'base/utils', 'gui/collider'],function(Engine, renderer, Manager, Settings, Color, Point, Letter, Message, Utils, Collider)
 {
 	var Game = function ()
 	{
@@ -13,14 +13,11 @@ define(['engine', 'base/renderer', 'base/manager', 'settings', 'color', 'base/po
 
 		this.Update = function()
 		{
-			var phylactere = Manager.phylactere
 			Manager.timeElapsed = new Date() - Manager.timeStarted / 1000;
 			Manager.drawer.Clear()
 
-			phylactere.x = Manager.mouse.x
-			phylactere.y = Manager.mouse.y
-
-			phylactere.update()
+			Manager.player.update()
+			Manager.thinker.update()
 
 			var boidCount = Manager.boidList.length
 
@@ -37,16 +34,16 @@ define(['engine', 'base/renderer', 'base/manager', 'settings', 'color', 'base/po
 				var grid = new Point()
 
 				// Message Letter
-				if (boid instanceof Letter && boid.isFromMessage)
-				{
-					target = new Point(phylactere.x - boid.x, phylactere.y - boid.y)
-
-					grid.x = phylactere.GetX() + boid.gridX - boid.x
-					grid.y = phylactere.GetY() + boid.gridY - boid.y
-
-					grid.x *= Settings.DEFAULT_GRID_SCALE
-					grid.y *= Settings.DEFAULT_GRID_SCALE
-				}
+				// if (boid instanceof Letter && boid.isFromMessage)
+				// {
+				// 	target = new Point(phylactere.x - boid.x, phylactere.y - boid.y)
+				//
+				// 	grid.x = phylactere.GetX() + boid.gridX - boid.x
+				// 	grid.y = phylactere.GetY() + boid.gridY - boid.y
+				//
+				// 	grid.x *= Settings.DEFAULT_GRID_SCALE
+				// 	grid.y *= Settings.DEFAULT_GRID_SCALE
+				// }
 
 				for (var other = 0; other < boidCount; ++other)
 				{

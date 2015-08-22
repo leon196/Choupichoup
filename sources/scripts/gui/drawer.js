@@ -1,5 +1,5 @@
 
-define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'base/manager'], function (PIXI, Settings, renderer, Engine, Manager)
+define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'manager'], function (PIXI, Settings, renderer, Engine, Manager)
 {
 	var Drawer = function()
 	{

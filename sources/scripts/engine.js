@@ -1,13 +1,13 @@
 
-define(['lib/pixi', 'base/renderer', 'base/manager', 'settings', 'game', 'base/point', 'base/utils', 'base/boid', 'gui/button', 'gui/drawer', 'gui/interface', 'gui/letter', 'gui/message', 'gui/phylactere', 'settings', 'color'],function(PIXI, renderer, Manager, Settings, Game, Point, Utils, Boid, Button, Drawer, Interface, Letter, Message, Phylactere, Settings, Color)
+define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point', 'base/utils', 'base/boid', 'gui/button', 'gui/drawer', 'gui/interface', 'gui/letter', 'gui/message', 'gui/phylactere', 'settings', 'color', 'element/thinker', 'element/player'], function(PIXI, renderer, Manager, Settings, Game, Point, Utils, Boid, Button, Drawer, Interface, Letter, Message, Phylactere, Settings, Color, Thinker, Player)
 {
 	var Engine = {}
 
-	// Game Elements
+	// Main Elements
 	Engine.interface = new Interface()
 	Engine.game = new Game()
 
-	// loader
+	// Asset loader
 	Engine.imageReady = false
 	Engine.fontReady = false
 	Engine.assetToLoad = ['images/test.png', 'images/head.png', 'images/ncs-1.png']
@@ -29,11 +29,13 @@ define(['lib/pixi', 'base/renderer', 'base/manager', 'settings', 'game', 'base/p
 		Engine.interface.visible = false
 
 		// Game Elements
-		Manager.phylactere = new Phylactere("Boids prototype for\nfloating thoughts")
+		Manager.player = new Player()
+		Manager.thinker = new Thinker()
 		Manager.drawer = new Drawer()
 
 		// Layers
-		Manager.stage.addChildAt(Manager.phylactere, 0)
+		Manager.stage.addChildAt(Manager.player, 0)
+		Manager.stage.addChildAt(Manager.thinker, 0)
 		Manager.stage.addChildAt(Engine.interface, 0)
 		Manager.stage.addChildAt(Manager.drawer, 0)
 
