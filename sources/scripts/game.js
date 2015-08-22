@@ -18,6 +18,7 @@ define(['engine', 'base/renderer', 'manager', 'settings', 'color', 'base/point',
 
 			Manager.player.update()
 			Manager.thinker.update()
+			Manager.talker.update()
 
 			var boidCount = Manager.boidList.length
 
@@ -27,23 +28,10 @@ define(['engine', 'base/renderer', 'manager', 'settings', 'color', 'base/point',
 				var boid = Manager.boidList[current]
 
 				var near = new Point()
-				var global = new Point()
+				var center = new Point()
 				var globalCount = 0
 				var avoid = new Point()
 				var target = new Point(boid.target.x - boid.x, boid.target.y - boid.y)
-				var grid = new Point()
-
-				// Message Letter
-				// if (boid instanceof Letter && boid.isFromMessage)
-				// {
-				// 	target = new Point(phylactere.x - boid.x, phylactere.y - boid.y)
-				//
-				// 	grid.x = phylactere.GetX() + boid.gridX - boid.x
-				// 	grid.y = phylactere.GetY() + boid.gridY - boid.y
-				//
-				// 	grid.x *= Settings.DEFAULT_GRID_SCALE
-				// 	grid.y *= Settings.DEFAULT_GRID_SCALE
-				// }
 
 				for (var other = 0; other < boidCount; ++other)
 				{
@@ -62,35 +50,29 @@ define(['engine', 'base/renderer', 'manager', 'settings', 'color', 'base/point',
 							near.y += boidOther.velocity.y
 						}
 
-						global.x += boidOther.x
-						global.y += boidOther.y
+						center.x += boidOther.x
+						center.y += boidOther.y
 						++globalCount
 
 					}
 				}
 
-				global.x = global.x / globalCount - boid.x
-				global.y = global.y / globalCount - boid.y
+				center.x = center.x / globalCount - boid.x
+				center.y = center.y / globalCount - boid.y
 
 				avoid.scale(boid.avoidScale)
-				global.scale(boid.globalScale)
+				center.scale(boid.globalScale)
 				near.scale(boid.nearScale)
 				target.scale(boid.targetScale)
 
 				// Apply to Boid
 				boid.update(
-					target.x + near.x + global.x + avoid.x + grid.x,
-					target.y + near.y + global.y + avoid.y + grid.y)
+					target.x + near.x + center.x + avoid.x,
+					target.y + near.y + center.y + avoid.y)
 
 				// Collision
 				if (boid instanceof Letter)
 				{
-					for (var c = 0; c < this.colliderList.length; ++c)
-					{
-						var collider = this.colliderList[c]
-						collider.collideWith(boid)
-					}
-
 					// Window borders Collision
 					if (boid.isFromMessage)
 					{
@@ -107,32 +89,38 @@ define(['engine', 'base/renderer', 'manager', 'settings', 'color', 'base/point',
 						boid.x = Utils.clamp(boid.x, 0, renderer.width)
 						boid.y = Utils.clamp(boid.y, 0, renderer.height)
 					}
-					// else
-					// {
-					// 	for (var c = 0; c < phylactere.letters.length; ++c)
-					// 	{
-					// 		var collider = phylactere.letters[c]
-					// 		if (collider.circleCollision(boid))
-					// 		{
-					// 			boid.BounceFromCircleCollider(collider)
-					// 		}
-					// 	}
-					// }
+				}
+
+				// Collision with player
+				if (boid.isPlayer == false && boid.showBubble)
+				{
+					var letterList = Manager.player.phylactere.letters
+					for (var c = 0; c < letterList.length; ++c)
+					{
+						var collider = letterList[c]
+						if (collider.circleCollision(boid))
+						{
+							boid.BounceFromBoid(collider)
+							boid.avoidScale += 0.01
+						}
+					}
 				}
 
 				// Update graphics positions
-				Manager.drawer.bullBlackList[current].x = boid.x
-				Manager.drawer.bullBlackList[current].y = boid.y
-				Manager.drawer.bullWhiteList[current].x = boid.x
-				Manager.drawer.bullWhiteList[current].y = boid.y
+				if (boid.showBubble)
+				{
+					Manager.drawer.bullBlackList[current].x = boid.x
+					Manager.drawer.bullBlackList[current].y = boid.y
+					Manager.drawer.bullWhiteList[current].x = boid.x
+					Manager.drawer.bullWhiteList[current].y = boid.y
+				}
 
 				if (Manager.drawer.debug)
 				{
-					Manager.drawer.Arrow(boid, grid.getNormal(), boid.size + 10, 2 + 10 * grid.magnitude()/40, Color.GRID_HEX)
 					Manager.drawer.Arrow(boid, target.getNormal(), boid.size + 10, 2 + 10 * target.magnitude()/40, Color.TARGET_HEX)
 					Manager.drawer.Arrow(boid, avoid.getNormal(), boid.size + 10, 2 + 10 * avoid.magnitude()/40, Color.AVOID_HEX)
 					Manager.drawer.Arrow(boid, near.getNormal(), boid.size + 10, 2 + 10 * near.magnitude()/40, Color.NEAR_HEX)
-					Manager.drawer.Arrow(boid, global.getNormal(), boid.size + 10, 2 + 10 * global.magnitude()/40, Color.GLOBAL_HEX)
+					Manager.drawer.Arrow(boid, center.getNormal(), boid.size + 10, 2 + 10 * center.magnitude()/40, Color.GLOBAL_HEX)
 					// drawer.Arrow(boid, boid.velocity.getNormal(), boid.velocity.magnitude() * 5, 10, Color.BOID_HEX)
 				}
 			}

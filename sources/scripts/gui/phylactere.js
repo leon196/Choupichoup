@@ -1,7 +1,7 @@
 
-define(['base/Boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/renderer', 'manager', 'base/point'], function(Boid, Engine, Message, Letter, Utils, renderer, Manager, Point)
+define(['base/Boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/renderer', 'manager', 'base/point', 'settings'], function(Boid, Engine, Message, Letter, Utils, renderer, Manager, Point, Settings)
 {
-	var Phylactere = function(text, style)
+	var Phylactere = function(text, style, linkCount, cloudCount)
 	{
 		Message.call(this, text, style)
 
@@ -9,7 +9,10 @@ define(['base/Boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 		this.anchorY = 0
 
 		this.tailBoidList = []
-		for (var i = 0; i < 8; ++i)
+		linkCount = typeof linkCount !== "undefined" ? linkCount : 8
+		cloudCount = typeof cloudCount !== "undefined" ? cloudCount : 8
+
+		for (var i = 0; i < linkCount; ++i)
 		{
 			var ratio = i / 8
 			var boid = new Boid()
@@ -22,7 +25,7 @@ define(['base/Boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 		}
 
 		this.cloudBoidList = []
-		for (var i = 0; i < 8; ++i)
+		for (var i = 0; i < cloudCount; ++i)
 		{
 			var ratio = i / 8
 			var letter = new Letter(" ")
@@ -59,10 +62,8 @@ define(['base/Boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 			for (var i = 0; i < this.letters.length; ++i)
 			{
 				var boid = this.letters[i]
-				var p = new Point(this.x - boid.x, this.y - boid.y)
-				var norm = p.getNormal()
-				boid.target.x = norm.x * dist + boid.x
-				boid.target.y = norm.y * dist + boid.y
+	    	boid.target.x = this.GetX() + boid.gridX
+	    	boid.target.y = this.GetY() + boid.gridY
 			}
 		}
 	}

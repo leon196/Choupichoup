@@ -28,7 +28,7 @@ define(['base/boid', 'base/renderer', 'manager', 'gui/letter', 'engine'], functi
 			for (var idxLetter = 0; idxLetter < wordLetters.length; ++idxLetter)
 			{
 				// Boid Creation
-				var letter = new Letter(wordLetters[idxLetter])
+				var letter = new Letter(wordLetters[idxLetter], style)
 				letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
 
 				// Letter logic

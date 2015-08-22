@@ -19,6 +19,7 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
   // Game Elements
   Manager.player
   Manager.thinker
+  Manager.talker
 
   // Display Tool
   Manager.drawer

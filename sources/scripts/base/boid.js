@@ -1,5 +1,5 @@
 
-define(['lib/pixi', 'base/renderer', 'base/point', 'settings'], function(PIXI, renderer, Point, Settings)
+define(['lib/pixi', 'base/renderer', 'base/point', 'settings', 'base/utils'], function(PIXI, renderer, Point, Settings, Utils)
 {
 	var Boid = function()
 	{
@@ -7,6 +7,9 @@ define(['lib/pixi', 'base/renderer', 'base/point', 'settings'], function(PIXI, r
 
 		this.size = 4+Math.random()*16
 		this.target = new Point(renderer.width / 2, renderer.height / 2)
+
+		this.isPlayer = false
+		this.showBubble = true
 
 		// Init velocity vector with random seed
 		var randomAngle = Math.random() * Math.PI * 2
@@ -36,6 +39,27 @@ define(['lib/pixi', 'base/renderer', 'base/point', 'settings'], function(PIXI, r
 			// Friction
 			this.velocity.x *= this.friction
 			this.velocity.y *= this.friction
+		}
+
+		this.BounceFromBoid = function (boid)
+		{
+			var angle = Math.atan2(this.y - boid.y, this.x - boid.x)
+			this.x = boid.x + Math.cos(angle) * (boid.size + this.size)
+			this.y = boid.y + Math.sin(angle) * (boid.size + this.size)
+			this.velocity.x += Math.cos(angle) * boid.velocity.magnitude()
+			this.velocity.y += Math.sin(angle) * boid.velocity.magnitude()
+		}
+
+		this.Rumble = function ()
+		{
+			var randomAngle = Math.random() * Math.PI * 2
+			this.velocity.x += Math.cos(randomAngle)
+			this.velocity.y += Math.sin(randomAngle)
+		}
+
+		this.circleCollision = function (boid)
+		{
+			return Utils.distanceBetween(this, boid) < this.size + boid.size
 		}
 	}
 

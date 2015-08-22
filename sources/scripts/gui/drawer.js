@@ -25,13 +25,17 @@ define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'manager'], function 
 		{
 			var boid = Manager.boidList[b]
 			var graphB = new PIXI.Graphics()
-			graphB.beginFill(0x000000)
+
+			if (boid.isPlayer) graphB.beginFill(0xcccccc)
+			else graphB.beginFill(0x000000)
+
 			graphB.drawCircle(0, Settings.BULL_OUTLINE / 2, boid.size + Settings.BULL_OUTLINE)
 			this.bullBlackList.push(graphB)
 			Manager.layerBlack.addChild(graphB)
 
 			var graphW = new PIXI.Graphics()
-			graphW.beginFill(0xffffff)
+			if (boid.isPlayer) graphW.beginFill(0x000000)
+			else graphW.beginFill(0xffffff)
 			graphW.drawCircle(0, 0, boid.size)
 			this.bullWhiteList.push(graphW)
 			Manager.layerWhite.addChild(graphW)
