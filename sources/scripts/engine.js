@@ -34,6 +34,12 @@ define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point'
 		Manager.talker = new Talker()
 		Manager.drawer = new Drawer()
 
+		for (var b = 0; b < Manager.boidList.length; ++b)
+		{
+			var boid = Manager.boidList[b]
+			Manager.drawer.AddBubble(boid)
+		}
+
 		// Layers
 		Manager.stage.addChildAt(Manager.player, 0)
 		Manager.stage.addChildAt(Manager.thinker, 0)

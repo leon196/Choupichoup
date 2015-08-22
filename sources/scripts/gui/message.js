@@ -36,9 +36,6 @@ define(['base/boid', 'base/renderer', 'manager', 'gui/letter', 'engine'], functi
 				letter.indexLetter = idxLetter
 				letter.isFromMessage = true
 
-				letter.avoidScale = 0.01
-				letter.friction = 0.98
-
 				// Add to update stack
 				Manager.boidList.push(letter)
 

@@ -21,9 +21,12 @@ define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'manager'], function 
 
 		this.bullBlackList = []
 		this.bullWhiteList = []
-		for (var b = 0; b < Manager.boidList.length; ++b)
+
+		this.showBubble = true
+		this.debug = false
+
+		this.AddBubble = function (boid)
 		{
-			var boid = Manager.boidList[b]
 			var graphB = new PIXI.Graphics()
 
 			if (boid.isPlayer) graphB.beginFill(0xcccccc)
@@ -41,24 +44,24 @@ define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'manager'], function 
 			Manager.layerWhite.addChild(graphW)
 		}
 
-		this.showBubble = true
-		this.debug = false
-
 		this.redraw = function(current)
 		{
-			var boid = Manager.boidList[current]
+			if (current != -1)
+			{
+				var boid = Manager.boidList[current]
 
-			var graph = this.bullBlackList[current]
-			graph.clear()
-			if (boid.isPlayer) graph.beginFill(0xcccccc)
-			else graph.beginFill(0x000000)
-			graph.drawCircle(0, Settings.BULL_OUTLINE / 2, boid.size + Settings.BULL_OUTLINE)
+				var graph = this.bullBlackList[current]
+				graph.clear()
+				if (boid.isPlayer) graph.beginFill(0xcccccc)
+				else graph.beginFill(0x000000)
+				graph.drawCircle(0, Settings.BULL_OUTLINE / 2, boid.size + Settings.BULL_OUTLINE)
 
-			graph = this.bullWhiteList[current]
-			graph.clear()
-			if (boid.isPlayer) graph.beginFill(0x000000)
-			else graph.beginFill(0xffffff)
-			graph.drawCircle(0, 0, boid.size)
+				graph = this.bullWhiteList[current]
+				graph.clear()
+				if (boid.isPlayer) graph.beginFill(0x000000)
+				else graph.beginFill(0xffffff)
+				graph.drawCircle(0, 0, boid.size)
+			}
 		}
 
 	 	this.Clear = function ()

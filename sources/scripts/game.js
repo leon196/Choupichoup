@@ -92,21 +92,38 @@ define(['engine', 'base/renderer', 'manager', 'settings', 'color', 'base/point',
 				}
 
 				// Collision with player
-				if (boid.isPlayer == false && boid.showBubble)
+				if (boid.isPlayer == false)
 				{
-					var letterList = Manager.player.phylactere.letters
-					for (var c = 0; c < letterList.length; ++c)
+					var bubbleList = Manager.player.bubbleList
+					for (var c = 0; c < bubbleList.length; ++c)
 					{
-						var collider = letterList[c]
+						var collider = bubbleList[c]
 						if (collider.circleCollision(boid))
 						{
-							boid.BounceFromBoid(collider)
-							boid.size = Math.max(1, boid.size - 1)
-							Manager.drawer.redraw(current)
-							if (boid.size <= 1)
+							if (boid.showBubble)
 							{
-								Manager.removeBoid(boid, current)
-								return
+								boid.BounceFromBoid(collider)
+								boid.size = Math.max(1, boid.size - 1)
+								Manager.drawer.redraw(current)
+								if (boid.size <= 1)
+								{
+									Manager.removeBoid(boid, current)
+									return
+								}
+								collider.size += 1
+								Manager.drawer.redraw(Manager.boidList.indexOf(collider))
+								if (collider.size > Settings.MAX_SIZE)
+								{
+									Manager.player.DivideBubble(collider)
+								}
+							}
+							else if (boid instanceof Letter && boid.text.text != " "
+							&& collider instanceof Letter && collider.text.text == " ") {
+								if (Manager.player.Absorb(boid))
+								{
+									Manager.removeBoid(boid, current)
+									return
+								}
 							}
 						}
 					}
