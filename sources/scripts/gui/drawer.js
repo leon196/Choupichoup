@@ -44,6 +44,23 @@ define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'manager'], function 
 		this.showBubble = true
 		this.debug = false
 
+		this.redraw = function(current)
+		{
+			var boid = Manager.boidList[current]
+
+			var graph = this.bullBlackList[current]
+			graph.clear()
+			if (boid.isPlayer) graph.beginFill(0xcccccc)
+			else graph.beginFill(0x000000)
+			graph.drawCircle(0, Settings.BULL_OUTLINE / 2, boid.size + Settings.BULL_OUTLINE)
+
+			graph = this.bullWhiteList[current]
+			graph.clear()
+			if (boid.isPlayer) graph.beginFill(0x000000)
+			else graph.beginFill(0xffffff)
+			graph.drawCircle(0, 0, boid.size)
+		}
+
 	 	this.Clear = function ()
 	 	{
 			this.graphicsWhite.clear()

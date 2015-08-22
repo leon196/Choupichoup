@@ -4,6 +4,7 @@ define([], function()
   var Settings = {}
 
   Settings.DEFAULT_SPEED = 1
+  Settings.MIN_SPEED = 10
   Settings.DEFAULT_FRICTION = 0.99
   Settings.DEFAULT_FRICTION_COLLISION = 0.9
 

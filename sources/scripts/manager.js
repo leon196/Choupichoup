@@ -16,6 +16,16 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
   // Global Boid List
   Manager.boidList = []
 
+  Manager.removeBoid = function (boid, current)
+  {
+    Manager.boidList.splice(current, 1)
+    Manager.stage.removeChild(boid)
+    Manager.layerBlack.removeChild(Manager.drawer.bullBlackList[current])
+    Manager.layerWhite.removeChild(Manager.drawer.bullWhiteList[current])
+    Manager.drawer.bullBlackList.splice(current, 1)
+    Manager.drawer.bullWhiteList.splice(current, 1)
+  }
+
   // Game Elements
   Manager.player
   Manager.thinker

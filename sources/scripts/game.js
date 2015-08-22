@@ -101,7 +101,13 @@ define(['engine', 'base/renderer', 'manager', 'settings', 'color', 'base/point',
 						if (collider.circleCollision(boid))
 						{
 							boid.BounceFromBoid(collider)
-							boid.avoidScale += 0.01
+							boid.size = Math.max(1, boid.size - 1)
+							Manager.drawer.redraw(current)
+							if (boid.size <= 1)
+							{
+								Manager.removeBoid(boid, current)
+								return
+							}
 						}
 					}
 				}

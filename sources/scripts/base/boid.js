@@ -33,8 +33,8 @@ define(['lib/pixi', 'base/renderer', 'base/point', 'settings', 'base/utils'], fu
 			this.velocity.y += moveY
 
 			// Apply
-			this.x += this.velocity.x * this.speed / this.size
-			this.y += this.velocity.y * this.speed / this.size
+			this.x += this.velocity.x * this.speed / Math.max(Settings.MIN_SPEED, this.size)
+			this.y += this.velocity.y * this.speed / Math.max(Settings.MIN_SPEED, this.size)
 
 			// Friction
 			this.velocity.x *= this.friction
