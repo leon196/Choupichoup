@@ -1,8 +1,16 @@
 
-define(['engine', 'base/renderer', 'base/manager', 'settings', 'color', 'base/point', 'gui/letter', 'gui/message', 'base/utils'],function(Engine, renderer, Manager, Settings, Color, Point, Letter, Message, Utils)
+define(['engine', 'base/renderer', 'base/manager', 'settings', 'color', 'base/point', 'gui/letter', 'gui/message', 'base/utils', 'gui/collider'],function(Engine, renderer, Manager, Settings, Color, Point, Letter, Message, Utils, Collider)
 {
 	var Game = function ()
 	{
+		this.colliderList = []
+
+		this.SpawnCollider = function()
+		{
+			var collider = new Collider()
+			this.colliderList.push(collider)
+		}
+
 		this.Update = function()
 		{
 			var phylactere = Manager.phylactere
@@ -80,6 +88,12 @@ define(['engine', 'base/renderer', 'base/manager', 'settings', 'color', 'base/po
 				// Collision
 				if (boid instanceof Letter)
 				{
+					for (var c = 0; c < this.colliderList.length; ++c)
+					{
+						var collider = this.colliderList[c]
+						collider.collideWith(boid)
+					}
+
 					// Window borders Collision
 					if (boid.isFromMessage)
 					{

@@ -10,7 +10,7 @@ define(['lib/pixi', 'base/renderer', 'base/manager', 'settings', 'game', 'base/p
 	// loader
 	Engine.imageReady = false
 	Engine.fontReady = false
-	Engine.assetToLoad = ['images/test.png', 'images/head.png']
+	Engine.assetToLoad = ['images/test.png', 'images/head.png', 'images/ncs-1.png']
 	for (var i = 0; i < Engine.assetToLoad.length; ++i) { PIXI.loader.add(Engine.assetToLoad[i]) }
 	Engine.ImageLoaded = function () { Engine.imageReady = true; if (Engine.fontReady) { Engine.Init() } }
 	Engine.FontLoaded = function () { Engine.fontReady = true; if (Engine.imageReady) { Engine.Init() } }
@@ -40,6 +40,9 @@ define(['lib/pixi', 'base/renderer', 'base/manager', 'settings', 'game', 'base/p
 		// Interactivity
 		Manager.stage.interactive = true
 		Manager.stage.on('mousemove', Engine.onMove).on('touchstart', Engine.onMove).on('touchmove', Engine.onMove)
+
+		// Debug
+		// Engine.game.SpawnCollider()
 
 		// Start Loop
 		Manager.timeStarted = new Date()

@@ -31,13 +31,13 @@ define(['../lib/pixi', '../base/utils', '../base/boid',  '../settings'], functio
 		this.gridX = 0
 		this.gridY = 0
 
-		this.BounceFromCircleCollider = function (collider)
+		this.BounceFromBoid = function (boid)
 		{
-			var angle = Math.atan2(this.y - collider.y, this.x - collider.x)
-			this.x = collider.x + Math.cos(angle) * (collider.size + this.size)
-			this.y = collider.y + Math.sin(angle) * (collider.size + this.size)
-			this.velocity.x += Math.cos(angle) * collider.velocity.magnitude()
-			this.velocity.y += Math.sin(angle) * collider.velocity.magnitude()
+			var angle = Math.atan2(this.y - boid.y, this.x - boid.x)
+			this.x = boid.x + Math.cos(angle) * (boid.size + this.size)
+			this.y = boid.y + Math.sin(angle) * (boid.size + this.size)
+			this.velocity.x += Math.cos(angle) * boid.velocity.magnitude()
+			this.velocity.y += Math.sin(angle) * boid.velocity.magnitude()
 		}
 
 		this.Rumble = function ()
