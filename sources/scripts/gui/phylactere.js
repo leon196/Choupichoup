@@ -101,10 +101,21 @@ define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 			var letter = new Letter(" ", this.css)
 			letter.x = collider.x
       letter.y = collider.y
+			letter.size = Settings.MIN_SIZE
 			letter.phylactere = this
 	    letter.isPlayer = collider.isPlayer
 			Manager.addBoid(letter)
       this.boidList.push(letter)
+		}
+
+		this.IsDead = function ()
+		{
+			for (var i = 0; i < this.boidList.length; ++i) {
+				if (this.boidList[i] instanceof Letter) {
+					return false
+				}
+			}
+			return true
 		}
 
 		this.clear = function ()

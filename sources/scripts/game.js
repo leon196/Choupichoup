@@ -1,8 +1,13 @@
 
 define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker', 'element/talker', 'settings', 'color', 'base/point', 'gui/letter', 'gui/message', 'base/utils', 'gui/collider'],function(Engine, renderer, Manager, Player, Thinker, Talker, Settings, Color, Point, Letter, Message, Utils, Collider)
 {
+	const GAME_STATE_INTRO = 0
+	const GAME_STATE_PLAY = 1
+	const GAME_STATE_OVER = 2
+
 	var Game = function ()
 	{
+		this.gameState = GAME_STATE_PLAY
 		this.timeLastSpawn = 0
 		this.timeDelaySpawn = 5
 
@@ -11,6 +16,7 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 			// Game Elements
 			Manager.player = new Player()
 			Manager.talker = new Talker()
+			this.SpawnThinker()
 		}
 
 		this.SpawnThinker = function ()
@@ -28,15 +34,18 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 			Manager.player.update()
 			Manager.talker.update()
 
-			for (var i = 0; i < Manager.thinkerList.length; ++i)
+			if (this.gameState == GAME_STATE_PLAY)
 			{
-				var thinker = Manager.thinkerList[i]
-				thinker.update()
-			}
+				if (this.timeLastSpawn + this.timeDelaySpawn < Manager.timeElapsed)
+				{
+					this.SpawnThinker()
+				}
 
-			if (this.timeLastSpawn + this.timeDelaySpawn < Manager.timeElapsed)
-			{
-				this.SpawnThinker()
+				for (var i = 0; i < Manager.thinkerList.length; ++i)
+				{
+					var thinker = Manager.thinkerList[i]
+					thinker.update()
+				}
 			}
 
 			var boidCount = Manager.boidList.length
@@ -51,6 +60,11 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 				var globalCount = 0
 				var avoid = new Point()
 				var target = new Point(boid.target.x - boid.x, boid.target.y - boid.y)
+
+				if (this.gameState == GAME_STATE_OVER)
+				{
+					target = new Point(renderer.width / 2 - boid.x, renderer.height / 2 - boid.y)
+				}
 
 				for (var other = 0; other < boidCount; ++other)
 				{
@@ -89,9 +103,11 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 					target.x + near.x + center.x + avoid.x,
 					target.y + near.y + center.y + avoid.y)
 
-				// Window borders Collision
-				if (boid.isPlayer && boid instanceof Letter && boid.text.text != " ")
+				if (this.gameState == GAME_STATE_PLAY)
 				{
+					// Window borders Collision
+					if (boid.isPlayer && boid instanceof Letter && boid.text.text != " ")
+					{
 						if (boid.x < 0 || boid.x > renderer.width)
 						{
 							boid.velocity.x *= -boid.frictionCollision
@@ -104,57 +120,66 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 						}
 						boid.x = Utils.clamp(boid.x, 0, renderer.width)
 						boid.y = Utils.clamp(boid.y, 0, renderer.height)
-				}
+					}
 
-				// Collision with player
-				if (boid.isPlayer == false)
-				{
-					var bubbleList = Manager.player.phylactere.boidList
-					for (var c = 0; c < bubbleList.length; ++c)
+					// Collision with player
+					if (boid.isPlayer == false)
 					{
-						var collider = bubbleList[c]
-						// Has collided
-						if (collider.circleCollision(boid)) {
-							// Is a thought
-							if (boid.showBubble) {
-								// Bounce collision
-								boid.BounceFromBoid(collider)
-								// Balance of power
-								if (boid.size < collider.size) {
-									// Grow player
-									collider.Grow(current)
-									if (collider.size > Settings.MAX_SIZE) {
-										collider.phylactere.DivideBubble(collider)
+						var bubbleList = Manager.player.phylactere.boidList
+						for (var c = 0; c < bubbleList.length; ++c)
+						{
+							var collider = bubbleList[c]
+							// Has collided
+							if (collider.circleCollision(boid)) {
+								// Is a thought
+								if (boid.showBubble) {
+									// Bounce collision
+									boid.BounceFromBoid(collider)
+									// Balance of power
+									if (boid.size < collider.size) {
+										// Bubble with letter
+										if (collider.text.text != " ") {
+											// Divide bubble with letter
+											collider.phylactere.DivideBubble(collider)
+											// Grow player
+											if (collider.size < Settings.MAX_SIZE) {
+												collider.Grow(current)
+											}
+										}
+										// Shrink current
+										boid.Shrink(current)
+										if (boid.size <= Settings.SIZE_DEAD)	{
+											Manager.removeBoid(boid, current)
+											return
+										}
 									}
-									// Shrink current
-									boid.Shrink(current)
-									if (boid.size <= 1)	{
-										Manager.removeBoid(boid, current)
-										return
+									// Current boid is bigger than player
+									else {
+										// Grow current
+										// boid.Grow(current)
+										// if (boid.size > Settings.MAX_SIZE) {
+										// 	boid.phylactere.DivideBubble(boid)
+										// }
+										// Shrink player
+										var colliderIndex = Manager.boidList.indexOf(collider)
+										collider.Shrink(colliderIndex)
+										if (collider.size <= Settings.SIZE_DEAD)	{
+											Manager.removeBoid(collider, colliderIndex)
+											if (Manager.player.phylactere.IsDead())
+											{
+												this.gameState = GAME_STATE_OVER
+											}
+											return
+										}
 									}
 								}
-								// Current boid is bigger than player
-								else {
-									// Grow current
-									boid.Grow(current)
-									if (boid.size > Settings.MAX_SIZE) {
-										boid.phylactere.DivideBubble(boid)
-									}
-									// Shrink player
-									var colliderIndex = Manager.boidList.indexOf(collider)
-									collider.Shrink(colliderIndex)
-									if (collider.size <= 1)	{
-										Manager.removeBoid(collider, colliderIndex)
-										return
-									}
+								// Absorption
+								else if (boid instanceof Letter && boid.text.text != " "
+								&& collider instanceof Letter && collider.text.text == " ") {
+									Manager.player.Absorb(collider, boid)
+									Manager.removeBoid(boid, current)
+									return
 								}
-							}
-							// Absorption
-							else if (boid instanceof Letter && boid.text.text != " "
-							&& collider instanceof Letter && collider.text.text == " ") {
-								Manager.player.Absorb(collider, boid)
-								Manager.removeBoid(boid, current)
-								return
 							}
 						}
 					}

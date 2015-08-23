@@ -7,13 +7,13 @@ define(['lib/pixi', 'base/utils', 'base/boid',  'settings', 'manager'], function
 
 		// The actual string
 		this.character = Utils.getDefaultIfUndefined(character, Utils.randomLetter())
-		this.size = 10+Math.random()*15
+		this.size = Settings.MIN_SIZE+Math.random()*(Settings.MAX_SIZE - Settings.MIN_SIZE)
 
 		// Font stuff
 		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: '#020202', align: 'left' }
 		if (typeof style !== 'undefined')
 		{
-			this.size = style.min+Math.random()*style.max
+			this.size = style.min+Math.random()*(style.max - style.min)
 			css = { font: this.size * Settings.LETTER_FONT_SCALE +'px ' + style.font, fill: style.fill, align: style.align }
 		}
 

@@ -5,7 +5,7 @@ define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter'], func
      PIXI.Container.call(this)
 
      this.bubbleList = []
-     this.css = { min:8, max:16, font: 'Shadows Into Light', fill: '#ffffff', align: 'left' }
+     this.css = { min:Settings.MIN_SIZE, max:Settings.MAX_SIZE, font: 'Shadows Into Light', fill: '#ffffff', align: 'left' }
      this.phylactere = new Phylactere("Player", this.css, 8)
      this.phylactere.x = Manager.mouse.x
      this.phylactere.y = Manager.mouse.y
@@ -16,7 +16,7 @@ define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter'], func
     {
         collider.text.text = boid.text.text
         collider.text.style.fill = '#ffffff'
-        collider.size = boid.size
+        collider.size = Settings.MIN_SIZE
         Manager.drawer.redraw(Manager.boidList.indexOf(collider))
     }
 
