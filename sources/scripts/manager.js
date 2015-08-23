@@ -25,6 +25,7 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
       {
         var boid = Manager.garbageList[i].boid
         var index = Manager.garbageList[i].index
+        boid.phylactere.letters.splice(boid.phylactere.letters.indexOf(boid), 1)
         Manager.boidList.splice(index, 1)
         Manager.stage.removeChild(boid)
         Manager.layerBlack.removeChild(Manager.drawer.bullBlackList[index])

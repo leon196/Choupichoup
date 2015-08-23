@@ -96,32 +96,47 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 				// Collision with player
 				if (boid.isPlayer == false)
 				{
-					var bubbleList = Manager.player.bubbleList
+					var bubbleList = Manager.player.phylactere.letters
 					for (var c = 0; c < bubbleList.length; ++c)
 					{
 						var collider = bubbleList[c]
-						if (collider.circleCollision(boid))
-						{
-							if (boid.showBubble)
-							{
+						// Has collided
+						if (collider.circleCollision(boid)) {
+							// Is a thought
+							if (boid.showBubble) {
+								// Bounce collision
 								boid.BounceFromBoid(collider)
-								if (boid.size < collider.size)
-								{
-									boid.size = Math.max(1, boid.size - 1)
-									Manager.drawer.redraw(current)
-									if (boid.size <= 1)
-									{
-										Manager.removeBoid(boid, current)
+								// Balance of power
+								if (boid.size < collider.size) {
+									// Grow player
+									// collider.Grow(current)
+									// if (collider.size > Settings.MAX_SIZE) {
+									// 	collider.phylactere.DivideBubble(collider)
+									// }
+									// Shrink current
+									// boid.Shrink(current)
+									// if (boid.size <= 1)	{
+									// 	Manager.removeBoid(boid, current)
+									// 	return
+									// }
+								}
+								// Current boid is bigger than player
+								else {
+								// 	// Grow current
+								// 	boid.Grow(current)
+								// 	if (boid.size > Settings.MAX_SIZE) {
+								// 		boid.phylactere.DivideBubble(boid)
+								// 	}
+									// Shrink player
+									var colliderIndex = Manager.boidList.indexOf(collider)
+									collider.Shrink(colliderIndex)
+									if (collider.size <= 1)	{
+										Manager.removeBoid(collider, colliderIndex)
 										return
-									}
-									collider.size += 1
-									Manager.drawer.redraw(Manager.boidList.indexOf(collider))
-									if (collider.size > Settings.MAX_SIZE)
-									{
-										Manager.player.DivideBubble(collider)
 									}
 								}
 							}
+							// Absorption
 							else if (boid instanceof Letter && boid.text.text != " "
 							&& collider instanceof Letter && collider.text.text == " ") {
 								if (Manager.player.Absorb(boid))

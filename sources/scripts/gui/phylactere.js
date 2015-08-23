@@ -5,6 +5,8 @@ define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 	{
 		Message.call(this, text, style)
 
+		this.isPlayer = false
+
 		this.anchorX = 0
 		this.anchorY = 0
 
@@ -20,10 +22,12 @@ define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 			{
 				var ratio = i / this.linkCount
 				var boid = new Boid()
+				boid.phylactere = this
 				boid.x = Utils.mix(this.anchorX, this.x, ratio)
 				boid.y = Utils.mix(this.anchorY, this.y, ratio)
 				boid.friction = 0.9
 				boid.size = 8 + Math.sin(ratio * Utils.PI2) * 2
+				boid.isPlayer = this.isPlayer
 				Manager.stage.addChild(boid)
 				Manager.boidList.push(boid)
 				Manager.drawer.AddBubble(boid)
@@ -34,9 +38,11 @@ define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 			{
 				var ratio = i / this.cloudCount
 				var letter = new Letter(" ")
+				letter.phylactere = this
 				letter.x = this.x
 				letter.y = this.y
 				letter.size = 15 + Math.sin(ratio * Utils.PI2) * 10
+				letter.isPlayer = this.isPlayer
 				Manager.stage.addChild(letter)
 				Manager.boidList.push(letter)
 				Manager.drawer.AddBubble(letter)
@@ -45,8 +51,11 @@ define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 			for (var i = 0; i < this.letters.length; ++i)
 			{
 				var letter = this.letters[i]
+				letter.phylactere = this
 				letter.x = this.x
 				letter.y = this.y
+				letter.isPlayer = this.isPlayer
+	      Manager.drawer.redraw(Manager.boidList.indexOf(letter))
 			}
 		}
 
@@ -79,6 +88,25 @@ define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 	    	boid.target.x = this.GetX() + boid.gridX
 	    	boid.target.y = this.GetY() + boid.gridY
 			}
+		}
+
+		this.DivideBubble = function (collider)
+		{
+			collider.size = Settings.MIN_SIZE
+
+			var letter = new Letter(" ", this.css)
+			letter.x = collider.x
+      letter.y = collider.y
+			letter.phylactere = this
+			if (collider.isPlayer)
+			{
+				Manager.player.bubbleList.push(letter)
+	      letter.isPlayer = true
+			}
+			Manager.stage.addChild(letter)
+			Manager.boidList.push(letter)
+			Manager.drawer.AddBubble(letter)
+      this.cloudBoidList.push(letter)
 		}
 	}
 

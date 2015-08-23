@@ -1,5 +1,5 @@
 
-define(['lib/pixi', 'base/renderer', 'base/point', 'settings', 'base/utils'], function(PIXI, renderer, Point, Settings, Utils)
+define(['lib/pixi', 'base/renderer', 'base/point', 'settings', 'base/utils', 'manager'], function(PIXI, renderer, Point, Settings, Utils, Manager)
 {
 	var Boid = function()
 	{
@@ -48,6 +48,18 @@ define(['lib/pixi', 'base/renderer', 'base/point', 'settings', 'base/utils'], fu
 			this.y = boid.y + Math.sin(angle) * (boid.size + this.size)
 			this.velocity.x += Math.cos(angle) * boid.velocity.magnitude()
 			this.velocity.y += Math.sin(angle) * boid.velocity.magnitude()
+		}
+
+		this.Grow = function (current)
+		{
+			this.size += 1
+			Manager.drawer.redraw(Manager.boidList.indexOf(this))
+		}
+
+		this.Shrink = function (current)
+		{
+			this.size = Math.max(1, this.size - 1)
+			Manager.drawer.redraw(current)
 		}
 
 		this.Rumble = function ()

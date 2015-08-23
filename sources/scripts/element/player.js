@@ -9,30 +9,8 @@ define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter'], func
      this.phylactere = new Phylactere("Player", this.css, 8)
      this.phylactere.x = Manager.mouse.x
      this.phylactere.y = Manager.mouse.y
+     this.phylactere.isPlayer = true
      this.phylactere.Init()
-
-     for (var i = 0; i < this.phylactere.letters.length; ++i)
-     {
-       var boid = this.phylactere.letters[i]
-       boid.isPlayer = true
-       Manager.drawer.redraw(Manager.boidList.indexOf(boid))
-       this.bubbleList.push(boid)
-     }
-
-    for (var i = 0; i < this.phylactere.cloudBoidList.length; ++i)
-    {
-      var boid = this.phylactere.cloudBoidList[i]
-      boid.isPlayer = true
-      Manager.drawer.redraw(Manager.boidList.indexOf(boid))
-      this.bubbleList.push(boid)
-     }
-
-    for (var i = 0; i < this.phylactere.tailBoidList.length; ++i)
-    {
-      var boid = this.phylactere.tailBoidList[i]
-      boid.isPlayer = true
-      Manager.drawer.redraw(Manager.boidList.indexOf(boid))
-   }
 
     this.Absorb = function (boid)
     {
@@ -49,21 +27,6 @@ define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter'], func
       }
       return absorbed
     }
-
-		this.DivideBubble = function (collider)
-		{
-			collider.size = Settings.MIN_SIZE
-
-			var letter = new Letter(" ", this.css)
-			letter.x = collider.x
-      letter.y = collider.y
-      letter.isPlayer = true
-			Manager.stage.addChild(letter)
-			Manager.boidList.push(letter)
-			Manager.drawer.AddBubble(letter)
-      this.phylactere.cloudBoidList.push(letter)
-      this.bubbleList.push(letter)
-		}
 
     this.update = function ()
     {
