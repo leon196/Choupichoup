@@ -9,13 +9,12 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 	{
 		this.gameState = GAME_STATE_PLAY
 		this.timeLastSpawn = 0
-		this.timeDelaySpawn = 5
+		this.timeDelaySpawn = 15
 
 		this.Init = function()
 		{
 			// Game Elements
 			Manager.player = new Player()
-			Manager.talker = new Talker()
 			this.SpawnThinker()
 		}
 
@@ -23,22 +22,38 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 		{
 		  var thinker = new Thinker()
 			Manager.addThinker(thinker)
-			this.timeLastSpawn = Manager.timeElapsed
+		}
+
+		this.SpawnTalker = function ()
+		{
+		  var talker = new Talker()
+			Manager.addTalker(talker)
 		}
 
 		this.Update = function()
 		{
 			Manager.timeElapsed = new Date() / 1000 - Manager.timeStarted;
 
+			// Clean garbage
 			Manager.update()
+
+			// Update player
 			Manager.player.update()
-			Manager.talker.update()
 
 			if (this.gameState == GAME_STATE_PLAY)
 			{
+				// Check game over
+				if (Manager.player.phylactere.IsDead())
+				{
+					this.gameState = GAME_STATE_OVER
+				}
+
+				// Spawn elements
 				if (this.timeLastSpawn + this.timeDelaySpawn < Manager.timeElapsed)
 				{
 					this.SpawnThinker()
+					this.SpawnTalker()
+					this.timeLastSpawn = Manager.timeElapsed
 				}
 
 				for (var i = 0; i < Manager.thinkerList.length; ++i)
@@ -46,11 +61,16 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 					var thinker = Manager.thinkerList[i]
 					thinker.update()
 				}
+
+				for (var i = 0; i < Manager.talkerList.length; ++i)
+				{
+					var talker = Manager.talkerList[i]
+					talker.update()
+				}
 			}
 
+			// The mega game algo
 			var boidCount = Manager.boidList.length
-
-			// For all active boids
 			for (var current = 0; current < boidCount; ++current)
 			{
 				var boid = Manager.boidList[current]
@@ -138,12 +158,14 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 									// Balance of power
 									if (boid.size < collider.size) {
 										// Bubble with letter
-										if (collider.text.text != " ") {
-											// Divide bubble with letter
-											collider.phylactere.DivideBubble(collider)
+										if (collider instanceof Letter && collider.text.text != " ") {
 											// Grow player
 											if (collider.size < Settings.MAX_SIZE) {
 												collider.Grow(current)
+											}
+											// Divide bubble with letter
+											else {
+												collider.phylactere.DivideBubble(collider)
 											}
 										}
 										// Shrink current
@@ -156,19 +178,19 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 									// Current boid is bigger than player
 									else {
 										// Grow current
-										// boid.Grow(current)
-										// if (boid.size > Settings.MAX_SIZE) {
-										// 	boid.phylactere.DivideBubble(boid)
+										// if (boid instanceof Letter && boid.text.text != " ") {
+										// 	if (boid.size < Settings.MAX_SIZE) {
+										// 		boid.Grow(current)
+										// 	}
+										// 	else {
+										// 		boid.phylactere.DivideBubble(boid)
+										// 	}
 										// }
 										// Shrink player
 										var colliderIndex = Manager.boidList.indexOf(collider)
 										collider.Shrink(colliderIndex)
 										if (collider.size <= Settings.SIZE_DEAD)	{
 											Manager.removeBoid(collider, colliderIndex)
-											if (Manager.player.phylactere.IsDead())
-											{
-												this.gameState = GAME_STATE_OVER
-											}
 											return
 										}
 									}

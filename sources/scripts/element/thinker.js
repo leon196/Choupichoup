@@ -4,7 +4,7 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager', 'settings', 'b
   {
     PIXI.Container.call(this)
 
-    this.phylactere = new Phylactere("Thinker", { min:Settings.MIN_SIZE, max:Settings.MAX_SIZE, font: 'Shadows Into Light', fill: '#020202', align: 'left' }, 8)
+    this.phylactere = new Phylactere("Thinker", { min:Settings.MIN_SIZE, max:Settings.MAX_SIZE * 0.75, font: 'Shadows Into Light', fill: '#020202', align: 'left' }, 8)
     this.phylactere.x = renderer.width * 1.25
     this.phylactere.y = renderer.height / 2
     this.phylactere.anchorX = this.phylactere.x

@@ -96,12 +96,12 @@ define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 
 		this.DivideBubble = function (collider)
 		{
-			collider.size = Settings.MIN_SIZE
+			collider.size = Settings.SPAWN_SIZE
 
-			var letter = new Letter(" ", this.css)
+			var letter = new Letter(" ", style)
 			letter.x = collider.x
       letter.y = collider.y
-			letter.size = Settings.MIN_SIZE
+			letter.size = Settings.SPAWN_SIZE
 			letter.phylactere = this
 	    letter.isPlayer = collider.isPlayer
 			Manager.addBoid(letter)
