@@ -11,9 +11,9 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager'], function(PIXI
     this.phylactere.y = renderer.height / 2
     this.phylactere.Init()
 
-    for (var i = 0; i < this.phylactere.letters.length; ++i)
+    for (var i = 0; i < this.phylactere.boidList.length; ++i)
     {
-      var letter = this.phylactere.letters[i]
+      var letter = this.phylactere.boidList[i]
       letter.showBubble = false
       Manager.drawer.clearBubble(Manager.boidList.indexOf(letter))
     }
@@ -21,6 +21,13 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager'], function(PIXI
     this.update = function ()
     {
       this.phylactere.Update()
+    }
+
+    this.move = function (x, y)
+    {
+      this.phylactere.anchorX = x
+      this.phylactere.x = x
+      this.phylactere.y = y
     }
   }
 

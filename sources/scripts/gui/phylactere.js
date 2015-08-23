@@ -11,7 +11,6 @@ define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 		this.anchorY = 0
 
 		this.tailBoidList = []
-		this.cloudBoidList = []
 
 		this.linkCount = typeof linkCount !== "undefined" ? linkCount : 0
 		this.cloudCount = typeof cloudCount !== "undefined" ? cloudCount : 0
@@ -28,14 +27,14 @@ define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 				boid.friction = 0.9
 				boid.size = 8 + Math.sin(ratio * Utils.PI2) * 2
 				boid.isPlayer = this.isPlayer
-				Manager.stage.addChild(boid)
-				Manager.boidList.push(boid)
-				Manager.drawer.AddBubble(boid)
-				this.tailBoidList.push(boid)
+				boid.isLink = true
+				boid.linkRatio = ratio
+				Manager.addBoid(boid)
+				this.boidList.push(boid)
 			}
-			for (var i = 0; i < this.letters.length; ++i)
+			for (var i = 0; i < this.boidList.length; ++i)
 			{
-				var letter = this.letters[i]
+				var letter = this.boidList[i]
 				letter.phylactere = this
 				letter.x = this.x
 				letter.y = this.y
@@ -51,43 +50,46 @@ define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 				letter.y = this.y
 				letter.size = 15 + Math.sin(ratio * Utils.PI2) * 10
 				letter.isPlayer = this.isPlayer
-				Manager.stage.addChild(letter)
-				Manager.boidList.push(letter)
-				Manager.drawer.AddBubble(letter)
-				this.letters.push(letter)
+				Manager.addBoid(letter)
+				this.boidList.push(letter)
 			}
 		}
 
 		this.Update = function ()
 		{
-			for (var i = 0; i < this.tailBoidList.length; ++i)
+			for (var i = 0; i < this.boidList.length; ++i)
 			{
-				var boid = this.tailBoidList[i]
-				var ratio = i / this.tailBoidList.length
-				boid.target.x = Utils.mix(this.anchorX, this.x, ratio)
-				boid.target.y = Utils.mix(this.anchorY, this.y, ratio)
-				if (Utils.distanceTo(this) != 0)
-				{
-					boid.target.x += (this.y / Utils.distanceTo(this)) * Math.sin(ratio * Utils.PI2) * 40
-					boid.target.y += (-this.x / Utils.distanceTo(this)) * Math.sin(ratio * Utils.PI2) * 40
-				}
-			}
-			for (var i = 0; i < this.letters.length; ++i)
-			{
-				var boid = this.letters[i]
+				var boid = this.boidList[i]
 
-				if (boid.text.text != " ")
+				if (boid.isLink == false)
 				{
-		    	boid.target.x = this.GetX() + boid.gridX
-		    	boid.target.y = this.GetY() + boid.gridY
+					// Letter
+					if (boid.text.text != " ")
+					{
+			    	boid.target.x = this.GetX() + boid.gridX
+			    	boid.target.y = this.GetY() + boid.gridY
+					}
+					// Empty Bubble
+					else
+					{
+						var p = new Point(this.x - boid.x, this.y - boid.y)
+						var dist = Math.max(0, p.magnitude() - 60)
+						var norm = p.getNormal()
+						boid.target.x = norm.x * dist + boid.x
+						boid.target.y = norm.y * dist + boid.y
+					}
 				}
 				else
 				{
-					var p = new Point(this.x - boid.x, this.y - boid.y)
-					var dist = Math.max(0, p.magnitude() - 60)
-					var norm = p.getNormal()
-					boid.target.x = norm.x * dist + boid.x
-					boid.target.y = norm.y * dist + boid.y
+					// Link / Tail
+					var ratio = boid.linkRatio
+					boid.target.x = Utils.mix(this.anchorX, this.x, ratio)
+					boid.target.y = Utils.mix(this.anchorY, this.y, ratio)
+					if (Utils.distanceTo(this) != 0)
+					{
+						boid.target.x += (this.y / Utils.distanceTo(this)) * Math.sin(ratio * Utils.PI2) * 40
+						boid.target.y += (-this.x / Utils.distanceTo(this)) * Math.sin(ratio * Utils.PI2) * 40
+					}
 				}
 			}
 		}
@@ -101,10 +103,17 @@ define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
       letter.y = collider.y
 			letter.phylactere = this
 	    letter.isPlayer = collider.isPlayer
-			Manager.stage.addChild(letter)
-			Manager.boidList.push(letter)
-			Manager.drawer.AddBubble(letter)
-      this.letters.push(letter)
+			Manager.addBoid(letter)
+      this.boidList.push(letter)
+		}
+
+		this.clear = function ()
+		{
+			for (var i = 0; i < this.boidList.length; ++i)
+			{
+				var boid = this.boidList[i]
+				Manager.removeBoid(boid, Manager.boidList.indexOf(boid))
+			}
 		}
 	}
 

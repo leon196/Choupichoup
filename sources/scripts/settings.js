@@ -4,11 +4,13 @@ define([], function()
   var Settings = {}
 
   Settings.DEFAULT_SPEED = 1
-  Settings.DEFAULT_FRICTION = 0.95
+  Settings.DEFAULT_FRICTION = 0.98
   Settings.DEFAULT_FRICTION_COLLISION = 0.9
 
   Settings.MIN_SIZE = 15
   Settings.MAX_SIZE = 30
+
+  Settings.SCROLL_SPEED = 0.0001
 
   Settings.DEFAULT_TARGET_SCALE = 0.1
   Settings.DEFAULT_AVOID_SCALE = 0.1

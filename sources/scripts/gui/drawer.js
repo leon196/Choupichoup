@@ -48,6 +48,14 @@ define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'manager'], function 
 			}
 		}
 
+		this.removeBubble = function (boid, index)
+		{
+			Manager.layerBlack.removeChild(Manager.drawer.bullBlackList[index])
+			Manager.layerWhite.removeChild(Manager.drawer.bullWhiteList[index])
+			this.bullBlackList.splice(index, 1)
+			this.bullWhiteList.splice(index, 1)
+		}
+
 		this.redraw = function(index)
 		{
 			if (index != -1)

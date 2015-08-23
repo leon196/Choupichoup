@@ -7,7 +7,7 @@ define(['base/boid', 'base/renderer', 'manager', 'gui/letter', 'engine'], functi
 		Boid.call(this)
 
 		// The list of letter boids that make the message
-		this.letters = []
+		this.boidList = []
 
 		// Data strings
 		this.lines = text.split("\n")
@@ -36,15 +36,11 @@ define(['base/boid', 'base/renderer', 'manager', 'gui/letter', 'engine'], functi
 				letter.indexLetter = idxLetter
 				letter.isFromMessage = true
 
-				// Add to update stack
-				Manager.boidList.push(letter)
-
-				// Add to display
-				Manager.drawer.AddBubble(letter)
-				Manager.stage.addChild(letter)
+				// Add to update stack and display
+				Manager.addBoid(letter)
 
 				// Store own letters
-				this.letters.push(letter)
+				this.boidList.push(letter)
 
 				lineWidth += letter.size
 			}
@@ -53,9 +49,9 @@ define(['base/boid', 'base/renderer', 'manager', 'gui/letter', 'engine'], functi
 
 		// Setup position
 		lineWidth = 0
-		for (var l = 0; l < this.letters.length; ++l)
+		for (var l = 0; l < this.boidList.length; ++l)
 		{
-			var boid = this.letters[l]
+			var boid = this.boidList[l]
 			// var center = Math.ceil(this.lineWidthMax / 2) * boid.size
 			// var offset = (this.lineWidthMax - wordLetters.length) / 2 * boid.size
 

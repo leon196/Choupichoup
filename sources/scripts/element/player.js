@@ -12,21 +12,12 @@ define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter'], func
      this.phylactere.isPlayer = true
      this.phylactere.Init()
 
-    this.Absorb = function (boid)
+    this.Absorb = function (collider, boid)
     {
-      for (var i = 0; i < this.phylactere.letters.length; ++i)
-      {
-        var letter = this.phylactere.letters[i]
-        if (letter.text.text == " ")
-        {
-          letter.text.text = boid.text.text
-          letter.text.style.fill = '#ffffff'
-          letter.size = boid.size
-          Manager.drawer.redraw(Manager.boidList.indexOf(letter))
-          return true
-        }
-      }
-      return false
+        collider.text.text = boid.text.text
+        collider.text.style.fill = '#ffffff'
+        collider.size = boid.size
+        Manager.drawer.redraw(Manager.boidList.indexOf(collider))
     }
 
     this.update = function ()

@@ -10,6 +10,8 @@ define(['lib/pixi', 'base/renderer', 'base/point', 'settings', 'base/utils', 'ma
 
 		this.isPlayer = false
 		this.showBubble = true
+		this.isLink = false
+		this.linkRatio = 0
 
 		// Init velocity vector with random seed
 		var randomAngle = Math.random() * Math.PI * 2

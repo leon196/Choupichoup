@@ -3,24 +3,36 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 {
 	var Game = function ()
 	{
-		this.colliderList = []
+		this.thinkerList = []
 
 		this.Init = function()
 		{
 			// Game Elements
 			Manager.player = new Player()
-			Manager.thinker = new Thinker()
 			Manager.talker = new Talker()
+			this.AddThinker()
+		}
+
+		this.AddThinker = function()
+		{
+			var thinker = new Thinker()
+			thinker.init()
+			this.thinkerList.push(thinker)
 		}
 
 		this.Update = function()
 		{
-			Manager.timeElapsed = new Date() - Manager.timeStarted / 1000;
+			Manager.timeElapsed = new Date() / 1000 - Manager.timeStarted;
 
 			Manager.update()
 			Manager.player.update()
-			Manager.thinker.update()
 			Manager.talker.update()
+
+			for (var i = 0; i < this.thinkerList.length; ++i)
+			{
+				var thinker = this.thinkerList[i]
+				thinker.update()
+			}
 
 			var boidCount = Manager.boidList.length
 
@@ -72,12 +84,9 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 					target.x + near.x + center.x + avoid.x,
 					target.y + near.y + center.y + avoid.y)
 
-				// Collision
-				if (boid instanceof Letter)
+				// Window borders Collision
+				if (boid.isPlayer && boid instanceof Letter && boid.text.text != " ")
 				{
-					// Window borders Collision
-					if (boid.isFromMessage)
-					{
 						if (boid.x < 0 || boid.x > renderer.width)
 						{
 							boid.velocity.x *= -boid.frictionCollision
@@ -90,13 +99,12 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 						}
 						boid.x = Utils.clamp(boid.x, 0, renderer.width)
 						boid.y = Utils.clamp(boid.y, 0, renderer.height)
-					}
 				}
 
 				// Collision with player
 				if (boid.isPlayer == false)
 				{
-					var bubbleList = Manager.player.phylactere.letters
+					var bubbleList = Manager.player.phylactere.boidList
 					for (var c = 0; c < bubbleList.length; ++c)
 					{
 						var collider = bubbleList[c]
@@ -117,6 +125,7 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 									boid.Shrink(current)
 									if (boid.size <= 1)	{
 										Manager.removeBoid(boid, current)
+										return
 									}
 								}
 								// Current boid is bigger than player
@@ -131,16 +140,16 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 									collider.Shrink(colliderIndex)
 									if (collider.size <= 1)	{
 										Manager.removeBoid(collider, colliderIndex)
+										return
 									}
 								}
 							}
 							// Absorption
 							else if (boid instanceof Letter && boid.text.text != " "
 							&& collider instanceof Letter && collider.text.text == " ") {
-								if (Manager.player.Absorb(boid))
-								{
-									Manager.removeBoid(boid, current)
-								}
+								Manager.player.Absorb(collider, boid)
+								Manager.removeBoid(boid, current)
+								return
 							}
 						}
 					}

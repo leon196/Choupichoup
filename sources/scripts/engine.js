@@ -3,14 +3,6 @@ define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point'
 {
 	var Engine = {}
 
-	Engine.interface = new Interface()
-	Manager.stage.addChild(Engine.interface)
-
-	Manager.drawer = new Drawer()
-	Manager.stage.addChild(Manager.drawer)
-
-	Engine.game = new Game()
-
 	// Asset loader
 	Engine.imageReady = false
 	Engine.fontReady = false
@@ -22,24 +14,28 @@ define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point'
 
 	Engine.Init = function ()
 	{
-		// Buttons
-		// Engine.interface.addButton("Draw Debug", function () { drawer.debug = !drawer.debug; Engine.interface.visible = !Engine.interface.visible })
-		// Engine.interface.addButton("Draw Bubble", function () { layerWhite.visible = !layerWhite.visible; layerBlack.visible = !layerBlack.visible })
+		// Interface
+		Engine.interface = new Interface()
 		Engine.interface.addButton("Algo Boids", function () {}, "https://en.wikipedia.org/wiki/Boids")
 		Engine.interface.addButton("Pixi.js", function () {}, "http://www.pixijs.com/")
 		Engine.interface.addButton("Code Sources", function () {}, "https://github.com/leon196/BubbleLetter")
-		// Engine.interface.addLabels(['target', 'avoid','near', 'center']
-		// 	,[Color.TARGET_STR, Color.AVOID_STR, Color.NEAR_STR, Color.GLOBAL_STR])
-		Engine.interface.visible = false
 
 		// Interactivity
 		Manager.stage.interactive = true
 		Manager.stage.on('mousedown', Engine.onClic).on('touchstart', Engine.onClic)
 		Manager.stage.on('mousemove', Engine.onMove).on('touchmove', Engine.onMove)
 
+		// Drawer
+		Manager.drawer = new Drawer()
+		Manager.stage.addChild(Manager.drawer)
+
+		// Setup
+		Manager.timeStarted = new Date() / 1000
+		Manager.timeElapsed = 0
+		Manager.game = new Game()
+		Manager.game.Init()
+
 		// Start Loop
-		Manager.timeStarted = new Date()
-		Engine.game.Init()
 		Engine.animate()
 	}
 
@@ -47,7 +43,7 @@ define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point'
 	{
 	    requestAnimationFrame(Engine.animate)
 	    renderer.render(Manager.stage)
-			Engine.game.Update()
+			Manager.game.Update()
 	}
 
 	// Mouse input
