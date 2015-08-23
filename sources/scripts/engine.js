@@ -48,7 +48,8 @@ define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point'
 
 		// Interactivity
 		Manager.stage.interactive = true
-		Manager.stage.on('mousemove', Engine.onMove).on('touchstart', Engine.onMove).on('touchmove', Engine.onMove)
+		Manager.stage.on('mousedown', Engine.onClic).on('touchstart', Engine.onClic)
+		Manager.stage.on('mousemove', Engine.onMove).on('touchmove', Engine.onMove)
 
 		// Debug
 		// Engine.game.SpawnCollider()
@@ -67,6 +68,11 @@ define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point'
 
 	// Mouse input
 	Engine.onMove = function(event)
+	{
+		Manager.mouse = event.data.global
+	}
+
+	Engine.onClic = function(event)
 	{
 		Manager.mouse = event.data.global
 	}

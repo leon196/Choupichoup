@@ -5,19 +5,8 @@ define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'manager'], function 
 	{
 		PIXI.Container.call(this)
 
-		this.background = new PIXI.Sprite(PIXI.Texture.fromImage('images/head.png'))
-		this.background.anchor.x = 0.55
-		this.background.anchor.y = 1
-		this.background.x = renderer.width / 2
-		this.background.y = renderer.height
-		this.addChild(this.background)
-
-		this.graphicsBlack = new PIXI.Graphics()
-		this.graphicsWhite = new PIXI.Graphics()
 		this.graphicsDebug = new PIXI.Graphics()
-		this.addChild(this.graphicsBlack)
 		this.addChild(this.graphicsDebug)
-		this.addChild(this.graphicsWhite)
 
 		this.bullBlackList = []
 		this.bullWhiteList = []
@@ -64,15 +53,6 @@ define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'manager'], function 
 			}
 		}
 
-	 	this.Clear = function ()
-	 	{
-			this.graphicsWhite.clear()
-			this.graphicsBlack.clear()
-			this.graphicsDebug.clear()
-			this.graphicsWhite.beginFill(0xffffff)
-			this.graphicsBlack.beginFill(0x000000)
-		}
-
 	 	this.Line = function (pos, dir, thinckness, color)
 	 	{
 			this.graphicsBlack.lineStyle(thinckness, color)
@@ -98,12 +78,6 @@ define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'manager'], function 
 				this.graphicsDebug.lineTo(origin.x + forward.x + offset.x, origin.y + forward.y + offset.y)
 				this.graphicsDebug.lineTo(origin.x + offset.x, origin.y + offset.y)
 	 		}
-	 	}
-
-	 	this.EndFill = function ()
-	 	{
-			this.graphicsWhite.endFill()
-			this.graphicsBlack.endFill()
 	 	}
 	}
 

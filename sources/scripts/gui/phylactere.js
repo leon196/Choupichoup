@@ -9,34 +9,46 @@ define(['base/Boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 		this.anchorY = 0
 
 		this.tailBoidList = []
-		linkCount = typeof linkCount !== "undefined" ? linkCount : 8
-		cloudCount = typeof cloudCount !== "undefined" ? cloudCount : 8
-
-		for (var i = 0; i < linkCount; ++i)
-		{
-			var ratio = i / 8
-			var boid = new Boid()
-			boid.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
-			boid.friction = 0.9
-			boid.size = 8 + Math.sin(ratio * Utils.PI2) * 2
-			Manager.stage.addChild(boid)
-			Manager.boidList.push(boid)
-			this.tailBoidList.push(boid)
-		}
-
 		this.cloudBoidList = []
-		for (var i = 0; i < cloudCount; ++i)
+
+		this.linkCount = typeof linkCount !== "undefined" ? linkCount : 8
+		this.cloudCount = typeof cloudCount !== "undefined" ? cloudCount : 8
+
+		this.Init = function ()
 		{
-			var ratio = i / 8
-			var letter = new Letter(" ")
-			letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
-			letter.size = 15 + Math.sin(ratio * Utils.PI2) * 10
-			Manager.stage.addChild(letter)
-			Manager.boidList.push(letter)
-			this.cloudBoidList.push(letter)
+			for (var i = 0; i < this.linkCount; ++i)
+			{
+				var ratio = i / this.linkCount
+				var boid = new Boid()
+				boid.x = Utils.mix(this.anchorX, this.x, ratio)
+				boid.y = Utils.mix(this.anchorY, this.y, ratio)
+				boid.friction = 0.9
+				boid.size = 8 + Math.sin(ratio * Utils.PI2) * 2
+				Manager.stage.addChild(boid)
+				Manager.boidList.push(boid)
+				this.tailBoidList.push(boid)
+			}
+
+			for (var i = 0; i < this.cloudCount; ++i)
+			{
+				var ratio = i / this.cloudCount
+				var letter = new Letter(" ")
+				letter.x = this.x
+				letter.y = this.y
+				letter.size = 15 + Math.sin(ratio * Utils.PI2) * 10
+				Manager.stage.addChild(letter)
+				Manager.boidList.push(letter)
+				this.cloudBoidList.push(letter)
+			}
+			for (var i = 0; i < this.letters.length; ++i)
+			{
+				var letter = this.letters[i]
+				letter.x = this.x
+				letter.y = this.y
+			}
 		}
 
-		this.update = function ()
+		this.Update = function ()
 		{
 			for (var i = 0; i < this.tailBoidList.length; ++i)
 			{

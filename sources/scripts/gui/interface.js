@@ -5,6 +5,11 @@ define(['../lib/pixi','../base/point', '../gui/button'], function(PIXI, Point, B
 	{
 		PIXI.Container.call(this)
 
+		this.background = new PIXI.Sprite(PIXI.Texture.fromImage('images/head.png'))
+		this.background.anchor.x = 0.5
+		this.background.anchor.y = 0.5
+		this.addChild(this.background)
+
 		this.buttonList = []
 		this.labelFontSize = 24
 

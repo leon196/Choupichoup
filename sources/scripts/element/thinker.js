@@ -8,10 +8,11 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer'], function(PIXI, Phylacter
     this.phylactere.anchorX = renderer.width / 2
     this.phylactere.x = renderer.width / 2
     this.phylactere.y = renderer.height / 2
+    this.phylactere.Init()
 
     this.update = function ()
     {
-      this.phylactere.update()
+      this.phylactere.Update()
     }
   }
 

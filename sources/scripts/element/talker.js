@@ -9,6 +9,7 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer'], function(PIXI, Phylacter
     this.phylactere.anchorX = renderer.width
     this.phylactere.x = renderer.width * 3 / 4
     this.phylactere.y = renderer.height / 2
+    this.phylactere.Init()
 
     for (var i = 0; i < this.phylactere.letters.length; ++i)
     {
@@ -18,7 +19,7 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer'], function(PIXI, Phylacter
 
     this.update = function ()
     {
-      this.phylactere.update()
+      this.phylactere.Update()
     }
   }
 

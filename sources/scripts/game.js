@@ -14,7 +14,6 @@ define(['engine', 'base/renderer', 'manager', 'settings', 'color', 'base/point',
 		this.Update = function()
 		{
 			Manager.timeElapsed = new Date() - Manager.timeStarted / 1000;
-			Manager.drawer.Clear()
 
 			Manager.player.update()
 			Manager.thinker.update()
@@ -103,6 +102,12 @@ define(['engine', 'base/renderer', 'manager', 'settings', 'color', 'base/point',
 							if (boid.showBubble)
 							{
 								boid.BounceFromBoid(collider)
+								// if (boid.size <= collider.size)
+								// {
+								// 	var tmp = collider
+								// 	collider = boid
+								// 	boid = tmp
+								// }
 								boid.size = Math.max(1, boid.size - 1)
 								Manager.drawer.redraw(current)
 								if (boid.size <= 1)
@@ -147,7 +152,6 @@ define(['engine', 'base/renderer', 'manager', 'settings', 'color', 'base/point',
 					// drawer.Arrow(boid, boid.velocity.getNormal(), boid.velocity.magnitude() * 5, 10, Color.BOID_HEX)
 				}
 			}
-			Manager.drawer.EndFill()
 		}
 	}
 
