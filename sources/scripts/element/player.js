@@ -27,6 +27,13 @@ define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter'], func
       this.bubbleList.push(boid)
      }
 
+    for (var i = 0; i < this.phylactere.tailBoidList.length; ++i)
+    {
+      var boid = this.phylactere.tailBoidList[i]
+      boid.isPlayer = true
+      Manager.drawer.redraw(Manager.boidList.indexOf(boid))
+   }
+
     this.Absorb = function (boid)
     {
       var absorbed = true
@@ -48,7 +55,8 @@ define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter'], func
 			collider.size = Settings.MIN_SIZE
 
 			var letter = new Letter(" ", this.css)
-			letter.position.set(collider.x, collider.y)
+			letter.x = collider.x
+      letter.y = collider.y
       letter.isPlayer = true
 			Manager.stage.addChild(letter)
 			Manager.boidList.push(letter)

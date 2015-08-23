@@ -22,6 +22,8 @@ define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'manager'], function 
 			else graphB.beginFill(0x000000)
 
 			graphB.drawCircle(0, Settings.BULL_OUTLINE / 2, boid.size + Settings.BULL_OUTLINE)
+			graphB.x = boid.x
+			graphB.y = boid.y
 			this.bullBlackList.push(graphB)
 			Manager.layerBlack.addChild(graphB)
 
@@ -29,6 +31,8 @@ define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'manager'], function 
 			if (boid.isPlayer) graphW.beginFill(0x000000)
 			else graphW.beginFill(0xffffff)
 			graphW.drawCircle(0, 0, boid.size)
+			graphW.x = boid.x
+			graphW.y = boid.y
 			this.bullWhiteList.push(graphW)
 			Manager.layerWhite.addChild(graphW)
 		}
