@@ -15,15 +15,30 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
 
   // Global Boid List
   Manager.boidList = []
+  Manager.garbageList = []
 
-  Manager.removeBoid = function (boid, current)
+  Manager.update = function ()
   {
-    Manager.boidList.splice(current, 1)
-    Manager.stage.removeChild(boid)
-    Manager.layerBlack.removeChild(Manager.drawer.bullBlackList[current])
-    Manager.layerWhite.removeChild(Manager.drawer.bullWhiteList[current])
-    Manager.drawer.bullBlackList.splice(current, 1)
-    Manager.drawer.bullWhiteList.splice(current, 1)
+    if (Manager.garbageList.length > 0)
+    {
+      for (var i = Manager.garbageList.length - 1; i >= 0; --i)
+      {
+        var boid = Manager.garbageList[i].boid
+        var index = Manager.garbageList[i].index
+        Manager.boidList.splice(index, 1)
+        Manager.stage.removeChild(boid)
+        Manager.layerBlack.removeChild(Manager.drawer.bullBlackList[index])
+        Manager.layerWhite.removeChild(Manager.drawer.bullWhiteList[index])
+        Manager.drawer.bullBlackList.splice(index, 1)
+        Manager.drawer.bullWhiteList.splice(index, 1)
+      }
+      Manager.garbageList = []
+    }
+  }
+
+  Manager.removeBoid = function (boid_, index_)
+  {
+    Manager.garbageList.push({boid:boid_, index:index_})
   }
 
   // Game Elements

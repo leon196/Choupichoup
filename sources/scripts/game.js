@@ -17,6 +17,7 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 		{
 			Manager.timeElapsed = new Date() - Manager.timeStarted / 1000;
 
+			Manager.update()
 			Manager.player.update()
 			Manager.thinker.update()
 			Manager.talker.update()
@@ -104,18 +105,21 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 							if (boid.showBubble)
 							{
 								boid.BounceFromBoid(collider)
-								boid.size = Math.max(1, boid.size - 1)
-								Manager.drawer.redraw(current)
-								if (boid.size <= 1)
+								if (boid.size < collider.size)
 								{
-									Manager.removeBoid(boid, current)
-									return
-								}
-								collider.size += 1
-								Manager.drawer.redraw(Manager.boidList.indexOf(collider))
-								if (collider.size > Settings.MAX_SIZE)
-								{
-									Manager.player.DivideBubble(collider)
+									boid.size = Math.max(1, boid.size - 1)
+									Manager.drawer.redraw(current)
+									if (boid.size <= 1)
+									{
+										Manager.removeBoid(boid, current)
+										return
+									}
+									collider.size += 1
+									Manager.drawer.redraw(Manager.boidList.indexOf(collider))
+									if (collider.size > Settings.MAX_SIZE)
+									{
+										Manager.player.DivideBubble(collider)
+									}
 								}
 							}
 							else if (boid instanceof Letter && boid.text.text != " "
