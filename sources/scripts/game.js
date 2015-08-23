@@ -109,30 +109,28 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 								// Balance of power
 								if (boid.size < collider.size) {
 									// Grow player
-									// collider.Grow(current)
-									// if (collider.size > Settings.MAX_SIZE) {
-									// 	collider.phylactere.DivideBubble(collider)
-									// }
+									collider.Grow(current)
+									if (collider.size > Settings.MAX_SIZE) {
+										collider.phylactere.DivideBubble(collider)
+									}
 									// Shrink current
-									// boid.Shrink(current)
-									// if (boid.size <= 1)	{
-									// 	Manager.removeBoid(boid, current)
-									// 	return
-									// }
+									boid.Shrink(current)
+									if (boid.size <= 1)	{
+										Manager.removeBoid(boid, current)
+									}
 								}
 								// Current boid is bigger than player
 								else {
-								// 	// Grow current
-								// 	boid.Grow(current)
-								// 	if (boid.size > Settings.MAX_SIZE) {
-								// 		boid.phylactere.DivideBubble(boid)
-								// 	}
+									// Grow current
+									boid.Grow(current)
+									if (boid.size > Settings.MAX_SIZE) {
+										boid.phylactere.DivideBubble(boid)
+									}
 									// Shrink player
 									var colliderIndex = Manager.boidList.indexOf(collider)
 									collider.Shrink(colliderIndex)
 									if (collider.size <= 1)	{
 										Manager.removeBoid(collider, colliderIndex)
-										return
 									}
 								}
 							}
@@ -142,7 +140,6 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 								if (Manager.player.Absorb(boid))
 								{
 									Manager.removeBoid(boid, current)
-									return
 								}
 							}
 						}

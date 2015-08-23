@@ -33,7 +33,15 @@ define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 				Manager.drawer.AddBubble(boid)
 				this.tailBoidList.push(boid)
 			}
-
+			for (var i = 0; i < this.letters.length; ++i)
+			{
+				var letter = this.letters[i]
+				letter.phylactere = this
+				letter.x = this.x
+				letter.y = this.y
+				letter.isPlayer = this.isPlayer
+	      Manager.drawer.redraw(Manager.boidList.indexOf(letter))
+			}
 			for (var i = 0; i < this.cloudCount; ++i)
 			{
 				var ratio = i / this.cloudCount
@@ -46,16 +54,7 @@ define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 				Manager.stage.addChild(letter)
 				Manager.boidList.push(letter)
 				Manager.drawer.AddBubble(letter)
-				this.cloudBoidList.push(letter)
-			}
-			for (var i = 0; i < this.letters.length; ++i)
-			{
-				var letter = this.letters[i]
-				letter.phylactere = this
-				letter.x = this.x
-				letter.y = this.y
-				letter.isPlayer = this.isPlayer
-	      Manager.drawer.redraw(Manager.boidList.indexOf(letter))
+				this.letters.push(letter)
 			}
 		}
 
@@ -73,20 +72,23 @@ define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 					boid.target.y += (-this.x / Utils.distanceTo(this)) * Math.sin(ratio * Utils.PI2) * 40
 				}
 			}
-			for (var i = 0; i < this.cloudBoidList.length; ++i)
-			{
-				var boid = this.cloudBoidList[i]
-				var p = new Point(this.x - boid.x, this.y - boid.y)
-				var dist = Math.max(0, p.magnitude() - 60)
-				var norm = p.getNormal()
-				boid.target.x = norm.x * dist + boid.x
-				boid.target.y = norm.y * dist + boid.y
-			}
 			for (var i = 0; i < this.letters.length; ++i)
 			{
 				var boid = this.letters[i]
-	    	boid.target.x = this.GetX() + boid.gridX
-	    	boid.target.y = this.GetY() + boid.gridY
+
+				if (boid.text.text != " ")
+				{
+		    	boid.target.x = this.GetX() + boid.gridX
+		    	boid.target.y = this.GetY() + boid.gridY
+				}
+				else
+				{
+					var p = new Point(this.x - boid.x, this.y - boid.y)
+					var dist = Math.max(0, p.magnitude() - 60)
+					var norm = p.getNormal()
+					boid.target.x = norm.x * dist + boid.x
+					boid.target.y = norm.y * dist + boid.y
+				}
 			}
 		}
 
@@ -98,15 +100,11 @@ define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 			letter.x = collider.x
       letter.y = collider.y
 			letter.phylactere = this
-			if (collider.isPlayer)
-			{
-				Manager.player.bubbleList.push(letter)
-	      letter.isPlayer = true
-			}
+	    letter.isPlayer = collider.isPlayer
 			Manager.stage.addChild(letter)
 			Manager.boidList.push(letter)
 			Manager.drawer.AddBubble(letter)
-      this.cloudBoidList.push(letter)
+      this.letters.push(letter)
 		}
 	}
 

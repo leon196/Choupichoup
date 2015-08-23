@@ -14,18 +14,19 @@ define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter'], func
 
     this.Absorb = function (boid)
     {
-      var absorbed = true
-      if (this.phylactere.cloudBoidList.length > 0)
+      for (var i = 0; i < this.phylactere.letters.length; ++i)
       {
-        var shell = this.phylactere.cloudBoidList[0]
-        shell.text.text = boid.text.text
-        shell.text.style.fill = '#ffffff'
-        shell.size = boid.size
-        Manager.drawer.redraw(Manager.boidList.indexOf(shell))
-        this.phylactere.cloudBoidList.splice(0, 1)
-        this.phylactere.letters.push(shell)
+        var letter = this.phylactere.letters[i]
+        if (letter.text.text == " ")
+        {
+          letter.text.text = boid.text.text
+          letter.text.style.fill = '#ffffff'
+          letter.size = boid.size
+          Manager.drawer.redraw(Manager.boidList.indexOf(letter))
+          return true
+        }
       }
-      return absorbed
+      return false
     }
 
     this.update = function ()
