@@ -3,21 +3,21 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 {
 	var Game = function ()
 	{
-		this.thinkerList = []
+		this.timeLastSpawn = 0
+		this.timeDelaySpawn = 5
 
 		this.Init = function()
 		{
 			// Game Elements
 			Manager.player = new Player()
 			Manager.talker = new Talker()
-			this.AddThinker()
 		}
 
-		this.AddThinker = function()
+		this.SpawnThinker = function ()
 		{
-			var thinker = new Thinker()
-			thinker.init()
-			this.thinkerList.push(thinker)
+		  var thinker = new Thinker()
+			Manager.addThinker(thinker)
+			this.timeLastSpawn = Manager.timeElapsed
 		}
 
 		this.Update = function()
@@ -28,10 +28,15 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 			Manager.player.update()
 			Manager.talker.update()
 
-			for (var i = 0; i < this.thinkerList.length; ++i)
+			for (var i = 0; i < Manager.thinkerList.length; ++i)
 			{
-				var thinker = this.thinkerList[i]
+				var thinker = Manager.thinkerList[i]
 				thinker.update()
+			}
+
+			if (this.timeLastSpawn + this.timeDelaySpawn < Manager.timeElapsed)
+			{
+				this.SpawnThinker()
 			}
 
 			var boidCount = Manager.boidList.length

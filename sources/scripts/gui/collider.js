@@ -37,7 +37,6 @@ define(['lib/pixi', 'manager', 'base/renderer', 'base/utils', 'settings'], funct
 				// Bottom of box and particle is going up
 				else if (boid.y > this.bottom && direction.y < 0) {
 					direction = Utils.Reflect(direction, {x:0, y:-1});
-          console.log(direction)
         }
 				// Top of box and particle is going down
 				else if (boid.y < this.top && direction.y > 0) {

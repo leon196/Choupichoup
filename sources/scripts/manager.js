@@ -2,26 +2,17 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
 {
   var Manager = {}
 
-	// Stage
-  Manager.stage = new PIXI.Container()
-
-  // Layers
-	Manager.layerBlack = new PIXI.Container()
-	Manager.layerWhite = new PIXI.Container()
-  Manager.layerCollider = new PIXI.Container()
-	Manager.stage.addChild(Manager.layerCollider)
-	Manager.stage.addChild(Manager.layerBlack)
-	Manager.stage.addChild(Manager.layerWhite)
-
-  // Global Lists
-  Manager.boidList = []
-  Manager.boidAddList = []
-  Manager.garbageList = []
-  Manager.garbageThinkerList = []
-
   // Game Elements
   Manager.player
   Manager.game
+
+  // Global Lists
+  Manager.boidList = []
+  Manager.thinkerList = []
+
+  // Garbage Lists
+  Manager.garbageList = []
+  Manager.garbageThinkerList = []
 
   // Display Tool
   Manager.drawer
@@ -33,10 +24,19 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
 	Manager.timeElapsed = 0
 	Manager.timeStarted = 0
 
+	// Stage
+  Manager.stage = new PIXI.Container()
+
+  // Layers
+	Manager.layerBlack = new PIXI.Container()
+	Manager.layerWhite = new PIXI.Container()
+  Manager.layerCollider = new PIXI.Container()
+	Manager.stage.addChild(Manager.layerCollider)
+	Manager.stage.addChild(Manager.layerBlack)
+	Manager.stage.addChild(Manager.layerWhite)
+
   Manager.addBoid = function (boid)
   {
-    // Manager.boidAddList.push(boid)
-
     Manager.stage.addChild(boid)
     Manager.boidList.push(boid)
     Manager.drawer.AddBubble(boid)
@@ -47,9 +47,15 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
     Manager.garbageList.push({boid:boid_, index:index_})
   }
 
+  Manager.addThinker = function(thinker)
+  {
+    thinker.init()
+    Manager.thinkerList.push(thinker)
+  }
+
   Manager.removeThinker = function(thinker_)
   {
-    Manager.garbageThinkerList.push({thinker:thinker_, index:Manager.game.thinkerList.indexOf(thinker_)})
+    Manager.garbageThinkerList.push({thinker:thinker_, index:Manager.thinkerList.indexOf(thinker_)})
   }
 
   Manager.update = function ()
@@ -61,7 +67,7 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
         var thinker = Manager.garbageThinkerList[i].thinker
         var index = Manager.garbageThinkerList[i].index
         thinker.phylactere.clear()
-        Manager.game.thinkerList.splice(index, 1)
+        Manager.thinkerList.splice(index, 1)
       }
       Manager.garbageThinkerList = []
     }
@@ -73,7 +79,6 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
         if (a.index > b.index) return 1
         return 0
       })
-      console.log(Manager.garbageList)
       for (var i = Manager.garbageList.length - 1; i >= 0; --i)
       {
         var boid = Manager.garbageList[i].boid
@@ -85,17 +90,6 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
       }
       Manager.garbageList = []
     }
-    // if (Manager.boidAddList.length > 0)
-    // {
-    //   for (var i = 0; i < Manager.boidAddList.length; ++i)
-    //   {
-    //     var boid = Manager.boidAddList[i]
-    //     Manager.stage.addChild(boid)
-    //     Manager.boidList.push(boid)
-    //     Manager.drawer.AddBubble(boid)
-    //   }
-    //   Manager.boidAddList = []
-    // }
   }
 
   return Manager
