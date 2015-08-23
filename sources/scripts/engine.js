@@ -3,8 +3,12 @@ define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point'
 {
 	var Engine = {}
 
-	// Main Elements
 	Engine.interface = new Interface()
+	Manager.stage.addChild(Engine.interface)
+
+	Manager.drawer = new Drawer()
+	Manager.stage.addChild(Manager.drawer)
+
 	Engine.game = new Game()
 
 	// Asset loader
@@ -19,43 +23,23 @@ define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point'
 	Engine.Init = function ()
 	{
 		// Buttons
-		Engine.interface.addButton("Draw Debug", function () { drawer.debug = !drawer.debug; Engine.interface.visible = !Engine.interface.visible })
-		Engine.interface.addButton("Draw Bubble", function () { layerWhite.visible = !layerWhite.visible; layerBlack.visible = !layerBlack.visible })
+		// Engine.interface.addButton("Draw Debug", function () { drawer.debug = !drawer.debug; Engine.interface.visible = !Engine.interface.visible })
+		// Engine.interface.addButton("Draw Bubble", function () { layerWhite.visible = !layerWhite.visible; layerBlack.visible = !layerBlack.visible })
 		Engine.interface.addButton("Algo Boids", function () {}, "https://en.wikipedia.org/wiki/Boids")
 		Engine.interface.addButton("Pixi.js", function () {}, "http://www.pixijs.com/")
 		Engine.interface.addButton("Code Sources", function () {}, "https://github.com/leon196/BubbleLetter")
-		Engine.interface.addLabels(['target', 'avoid','near', 'center']
-			,[Color.TARGET_STR, Color.AVOID_STR, Color.NEAR_STR, Color.GLOBAL_STR])
+		// Engine.interface.addLabels(['target', 'avoid','near', 'center']
+		// 	,[Color.TARGET_STR, Color.AVOID_STR, Color.NEAR_STR, Color.GLOBAL_STR])
 		Engine.interface.visible = false
-
-		// Game Elements
-		Manager.player = new Player()
-		Manager.thinker = new Thinker()
-		Manager.talker = new Talker()
-		Manager.drawer = new Drawer()
-
-		for (var b = 0; b < Manager.boidList.length; ++b)
-		{
-			var boid = Manager.boidList[b]
-			Manager.drawer.AddBubble(boid)
-		}
-
-		// Layers
-		Manager.stage.addChildAt(Manager.player, 0)
-		Manager.stage.addChildAt(Manager.thinker, 0)
-		Manager.stage.addChildAt(Engine.interface, 0)
-		Manager.stage.addChildAt(Manager.drawer, 0)
 
 		// Interactivity
 		Manager.stage.interactive = true
 		Manager.stage.on('mousedown', Engine.onClic).on('touchstart', Engine.onClic)
 		Manager.stage.on('mousemove', Engine.onMove).on('touchmove', Engine.onMove)
 
-		// Debug
-		// Engine.game.SpawnCollider()
-
 		// Start Loop
 		Manager.timeStarted = new Date()
+		Engine.game.Init()
 		Engine.animate()
 	}
 

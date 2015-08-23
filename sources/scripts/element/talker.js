@@ -1,10 +1,10 @@
 
-define(['lib/pixi', 'gui/phylactere', 'base/renderer'], function(PIXI, Phylactere, renderer){
+define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager'], function(PIXI, Phylactere, renderer, Manager){
   var Talker = function ()
   {
     PIXI.Container.call(this)
 
-    this.phylactere = new Phylactere("Talker", undefined, 0, 0)
+    this.phylactere = new Phylactere("Talker")
 
     this.phylactere.anchorX = renderer.width
     this.phylactere.x = renderer.width * 3 / 4
@@ -13,8 +13,9 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer'], function(PIXI, Phylacter
 
     for (var i = 0; i < this.phylactere.letters.length; ++i)
     {
-      var boid = this.phylactere.letters[i]
-      boid.showBubble = false
+      var letter = this.phylactere.letters[i]
+      letter.showBubble = false
+      Manager.drawer.clearBubble(Manager.boidList.indexOf(letter))
     }
 
     this.update = function ()

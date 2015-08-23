@@ -39,11 +39,12 @@ define(['base/boid', 'base/renderer', 'manager', 'gui/letter', 'engine'], functi
 				// Add to update stack
 				Manager.boidList.push(letter)
 
+				// Add to display
+				Manager.drawer.AddBubble(letter)
+				Manager.stage.addChild(letter)
+
 				// Store own letters
 				this.letters.push(letter)
-
-				// Add to scene to be displayed
-				Manager.stage.addChild(letter)
 
 				lineWidth += letter.size
 			}

@@ -1,5 +1,5 @@
 
-define(['base/Boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/renderer', 'manager', 'base/point', 'settings'], function(Boid, Engine, Message, Letter, Utils, renderer, Manager, Point, Settings)
+define(['base/boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/renderer', 'manager', 'base/point', 'settings'], function(Boid, Engine, Message, Letter, Utils, renderer, Manager, Point, Settings)
 {
 	var Phylactere = function(text, style, linkCount, cloudCount)
 	{
@@ -11,8 +11,8 @@ define(['base/Boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 		this.tailBoidList = []
 		this.cloudBoidList = []
 
-		this.linkCount = typeof linkCount !== "undefined" ? linkCount : 8
-		this.cloudCount = typeof cloudCount !== "undefined" ? cloudCount : 8
+		this.linkCount = typeof linkCount !== "undefined" ? linkCount : 0
+		this.cloudCount = typeof cloudCount !== "undefined" ? cloudCount : 0
 
 		this.Init = function ()
 		{
@@ -26,6 +26,7 @@ define(['base/Boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 				boid.size = 8 + Math.sin(ratio * Utils.PI2) * 2
 				Manager.stage.addChild(boid)
 				Manager.boidList.push(boid)
+				Manager.drawer.AddBubble(boid)
 				this.tailBoidList.push(boid)
 			}
 
@@ -38,6 +39,7 @@ define(['base/Boid', 'engine', 'gui/message', 'gui/letter', 'base/utils', 'base/
 				letter.size = 15 + Math.sin(ratio * Utils.PI2) * 10
 				Manager.stage.addChild(letter)
 				Manager.boidList.push(letter)
+				Manager.drawer.AddBubble(letter)
 				this.cloudBoidList.push(letter)
 			}
 			for (var i = 0; i < this.letters.length; ++i)

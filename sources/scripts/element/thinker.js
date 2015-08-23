@@ -4,7 +4,7 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer'], function(PIXI, Phylacter
   {
     PIXI.Container.call(this)
 
-    this.phylactere = new Phylactere("Thinker", { min:8, max:16, font: 'Shadows Into Light', fill: '#020202', align: 'left' }, 8, 0)
+    this.phylactere = new Phylactere("Thinker", { min:8, max:16, font: 'Shadows Into Light', fill: '#020202', align: 'left' }, 8)
     this.phylactere.anchorX = renderer.width / 2
     this.phylactere.x = renderer.width / 2
     this.phylactere.y = renderer.height / 2

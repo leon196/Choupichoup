@@ -6,7 +6,7 @@ define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter'], func
 
      this.bubbleList = []
      this.css = { min:8, max:16, font: 'Shadows Into Light', fill: '#ffffff', align: 'left' }
-     this.phylactere = new Phylactere("Player", this.css, 8, 0)
+     this.phylactere = new Phylactere("Player", this.css, 8)
      this.phylactere.x = Manager.mouse.x
      this.phylactere.y = Manager.mouse.y
      this.phylactere.Init()
@@ -15,6 +15,7 @@ define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter'], func
      {
        var boid = this.phylactere.letters[i]
        boid.isPlayer = true
+       Manager.drawer.redraw(Manager.boidList.indexOf(boid))
        this.bubbleList.push(boid)
      }
 
@@ -22,15 +23,9 @@ define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter'], func
     {
       var boid = this.phylactere.cloudBoidList[i]
       boid.isPlayer = true
+      Manager.drawer.redraw(Manager.boidList.indexOf(boid))
       this.bubbleList.push(boid)
      }
-
-    for (var i = 0; i < this.phylactere.tailBoidList.length; ++i)
-    {
-      var boid = this.phylactere.tailBoidList[i]
-      boid.isPlayer = true
-      this.bubbleList.push(boid)
-    }
 
     this.Absorb = function (boid)
     {

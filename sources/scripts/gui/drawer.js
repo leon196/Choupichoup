@@ -33,19 +33,30 @@ define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'manager'], function 
 			Manager.layerWhite.addChild(graphW)
 		}
 
-		this.redraw = function(current)
+		this.clearBubble = function (index)
 		{
-			if (current != -1)
+			if (index != -1)
 			{
-				var boid = Manager.boidList[current]
+				var graph = this.bullBlackList[index]
+				graph.clear()
+				graph = this.bullWhiteList[index]
+				graph.clear()
+			}
+		}
 
-				var graph = this.bullBlackList[current]
+		this.redraw = function(index)
+		{
+			if (index != -1)
+			{
+				var boid = Manager.boidList[index]
+
+				var graph = this.bullBlackList[index]
 				graph.clear()
 				if (boid.isPlayer) graph.beginFill(0xcccccc)
 				else graph.beginFill(0x000000)
 				graph.drawCircle(0, Settings.BULL_OUTLINE / 2, boid.size + Settings.BULL_OUTLINE)
 
-				graph = this.bullWhiteList[current]
+				graph = this.bullWhiteList[index]
 				graph.clear()
 				if (boid.isPlayer) graph.beginFill(0x000000)
 				else graph.beginFill(0xffffff)

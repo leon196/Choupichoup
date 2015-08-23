@@ -1,14 +1,16 @@
 
-define(['engine', 'base/renderer', 'manager', 'settings', 'color', 'base/point', 'gui/letter', 'gui/message', 'base/utils', 'gui/collider'],function(Engine, renderer, Manager, Settings, Color, Point, Letter, Message, Utils, Collider)
+define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker', 'element/talker', 'settings', 'color', 'base/point', 'gui/letter', 'gui/message', 'base/utils', 'gui/collider'],function(Engine, renderer, Manager, Player, Thinker, Talker, Settings, Color, Point, Letter, Message, Utils, Collider)
 {
 	var Game = function ()
 	{
 		this.colliderList = []
 
-		this.SpawnCollider = function()
+		this.Init = function()
 		{
-			var collider = new Collider()
-			this.colliderList.push(collider)
+			// Game Elements
+			Manager.player = new Player()
+			Manager.thinker = new Thinker()
+			Manager.talker = new Talker()
 		}
 
 		this.Update = function()
@@ -102,25 +104,19 @@ define(['engine', 'base/renderer', 'manager', 'settings', 'color', 'base/point',
 							if (boid.showBubble)
 							{
 								boid.BounceFromBoid(collider)
-								// if (boid.size <= collider.size)
+								// boid.size = Math.max(1, boid.size - 1)
+								// Manager.drawer.redraw(current)
+								// if (boid.size <= 1)
 								// {
-								// 	var tmp = collider
-								// 	collider = boid
-								// 	boid = tmp
+								// 	Manager.removeBoid(boid, current)
+								// 	return
 								// }
-								boid.size = Math.max(1, boid.size - 1)
-								Manager.drawer.redraw(current)
-								if (boid.size <= 1)
-								{
-									Manager.removeBoid(boid, current)
-									return
-								}
-								collider.size += 1
-								Manager.drawer.redraw(Manager.boidList.indexOf(collider))
-								if (collider.size > Settings.MAX_SIZE)
-								{
-									Manager.player.DivideBubble(collider)
-								}
+								// collider.size += 1
+								// Manager.drawer.redraw(Manager.boidList.indexOf(collider))
+								// if (collider.size > Settings.MAX_SIZE)
+								// {
+								// 	Manager.player.DivideBubble(collider)
+								// }
 							}
 							else if (boid instanceof Letter && boid.text.text != " "
 							&& collider instanceof Letter && collider.text.text == " ") {
