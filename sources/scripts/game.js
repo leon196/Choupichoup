@@ -175,11 +175,18 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 
 				// Collision with player
 				else {
-					for (var c = 0; c < Manager.player.boidList.length; ++c) {
-						var collider = Manager.player.boidList[c]
-						if (collider.circleCollision(boid)) {
-							// Bounce collision
-							boid.BounceFromBoid(collider)
+
+					if (Manager.player.circleCollision(boid))
+					{
+						boid.BounceFromBoid(Manager.player)
+					}
+					else {
+						for (var c = 0; c < Manager.player.boidList.length; ++c) {
+							var collider = Manager.player.boidList[c]
+							if (collider.circleCollision(boid)) {
+								// Bounce collision
+								boid.BounceFromBoid(collider)
+							}
 						}
 					}
 				}

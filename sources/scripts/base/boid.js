@@ -48,8 +48,8 @@ define(['lib/pixi', 'base/renderer', 'base/point', 'settings', 'base/utils', 'ma
 			var angle = Math.atan2(this.y - boid.y, this.x - boid.x)
 			this.x = boid.x + Math.cos(angle) * (boid.size + this.size)
 			this.y = boid.y + Math.sin(angle) * (boid.size + this.size)
-			this.velocity.x = Math.cos(angle) * boid.velocity.magnitude()
-			this.velocity.y = Math.sin(angle) * boid.velocity.magnitude()
+			this.velocity.x += Math.cos(angle) * boid.velocity.magnitude()
+			this.velocity.y += Math.sin(angle) * boid.velocity.magnitude()
 		}
 
 		this.Grow = function (current)

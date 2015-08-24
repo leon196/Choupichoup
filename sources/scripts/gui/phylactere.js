@@ -32,8 +32,9 @@ define(['base/boid', 'engine', 'gui/letter', 'base/utils', 'base/renderer', 'man
 				var dist = p.magnitude()//Math.max(0, p.magnitude() - 60)
 				var norm = p.getNormal()
 				// {x: norm.y , y: -norm.x} = right
-				boid.target.x = norm.y * Settings.ORBIT_SCALE + norm.x * dist + boid.x
-				boid.target.y = -norm.x * Settings.ORBIT_SCALE + norm.y * dist + boid.y
+				var orbitScale = Utils.clamp(this.velocity.magnitude(), 0, 1) * Settings.ORBIT_SCALE
+				boid.target.x = (norm.y * orbitScale + norm.x * dist) * Settings.ORBIT_SPEED + boid.x
+				boid.target.y = (-norm.x * orbitScale + norm.y * dist) * Settings.ORBIT_SPEED + boid.y
 			}
 		}
 
