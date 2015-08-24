@@ -1,5 +1,5 @@
 
-define(['lib/pixi', 'base/utils', 'base/boid',  'settings', 'manager'], function(PIXI, Utils, Boid, Settings, Manager)
+define(['lib/pixi', 'base/utils', 'base/boid',  'settings', 'manager', 'color'], function(PIXI, Utils, Boid, Settings, Manager, Color)
 {
 	var Letter = function (character, style)
 	{
@@ -9,8 +9,10 @@ define(['lib/pixi', 'base/utils', 'base/boid',  'settings', 'manager'], function
 		this.character = Utils.getDefaultIfUndefined(character, Utils.randomLetter())
 		this.size = Settings.MIN_SIZE+Math.random()*(Settings.MAX_SIZE - Settings.MIN_SIZE)
 
+		this.darkness = 0
+
 		// Font stuff
-		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: '#020202', align: 'left' }
+		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: Color.ShadeSharpColor('#ffffff', 1 - this.darkness), align: 'left' }
 		if (typeof style !== 'undefined')
 		{
 			this.size = style.min+Math.random()*(style.max - style.min)
@@ -19,11 +21,9 @@ define(['lib/pixi', 'base/utils', 'base/boid',  'settings', 'manager'], function
 
 		// var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: '020202', align: 'left' }
 
-		this.darkness = 0
-
 		// The Bubble
 		this.bubble = new PIXI.Graphics()
-		this.bubble.beginFill(0x000000)
+		this.bubble.beginFill(Color.ShadeHexColor(0xffffff, this.darkness))
 		this.bubble.drawCircle(0, 0, this.size)
 		this.addChild(this.bubble)
 

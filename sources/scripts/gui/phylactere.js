@@ -3,7 +3,7 @@ define(['base/boid', 'engine', 'gui/letter', 'base/utils', 'base/renderer', 'man
 {
 	var Phylactere = function()
 	{
-		Letter.call(this, " ")
+		Letter.call(this, "*")
 
 		this.boidList = []
 
