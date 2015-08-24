@@ -33,6 +33,15 @@ define(['lib/pixi', 'base/utils', 'base/boid',  'settings', 'manager', 'color'],
 		this.text.anchor.y = 0.5
 		this.addChild(this.text)
 
+		this.SetDarkness = function (darkness)
+		{
+			this.darkness = darkness
+			this.text.style.fill = Color.GetGraySharp(this.darkness)
+			this.bubble.clear()
+			this.bubble.beginFill(Color.GetGrayHex(1 - this.darkness))
+			this.bubble.drawCircle(0, 0, this.size)
+		}
+
 		// IDs of letter
 		this.indexLine = undefined
 		this.indexWord = undefined

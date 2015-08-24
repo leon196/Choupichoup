@@ -89,7 +89,7 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
         boid.phylactere.boidList.splice(boid.phylactere.boidList.indexOf(boid), 1)
         Manager.boidList.splice(index, 1)
         Manager.stage.removeChild(boid)
-        Manager.drawer.removeBubble(boid, index)
+        Manager.drawer.RemoveBubble(boid, index)
       }
       Manager.garbageList = []
     }

@@ -10,6 +10,13 @@ define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter'], func
       this.y = Manager.mouse.y
       this.isPlayer = true
       this.SpawnBubbleLetters(8)
+
+      for (var i = 0; i < this.boidList.length; ++i)
+      {
+        this.boidList[i].SetDarkness(1)
+      }
+
+      this.SetDarkness(1)
       Manager.AddBoid(this)
     }
 
