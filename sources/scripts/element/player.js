@@ -16,7 +16,7 @@ define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter'], func
     {
         collider.text.text = boid.text.text
         collider.text.style.fill = '#ffffff'
-        collider.size = Settings.MIN_SIZE
+        collider.size = Settings.SPAWN_SIZE
         Manager.drawer.redraw(Manager.boidList.indexOf(collider))
     }
 

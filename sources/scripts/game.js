@@ -8,8 +8,9 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 	var Game = function ()
 	{
 		this.gameState = GAME_STATE_PLAY
-		this.timeLastSpawn = 0
-		this.timeDelaySpawn = 15
+
+		this.timeSpawnStart = 0
+		this.timeSpawnDelay = 5
 
 		this.Init = function()
 		{
@@ -49,11 +50,11 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 				}
 
 				// Spawn elements
-				if (this.timeLastSpawn + this.timeDelaySpawn < Manager.timeElapsed)
+				if (this.timeSpawnStart + this.timeSpawnDelay < Manager.timeElapsed)
 				{
 					this.SpawnThinker()
 					this.SpawnTalker()
-					this.timeLastSpawn = Manager.timeElapsed
+					this.timeSpawnStart = Manager.timeElapsed
 				}
 
 				for (var i = 0; i < Manager.thinkerList.length; ++i)
@@ -158,7 +159,7 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 									// Balance of power
 									if (boid.size < collider.size) {
 										// Bubble with letter
-										if (collider instanceof Letter && collider.text.text != " ") {
+										// if (collider instanceof Letter && collider.text.text != " ") {
 											// Grow player
 											if (collider.size < Settings.MAX_SIZE) {
 												collider.Grow(current)
@@ -167,7 +168,7 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 											else {
 												collider.phylactere.DivideBubble(collider)
 											}
-										}
+										// }
 										// Shrink current
 										boid.Shrink(current)
 										if (boid.size <= Settings.SIZE_DEAD)	{
@@ -179,12 +180,12 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 									else {
 										// Grow current
 										// if (boid instanceof Letter && boid.text.text != " ") {
-										// 	if (boid.size < Settings.MAX_SIZE) {
-										// 		boid.Grow(current)
-										// 	}
-										// 	else {
-										// 		boid.phylactere.DivideBubble(boid)
-										// 	}
+											// if (boid.size < Settings.MAX_SIZE) {
+											// 	boid.Grow(current)
+											// }
+											// else {
+											// 	boid.phylactere.DivideBubble(boid)
+											// }
 										// }
 										// Shrink player
 										var colliderIndex = Manager.boidList.indexOf(collider)
