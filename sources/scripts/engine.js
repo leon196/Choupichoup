@@ -1,5 +1,5 @@
 
-define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point', 'base/utils', 'base/boid', 'gui/button', 'gui/drawer', 'gui/interface', 'gui/letter', 'gui/message', 'gui/phylactere', 'settings', 'color', 'element/thinker', 'element/player', 'element/talker'], function(PIXI, renderer, Manager, Settings, Game, Point, Utils, Boid, Button, Drawer, Interface, Letter, Message, Phylactere, Settings, Color, Thinker, Player, Talker)
+define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point', 'base/utils', 'base/boid', 'gui/button', 'gui/drawer', 'gui/interface', 'gui/letter', 'gui/message', 'gui/phylactere', 'settings', 'color', 'element/thinker', 'element/player'], function(PIXI, renderer, Manager, Settings, Game, Point, Utils, Boid, Button, Drawer, Interface, Letter, Message, Phylactere, Settings, Color, Thinker, Player)
 {
 	var Engine = {}
 
@@ -36,12 +36,12 @@ define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point'
 		Manager.game.Init()
 
 		// Start Loop
-		Engine.animate()
+		Engine.Update()
 	}
 
-	Engine.animate = function()
+	Engine.Update = function()
 	{
-	    requestAnimationFrame(Engine.animate)
+	    requestAnimationFrame(Engine.Update)
 	    renderer.render(Manager.stage)
 			Manager.game.Update()
 	}

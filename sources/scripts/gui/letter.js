@@ -19,6 +19,14 @@ define(['lib/pixi', 'base/utils', 'base/boid',  'settings', 'manager'], function
 
 		// var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: '020202', align: 'left' }
 
+		this.darkness = 0
+
+		// The Bubble
+		this.bubble = new PIXI.Graphics()
+		this.bubble.beginFill(0x000000)
+		this.bubble.drawCircle(0, 0, this.size)
+		this.addChild(this.bubble)
+
 		// The Pixi Text display
 		this.text = new PIXI.Text(this.character, css)
 		this.text.anchor.x = 0.5

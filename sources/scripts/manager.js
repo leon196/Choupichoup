@@ -9,12 +9,10 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
   // Global Lists
   Manager.boidList = []
   Manager.thinkerList = []
-  Manager.talkerList = []
 
   // Garbage Lists
   Manager.garbageList = []
   Manager.garbageThinkerList = []
-  Manager.garbageTalkerList = []
 
   // Display Tool
   Manager.drawer
@@ -37,44 +35,30 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
 	Manager.stage.addChild(Manager.layerBlack)
 	Manager.stage.addChild(Manager.layerWhite)
 
-  Manager.addBoid = function (boid)
+  Manager.AddBoid = function (boid)
   {
-    // Boid contains a PIXI.Text
     Manager.stage.addChild(boid)
-    // To update boid rules
     Manager.boidList.push(boid)
-    // Display bubble
-    Manager.drawer.AddBubble(boid)
+    // Manager.drawer.AddBubble(boid)
   }
 
-  Manager.addThinker = function(thinker)
+  Manager.AddThinker = function(thinker)
   {
-    thinker.init()
+    thinker.Init()
     Manager.thinkerList.push(thinker)
   }
 
-  Manager.addTalker = function(talker)
-  {
-    talker.init()
-    Manager.talkerList.push(talker)
-  }
-
-  Manager.removeBoid = function (boid_, index_)
+  Manager.RemoveBoid = function (boid_, index_)
   {
     Manager.garbageList.push({boid:boid_, index:index_})
   }
 
-  Manager.removeThinker = function(thinker_)
+  Manager.RemoveThinker = function(thinker_)
   {
     Manager.garbageThinkerList.push({thinker:thinker_, index:Manager.thinkerList.indexOf(thinker_)})
   }
 
-  Manager.removeTalker = function(talker_)
-  {
-    Manager.garbageTalkerList.push({talker:talker_, index:Manager.thinkerList.indexOf(talker_)})
-  }
-
-  Manager.update = function ()
+  Manager.Update = function ()
   {
     // Clean Thinkers
     if (Manager.garbageThinkerList.length > 0)
@@ -83,22 +67,10 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
       {
         var thinker = Manager.garbageThinkerList[i].thinker
         var index = Manager.garbageThinkerList[i].index
-        thinker.phylactere.clear()
+        thinker.Clear()
         Manager.thinkerList.splice(index, 1)
       }
       Manager.garbageThinkerList = []
-    }
-    // Clean Talkers
-    if (Manager.garbageTalkerList.length > 0)
-    {
-      for (var i = Manager.garbageTalkerList.length - 1; i >= 0; --i)
-      {
-        var talker = Manager.garbageTalkerList[i].talker
-        var index = Manager.garbageTalkerList[i].index
-        talker.phylactere.clear()
-        Manager.talkerList.splice(index, 1)
-      }
-      Manager.garbageTalkerList = []
     }
 
     // Clean Boids

@@ -1,34 +1,34 @@
 
 define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter'], function(PIXI, Phylactere, Manager, Settings, Letter){
-   var Player = function ()
-   {
-     PIXI.Container.call(this)
+  var Player = function ()
+  {
+    Phylactere.call(this)
 
-     this.bubbleList = []
-     this.css = { min:Settings.MIN_SIZE, max:Settings.MAX_SIZE, font: 'Shadows Into Light', fill: '#ffffff', align: 'left' }
-     this.phylactere = new Phylactere("Player", this.css, 8)
-     this.phylactere.x = Manager.mouse.x
-     this.phylactere.y = Manager.mouse.y
-     this.phylactere.isPlayer = true
-     this.phylactere.Init()
+    this.Init = function ()
+    {
+      this.x = Manager.mouse.x
+      this.y = Manager.mouse.y
+      this.isPlayer = true
+      this.SpawnBubbleLetters(8)
+      Manager.AddBoid(this)
+    }
 
     this.Absorb = function (collider, boid)
     {
-        collider.text.text = boid.text.text
-        collider.text.style.fill = '#ffffff'
-        collider.size = Settings.SPAWN_SIZE
-        Manager.drawer.redraw(Manager.boidList.indexOf(collider))
     }
 
-    this.update = function ()
+    this.Update = function ()
     {
-      this.phylactere.x = Manager.mouse.x
-      this.phylactere.y = Manager.mouse.y
-      this.phylactere.Update()
+			// Move to mouse
+			this.target.x = Manager.mouse.x
+			this.target.y = Manager.mouse.y
+
+      //
+      this.UpdateTargets()
     }
   }
 
-  Player.prototype = Object.create(PIXI.Container.prototype)
+  Player.prototype = Object.create(Phylactere.prototype)
   Player.prototype.constructor = Player
 
   return Player

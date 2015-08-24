@@ -37,7 +37,15 @@ define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'manager'], function 
 			Manager.layerWhite.addChild(graphW)
 		}
 
-		this.clearBubble = function (index)
+		this.UpdatePosition = function (index, x, y)
+		{
+			this.bullBlackList[index].x = x
+			this.bullBlackList[index].y = y
+			this.bullWhiteList[index].x = x
+			this.bullWhiteList[index].y = y
+		}
+
+		this.ClearBubble = function (index)
 		{
 			if (index != -1)
 			{
@@ -48,7 +56,7 @@ define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'manager'], function 
 			}
 		}
 
-		this.removeBubble = function (boid, index)
+		this.RemoveBubble = function (boid, index)
 		{
 			Manager.layerBlack.removeChild(Manager.drawer.bullBlackList[index])
 			Manager.layerWhite.removeChild(Manager.drawer.bullWhiteList[index])
@@ -56,7 +64,7 @@ define(['lib/pixi', 'settings', 'base/renderer', 'engine', 'manager'], function 
 			this.bullWhiteList.splice(index, 1)
 		}
 
-		this.redraw = function(index)
+		this.Redraw = function(index)
 		{
 			if (index != -1)
 			{

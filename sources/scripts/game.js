@@ -1,5 +1,5 @@
 
-define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker', 'element/talker', 'settings', 'color', 'base/point', 'gui/letter', 'gui/message', 'base/utils', 'gui/collider'],function(Engine, renderer, Manager, Player, Thinker, Talker, Settings, Color, Point, Letter, Message, Utils, Collider)
+define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker', 'settings', 'color', 'base/point', 'gui/letter', 'gui/message', 'base/utils', 'gui/collider'],function(Engine, renderer, Manager, Player, Thinker, Settings, Color, Point, Letter, Message, Utils, Collider)
 {
 	const GAME_STATE_INTRO = 0
 	const GAME_STATE_PLAY = 1
@@ -8,223 +8,125 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 	var Game = function ()
 	{
 		this.gameState = GAME_STATE_PLAY
-
 		this.timeSpawnStart = 0
 		this.timeSpawnDelay = 5
 
-		this.Init = function()
-		{
-			// Game Elements
+		this.vectorNear = new Point()
+		this.vectorAvoid = new Point()
+		this.vectorGlobal = new Point()
+		this.vectorTarget = new Point()
+
+		this.Init = function() {
 			Manager.player = new Player()
-			this.SpawnThinker()
+			Manager.player.Init()
 		}
 
-		this.SpawnThinker = function ()
-		{
+		this.SpawnThinker = function () {
 		  var thinker = new Thinker()
-			Manager.addThinker(thinker)
+			Manager.AddThinker(thinker)
 		}
 
-		this.SpawnTalker = function ()
-		{
-		  var talker = new Talker()
-			Manager.addTalker(talker)
-		}
-
-		this.Update = function()
-		{
+		// The mega game algo
+		this.Update = function() {
 			Manager.timeElapsed = new Date() / 1000 - Manager.timeStarted;
+			Manager.Update()
 
-			// Clean garbage
-			Manager.update()
+			if (this.gameState == GAME_STATE_PLAY) {
 
-			// Update player
-			Manager.player.update()
-
-			if (this.gameState == GAME_STATE_PLAY)
-			{
-				// Check game over
-				if (Manager.player.phylactere.IsDead())
-				{
-					this.gameState = GAME_STATE_OVER
-				}
+				Manager.player.Update()
 
 				// Spawn elements
-				if (this.timeSpawnStart + this.timeSpawnDelay < Manager.timeElapsed)
-				{
-					this.SpawnThinker()
-					this.SpawnTalker()
-					this.timeSpawnStart = Manager.timeElapsed
-				}
-
-				for (var i = 0; i < Manager.thinkerList.length; ++i)
-				{
-					var thinker = Manager.thinkerList[i]
-					thinker.update()
-				}
-
-				for (var i = 0; i < Manager.talkerList.length; ++i)
-				{
-					var talker = Manager.talkerList[i]
-					talker.update()
-				}
+				// if (this.timeSpawnStart + this.timeSpawnDelay < Manager.timeElapsed) {
+				// 	this.SpawnThinker()
+				// 	this.timeSpawnStart = Manager.timeElapsed
+				// }
+				// // Update elements
+				// for (var i = 0; i < Manager.thinkerList.length; ++i) {
+				// 	var thinker = Manager.thinkerList[i]
+				// 	thinker.Update()
+				// }
 			}
 
-			// The mega game algo
-			var boidCount = Manager.boidList.length
-			for (var current = 0; current < boidCount; ++current)
-			{
+			// The mega boids iteration
+			for (var current = 0; current < Manager.boidList.length; ++current) {
 				var boid = Manager.boidList[current]
 
-				var near = new Point()
-				var center = new Point()
-				var globalCount = 0
-				var avoid = new Point()
-				var target = new Point(boid.target.x - boid.x, boid.target.y - boid.y)
+				this.vectorNear.x = this.vectorNear.y = 0
+				this.vectorGlobal.x = this.vectorGlobal.y = 0
+				this.vectorAvoid.x = this.vectorAvoid.y = 0
+				this.vectorTarget.x = boid.target.x - boid.x
+				this.vectorTarget.y = boid.target.y - boid.y
 
-				if (this.gameState == GAME_STATE_OVER)
-				{
-					target = new Point(renderer.width / 2 - boid.x, renderer.height / 2 - boid.y)
+				if (this.gameState == GAME_STATE_OVER) {
+					this.vectorTarget = new Point(renderer.width / 2 - boid.x, renderer.height / 2 - boid.y)
 				}
 
-				for (var other = 0; other < boidCount; ++other)
-				{
-					if (current != other && (other instanceof Message) == false )
-					{
+				var globalCount = 0
+				for (var other = 0; other < Manager.boidList.length; ++other) {
+					if (current != other) {
 						var boidOther = Manager.boidList[other]
+						// Avoid
 						var dist = Utils.distanceBetween(boid, boidOther)
 						if (dist < (boid.size + boidOther.size) * Settings.BULL_COLLISION_BIAS)
 						{
-							avoid.x += boid.x - boidOther.x
-							avoid.y	+= boid.y - boidOther.y
+							this.vectorAvoid.x += boid.x - boidOther.x
+							this.vectorAvoid.y	+= boid.y - boidOther.y
 						}
-						if (dist < 100)
-						{
-							near.x += boidOther.velocity.x
-							near.y += boidOther.velocity.y
+						// Follow Near
+						if (dist < Settings.MIN_DIST_TO_FOLLOW) {
+							this.vectorNear.x += boidOther.velocity.x
+							this.vectorNear.y += boidOther.velocity.y
 						}
-
-						center.x += boidOther.x
-						center.y += boidOther.y
+						// Follow Global
+						this.vectorGlobal.x += boidOther.x
+						this.vectorGlobal.y += boidOther.y
 						++globalCount
-
 					}
 				}
+				this.vectorGlobal.x = this.vectorGlobal.x / globalCount - boid.x
+				this.vectorGlobal.y = this.vectorGlobal.y / globalCount - boid.y
 
-				center.x = center.x / globalCount - boid.x
-				center.y = center.y / globalCount - boid.y
-
-				avoid.scale(boid.avoidScale)
-				center.scale(boid.globalScale)
-				near.scale(boid.nearScale)
-				target.scale(boid.targetScale)
+				// Scale them
+				this.vectorAvoid.scale(boid.avoidScale)
+				this.vectorGlobal.scale(boid.globalScale)
+				this.vectorNear.scale(boid.nearScale)
+				this.vectorTarget.scale(boid.targetScale)
 
 				// Apply to Boid
 				boid.update(
-					target.x + near.x + center.x + avoid.x,
-					target.y + near.y + center.y + avoid.y)
+					this.vectorTarget.x + this.vectorNear.x + this.vectorGlobal.x + this.vectorAvoid.x,
+					this.vectorTarget.y + this.vectorNear.y + this.vectorGlobal.y + this.vectorAvoid.y)
 
-				if (this.gameState == GAME_STATE_PLAY)
-				{
-					// Window borders Collision
-					if (boid.isPlayer && boid instanceof Letter && boid.text.text != " ")
-					{
-						if (boid.x < 0 || boid.x > renderer.width)
-						{
-							boid.velocity.x *= -boid.frictionCollision
-							boid.Rumble()
-						}
-						if (boid.y < 0 || boid.y > renderer.height)
-						{
-							boid.velocity.y *= -boid.frictionCollision
-							boid.Rumble()
-						}
-						boid.x = Utils.clamp(boid.x, 0, renderer.width)
-						boid.y = Utils.clamp(boid.y, 0, renderer.height)
+				// Window borders Collision
+				if (boid.isPlayer) {
+					if (boid.x < 0 || boid.x > renderer.width) {
+						boid.velocity.x *= -boid.frictionCollision
+						boid.Rumble()
 					}
+					if (boid.y < 0 || boid.y > renderer.height) {
+						boid.velocity.y *= -boid.frictionCollision
+						boid.Rumble()
+					}
+					boid.x = Utils.clamp(boid.x, 0, renderer.width)
+					boid.y = Utils.clamp(boid.y, 0, renderer.height)
+				}
 
-					// Collision with player
-					if (boid.isPlayer == false)
-					{
-						var bubbleList = Manager.player.phylactere.boidList
-						for (var c = 0; c < bubbleList.length; ++c)
-						{
-							var collider = bubbleList[c]
-							// Has collided
-							if (collider.circleCollision(boid)) {
-								// Is a thought
-								if (boid.showBubble) {
-									// Bounce collision
-									boid.BounceFromBoid(collider)
-									// Balance of power
-									if (boid.size < collider.size) {
-										// Bubble with letter
-										// if (collider instanceof Letter && collider.text.text != " ") {
-											// Grow player
-											if (collider.size < Settings.MAX_SIZE) {
-												collider.Grow(current)
-											}
-											// Divide bubble with letter
-											else {
-												collider.phylactere.DivideBubble(collider)
-											}
-										// }
-										// Shrink current
-										boid.Shrink(current)
-										if (boid.size <= Settings.SIZE_DEAD)	{
-											Manager.removeBoid(boid, current)
-											return
-										}
-									}
-									// Current boid is bigger than player
-									else {
-										// Grow current
-										// if (boid instanceof Letter && boid.text.text != " ") {
-											// if (boid.size < Settings.MAX_SIZE) {
-											// 	boid.Grow(current)
-											// }
-											// else {
-											// 	boid.phylactere.DivideBubble(boid)
-											// }
-										// }
-										// Shrink player
-										var colliderIndex = Manager.boidList.indexOf(collider)
-										collider.Shrink(colliderIndex)
-										if (collider.size <= Settings.SIZE_DEAD)	{
-											Manager.removeBoid(collider, colliderIndex)
-											return
-										}
-									}
-								}
-								// Absorption
-								else if (boid instanceof Letter && boid.text.text != " "
-								&& collider instanceof Letter && collider.text.text == " ") {
-									Manager.player.Absorb(collider, boid)
-									Manager.removeBoid(boid, current)
-									return
-								}
+				// Collision with player
+				else {
+					for (var c = 0; c < Manager.player.boidList.length; ++c) {
+						var collider = Manager.player.boidList[c]
+						if (collider.circleCollision(boid)) {
+							// Bounce collision
+							boid.BounceFromBoid(collider)
+							// Balance of power
+							if (boid.size < collider.size) {
 							}
 						}
 					}
 				}
 
 				// Update graphics positions
-				if (boid.showBubble)
-				{
-					Manager.drawer.bullBlackList[current].x = boid.x
-					Manager.drawer.bullBlackList[current].y = boid.y
-					Manager.drawer.bullWhiteList[current].x = boid.x
-					Manager.drawer.bullWhiteList[current].y = boid.y
-				}
-
-				if (Manager.drawer.debug)
-				{
-					Manager.drawer.Arrow(boid, target.getNormal(), boid.size + 10, 2 + 10 * target.magnitude()/40, Color.TARGET_HEX)
-					Manager.drawer.Arrow(boid, avoid.getNormal(), boid.size + 10, 2 + 10 * avoid.magnitude()/40, Color.AVOID_HEX)
-					Manager.drawer.Arrow(boid, near.getNormal(), boid.size + 10, 2 + 10 * near.magnitude()/40, Color.NEAR_HEX)
-					Manager.drawer.Arrow(boid, center.getNormal(), boid.size + 10, 2 + 10 * center.magnitude()/40, Color.GLOBAL_HEX)
-					// drawer.Arrow(boid, boid.velocity.getNormal(), boid.velocity.magnitude() * 5, 10, Color.BOID_HEX)
-				}
+				// Manager.drawer.UpdatePosition(current, boid.x, boid.y)
 			}
 		}
 	}

@@ -13,6 +13,8 @@ define([], function()
   Settings.SIZE_DEAD = 1
   Settings.SIZE_DELTA = 1
 
+  Settings.MIN_DIST_TO_FOLLOW = 100
+
   Settings.SCROLL_SPEED = 0.0001
 
   Settings.DEFAULT_TARGET_SCALE = 0.1
