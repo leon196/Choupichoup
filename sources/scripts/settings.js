@@ -17,6 +17,8 @@ define([], function()
 
   Settings.SCROLL_SPEED = 0.0001
 
+  Settings.DARKNESS_SPEED = 0.01
+
   Settings.DEFAULT_TARGET_SCALE = 0.1
   Settings.DEFAULT_AVOID_SCALE = 0.1
   Settings.DEFAULT_GLOBAL_SCALE = 0.0001

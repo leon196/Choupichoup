@@ -11,8 +11,9 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager', 'settings', 'b
 
     this.Init = function ()
     {
-      this.x = renderer.width * 1.25
+      this.x = renderer.width / 2
       this.y = renderer.height / 2
+      this.target.x = renderer.width / 2
       this.target.y = renderer.height / 2
       this.timeStart = Manager.timeElapsed
       this.SpawnBubbleLetters(8)
@@ -22,7 +23,7 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager', 'settings', 'b
 
     this.Update = function ()
     {
-      this.Move()
+      // this.Move()
       this.UpdateTargets()
     }
 

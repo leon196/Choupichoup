@@ -35,8 +35,11 @@ define(['lib/pixi', 'base/utils', 'base/boid',  'settings', 'manager', 'color'],
 
 		this.SetDarkness = function (darkness)
 		{
-			this.darkness = darkness
-			this.text.style.fill = Color.GetGraySharp(this.darkness)
+			this.darkness = Utils.clamp(darkness, 0, 1)
+
+			var textStyle = this.text.style
+			textStyle.fill = Color.GetGraySharp(this.darkness)
+			this.text.style = textStyle
 			this.bubble.clear()
 			this.bubble.beginFill(Color.GetGrayHex(1 - this.darkness))
 			this.bubble.drawCircle(0, 0, this.size)

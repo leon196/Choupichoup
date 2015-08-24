@@ -19,6 +19,7 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 		this.Init = function() {
 			Manager.player = new Player()
 			Manager.player.Init()
+			this.SpawnThinker()
 		}
 
 		this.SpawnThinker = function () {
@@ -37,15 +38,15 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 				Manager.player.Update()
 
 				// Spawn elements
-				if (this.timeSpawnStart + this.timeSpawnDelay < Manager.timeElapsed) {
-					this.SpawnThinker()
-					this.timeSpawnStart = Manager.timeElapsed
-				}
-				// Update elements
-				for (var i = 0; i < Manager.thinkerList.length; ++i) {
-					var thinker = Manager.thinkerList[i]
-					thinker.Update()
-				}
+				// if (this.timeSpawnStart + this.timeSpawnDelay < Manager.timeElapsed) {
+				// 	this.SpawnThinker()
+				// 	this.timeSpawnStart = Manager.timeElapsed
+				// }
+				// // Update elements
+				// for (var i = 0; i < Manager.thinkerList.length; ++i) {
+				// 	var thinker = Manager.thinkerList[i]
+				// 	thinker.Update()
+				// }
 			}
 
 			// The mega boids iteration
@@ -121,6 +122,7 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 							boid.BounceFromBoid(collider)
 							// Balance of power
 							if (boid.size < collider.size) {
+								boid.SetDarkness(boid.darkness + Settings.DARKNESS_SPEED)
 							}
 						}
 					}
