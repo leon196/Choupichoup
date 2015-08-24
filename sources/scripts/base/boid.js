@@ -22,7 +22,6 @@ define(['lib/pixi', 'base/renderer', 'base/point', 'settings', 'base/utils', 'ma
 		this.frictionCollision = Settings.DEFAULT_FRICTION_COLLISION
 
 		// Rules
-		this.gridScale = Settings.DEFAULT_GRID_SCALE
 		this.targetScale = Settings.DEFAULT_TARGET_SCALE
 		this.avoidScale = Settings.DEFAULT_AVOID_SCALE
 		this.nearScale = Settings.DEFAULT_NEAR_SCALE

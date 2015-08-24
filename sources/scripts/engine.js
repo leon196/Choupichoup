@@ -6,7 +6,7 @@ define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point'
 	// Asset loader
 	Engine.imageReady = false
 	Engine.fontReady = false
-	Engine.assetToLoad = ['images/test.png', 'images/head.png', 'images/ncs-1.png']
+	Engine.assetToLoad = ['images/heads.png']
 	for (var i = 0; i < Engine.assetToLoad.length; ++i) { PIXI.loader.add(Engine.assetToLoad[i]) }
 	Engine.ImageLoaded = function () { Engine.imageReady = true; if (Engine.fontReady) { Engine.Init() } }
 	Engine.FontLoaded = function () { Engine.fontReady = true; if (Engine.imageReady) { Engine.Init() } }
@@ -17,8 +17,10 @@ define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point'
 		// Interface
 		Engine.interface = new Interface()
 		Engine.interface.addButton("Algo Boids", function () {}, "https://en.wikipedia.org/wiki/Boids")
-		Engine.interface.addButton("Pixi.js", function () {}, "http://www.pixijs.com/")
+		Engine.interface.addButton("Pixi.js", function () {}, "http://www.pixijs.com")
 		Engine.interface.addButton("Code Sources", function () {}, "https://github.com/leon196/BubbleLetter")
+		Engine.interface.addButton("Another unfinished game by Leon", function () {}, "http://leon196.github.io")
+		Manager.stage.addChild(Engine.interface)
 
 		// Interactivity
 		Manager.stage.interactive = true

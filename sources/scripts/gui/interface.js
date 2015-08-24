@@ -1,13 +1,31 @@
 
-define(['../lib/pixi','../base/point', '../gui/button'], function(PIXI, Point, Button)
+define(['lib/pixi', 'base/point', 'gui/button', 'base/renderer', 'gui/label'], function(PIXI, Point, Button, renderer, Label)
 {
 	var Interface = function ()
 	{
 		PIXI.Container.call(this)
 
-		this.background = new PIXI.Sprite(PIXI.Texture.fromImage('images/head.png'))
+		this.background = new PIXI.Sprite(PIXI.Texture.fromImage('images/heads.png'))
 		this.background.anchor.x = 0.5
 		this.background.anchor.y = 0.5
+		this.background.x = renderer.width / 2
+		this.background.y = renderer.height / 2
+		this.bgAspectRatio = this.background.width / this.background.height
+		if (renderer.width > renderer.height)
+		{
+			this.background.width = renderer.width
+			this.background.height = this.background.width / this.bgAspectRatio
+			if (this.background.height < renderer.height)
+			{
+				this.background.height = renderer.height
+				this.background.width = this.background.height * this.bgAspectRatio
+			}
+		}
+		else {
+			this.background.height = renderer.height
+			this.background.width = this.background.height * this.bgAspectRatio
+		}
+		this.background.alpha = 0.5
 		this.addChild(this.background)
 
 		this.buttonList = []
@@ -21,6 +39,12 @@ define(['../lib/pixi','../base/point', '../gui/button'], function(PIXI, Point, B
 			var button = new Button(text, callback, url)
 			this.buttonList.push(button)
 			this.labelAnchor.y = button.DOM.offsetHeight + this.margin * 2
+		}
+
+		this.addLabel = function (text)
+		{
+			var label = new Label(text)
+			this.buttonList.push(label)
 		}
 
 		this.addLabels = function (texts, colors)

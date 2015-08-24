@@ -67,6 +67,7 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
       {
         var thinker = Manager.garbageThinkerList[i].thinker
         var index = Manager.garbageThinkerList[i].index
+        Manager.RemoveBoid(thinker, Manager.boidList.indexOf(thinker))
         thinker.Clear()
         Manager.thinkerList.splice(index, 1)
       }
@@ -86,7 +87,9 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
       {
         var boid = Manager.garbageList[i].boid
         var index = Manager.garbageList[i].index
-        boid.phylactere.boidList.splice(boid.phylactere.boidList.indexOf(boid), 1)
+        if (boid.phylactere) {
+          boid.phylactere.boidList.splice(boid.phylactere.boidList.indexOf(boid), 1)
+        }
         Manager.boidList.splice(index, 1)
         Manager.stage.removeChild(boid)
         Manager.drawer.RemoveBubble(boid, index)
