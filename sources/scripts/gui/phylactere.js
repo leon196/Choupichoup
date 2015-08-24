@@ -29,10 +29,11 @@ define(['base/boid', 'engine', 'gui/letter', 'base/utils', 'base/renderer', 'man
 			{
 				var boid = this.boidList[i]
 				var p = new Point(this.x - boid.x, this.y - boid.y)
-				var dist = Math.max(0, p.magnitude() - 60)
+				var dist = p.magnitude()//Math.max(0, p.magnitude() - 60)
 				var norm = p.getNormal()
-				boid.target.x = norm.x * dist + boid.x
-				boid.target.y = norm.y * dist + boid.y
+				// {x: norm.y , y: -norm.x} = right
+				boid.target.x = norm.y * Settings.ORBIT_SCALE + norm.x * dist + boid.x
+				boid.target.y = -norm.x * Settings.ORBIT_SCALE + norm.y * dist + boid.y
 			}
 		}
 

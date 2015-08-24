@@ -45,6 +45,17 @@ define(['lib/pixi', 'base/utils', 'base/boid',  'settings', 'manager', 'color'],
 			this.bubble.drawCircle(0, 0, this.size)
 		}
 
+		this.SetSize = function (size)
+		{
+			this.size = size
+			var textStyle = this.text.style
+			textStyle.font = size * Settings.LETTER_FONT_SCALE + 'px ' + Settings.FONT_NAME
+			this.text.style = textStyle
+			this.bubble.clear()
+			this.bubble.beginFill(Color.GetGrayHex(1 - this.darkness))
+			this.bubble.drawCircle(0, 0, this.size)
+		}
+
 		// IDs of letter
 		this.indexLine = undefined
 		this.indexWord = undefined

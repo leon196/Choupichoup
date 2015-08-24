@@ -16,6 +16,7 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager', 'settings', 'b
       this.target.x = renderer.width / 2
       this.target.y = renderer.height / 2
       this.timeStart = Manager.timeElapsed
+      this.SetSize(30)
       this.SpawnBubbleLetters(8)
 
       Manager.AddBoid(this)

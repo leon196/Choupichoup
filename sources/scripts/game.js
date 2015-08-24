@@ -1,5 +1,5 @@
 
-define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker', 'settings', 'color', 'base/point', 'gui/letter', 'gui/message', 'base/utils', 'gui/collider'],function(Engine, renderer, Manager, Player, Thinker, Settings, Color, Point, Letter, Message, Utils, Collider)
+define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker', 'settings', 'color', 'base/point', 'gui/letter', 'gui/message', 'base/utils', 'gui/collider', 'gui/phylactere'],function(Engine, renderer, Manager, Player, Thinker, Settings, Color, Point, Letter, Message, Utils, Collider, Phylactere)
 {
 	const GAME_STATE_INTRO = 0
 	const GAME_STATE_PLAY = 1
@@ -36,6 +36,7 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 			if (this.gameState == GAME_STATE_PLAY) {
 
 				Manager.player.Update()
+				Manager.player.SetDarkness(Manager.player.darkness + Settings.DARKNESS_SPEED)
 
 				// Spawn elements
 				// if (this.timeSpawnStart + this.timeSpawnDelay < Manager.timeElapsed) {
@@ -43,10 +44,11 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 				// 	this.timeSpawnStart = Manager.timeElapsed
 				// }
 				// // Update elements
-				// for (var i = 0; i < Manager.thinkerList.length; ++i) {
-				// 	var thinker = Manager.thinkerList[i]
-				// 	thinker.Update()
-				// }
+				for (var i = 0; i < Manager.thinkerList.length; ++i) {
+					var thinker = Manager.thinkerList[i]
+					thinker.SetDarkness(thinker.darkness - Settings.DARKNESS_SPEED)
+					thinker.Update()
+				}
 			}
 
 			// The mega boids iteration
@@ -72,17 +74,75 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 						if (dist < (boid.size + boidOther.size) * Settings.BULL_COLLISION_BIAS)
 						{
 							this.vectorAvoid.x += boid.x - boidOther.x
-							this.vectorAvoid.y	+= boid.y - boidOther.y
+							this.vectorAvoid.y += boid.y - boidOther.y
 						}
 						// Follow Near
 						if (dist < Settings.MIN_DIST_TO_FOLLOW) {
 							this.vectorNear.x += boidOther.velocity.x
 							this.vectorNear.y += boidOther.velocity.y
 						}
+
 						// Follow Global
 						this.vectorGlobal.x += boidOther.x
 						this.vectorGlobal.y += boidOther.y
 						++globalCount
+
+						// Balance of power
+						if (dist - boid.size - boidOther.size < Settings.MIN_DIST_TO_ABSORB) {
+							if (boid.size < boidOther.size) {
+								if (boid.darkness > boidOther.darkness) {
+									boid.SetDarkness(boid.darkness - Settings.DARKNESS_SPEED)
+								}
+								else if (boid.darkness < boidOther.darkness) {
+									boid.SetDarkness(boid.darkness + Settings.DARKNESS_SPEED)
+								}
+							}
+							else {
+								if (boid.darkness < boidOther.darkness) {
+									boidOther.SetDarkness(boidOther.darkness - Settings.DARKNESS_SPEED)
+								}
+								else if (boid.darkness > boidOther.darkness) {
+									boidOther.SetDarkness(boidOther.darkness + Settings.DARKNESS_SPEED)
+								}
+							}
+
+							// Player got absorbed
+							if (boid.isPlayer && boid.darkness <= 0 && boid.phylactere && !boidOther.isPlayer)
+							{
+								var indexCurrent = boid.phylactere.boidList.indexOf(boid)
+								if (indexCurrent != -1)
+								{
+									boid.isPlayer = false
+									boid.phylactere.boidList.splice(indexCurrent, 1)
+									if (boidOther.phylactere) {
+										boidOther.phylactere.boidList.push(boid)
+										boid.phylactere = boidOther.phylactere
+									}
+									else {
+										boidOther.boidList.push(boid)
+										boid.phylactere = boidOther
+									}
+								}
+							}
+							// Player absorb other
+							else if (!boid.isPlayer && boid.darkness >= 1 && boid.phylactere)
+							{
+								var indexCurrent = boid.phylactere.boidList.indexOf(boid)
+								if (indexCurrent != -1)
+								{
+									boid.isPlayer = true
+									boid.phylactere.boidList.splice(indexCurrent, 1)
+									if (boidOther.phylactere) {
+										boidOther.phylactere.boidList.push(boid)
+										boid.phylactere = boidOther.phylactere
+									}
+									else {
+										boidOther.boidList.push(boid)
+										boid.phylactere = boidOther
+									}
+								}
+							}
+						}
 					}
 				}
 				this.vectorGlobal.x = this.vectorGlobal.x / globalCount - boid.x
@@ -120,10 +180,6 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 						if (collider.circleCollision(boid)) {
 							// Bounce collision
 							boid.BounceFromBoid(collider)
-							// Balance of power
-							if (boid.size < collider.size) {
-								boid.SetDarkness(boid.darkness + Settings.DARKNESS_SPEED)
-							}
 						}
 					}
 				}

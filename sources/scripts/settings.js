@@ -15,9 +15,13 @@ define([], function()
 
   Settings.MIN_DIST_TO_FOLLOW = 100
 
+  Settings.MIN_DIST_TO_ABSORB = 10
+
   Settings.SCROLL_SPEED = 0.0001
 
   Settings.DARKNESS_SPEED = 0.01
+
+  Settings.ORBIT_SCALE = 30
 
   Settings.DEFAULT_TARGET_SCALE = 0.1
   Settings.DEFAULT_AVOID_SCALE = 0.1
@@ -28,6 +32,8 @@ define([], function()
   Settings.LETTER_FONT_SCALE = 1.5
   Settings.BULL_OUTLINE = 2
   Settings.BULL_COLLISION_BIAS = 0.75
+
+  Settings.FONT_NAME = 'Shadows Into Light'
 
   return Settings
 })
