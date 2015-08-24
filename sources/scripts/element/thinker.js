@@ -16,6 +16,8 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager', 'settings', 'b
       this.target.y = renderer.height / 2
       this.timeStart = Manager.timeElapsed
       this.SpawnBubbleLetters(8)
+
+      Manager.AddBoid(this)
     }
 
     this.Update = function ()
@@ -29,7 +31,7 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager', 'settings', 'b
       var ratio = Utils.clamp((Manager.timeElapsed - this.timeStart) / this.timeDelay, 0, 1)
       if (ratio >= 1)
       {
-        Manager.removeThinker(this)
+        Manager.RemoveThinker(this)
       }
       var offset = renderer.width * 1.5 * (1 - ratio) - renderer.width / 4
       this.target.x = offset

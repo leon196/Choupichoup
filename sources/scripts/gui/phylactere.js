@@ -40,7 +40,7 @@ define(['base/boid', 'engine', 'gui/letter', 'base/utils', 'base/renderer', 'man
 		{
 			for (var i = 0; i < this.boidList.length; ++i)
 			{
-				Manager.removeBoid(this.boidList[i], Manager.boidList.indexOf(this.boidList[i]))
+				Manager.RemoveBoid(this.boidList[i], Manager.boidList.indexOf(this.boidList[i]))
 			}
 		}
 	}

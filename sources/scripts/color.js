@@ -1,5 +1,5 @@
 
-define([], function()
+define(['base/utils'], function(Utils)
 {
   var Color = {}
 
@@ -15,6 +15,19 @@ define([], function()
   Color.GLOBAL_STR = '#DE2DA8'
   Color.BOID_HEX = 0x3E3175
   Color.BOID_STR = '#3E3175'
+
+  Color.grayListHex = [0x000000, 0x111111, 0x222222, 0x333333, 0x444444, 0x555555, 0x666666, 0x777777, 0x888888, 0x999999, 0xAAAAAA, 0xBBBBBB, 0xCCCCCC, 0xDDDDDD, 0xEEEEEE, 0xFFFFFF]
+  Color.grayListSharp = ['#000000', '#111111', '#222222', '#333333', '#444444', '#555555', '#666666', '#777777', '#888888', '#999999', '#AAAAAA', '#BBBBBB', '#CCCCCC', '#DDDDDD', '#EEEEEE', '#FFFFFF']
+
+  Color.GetGrayHex = function (ratio)
+  {
+    return Color.grayListHex[Utils.clamp(Math.floor(Color.grayListHex.length*ratio), 0, Color.grayListHex.length - 1)]
+  }
+
+  Color.GetGraySharp = function (ratio)
+  {
+    return Color.grayListSharp[Utils.clamp(Math.floor(Color.grayListSharp.length*ratio), 0, Color.grayListSharp.length - 1)]
+  }
 
   // By Pimp Trizkit
   // http://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors

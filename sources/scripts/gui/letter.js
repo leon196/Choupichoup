@@ -12,18 +12,18 @@ define(['lib/pixi', 'base/utils', 'base/boid',  'settings', 'manager', 'color'],
 		this.darkness = 0
 
 		// Font stuff
-		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: Color.ShadeSharpColor('#ffffff', 1 - this.darkness), align: 'left' }
-		if (typeof style !== 'undefined')
-		{
-			this.size = style.min+Math.random()*(style.max - style.min)
-			css = { font: this.size * Settings.LETTER_FONT_SCALE +'px ' + style.font, fill: style.fill, align: style.align }
-		}
+		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: Color.GetGraySharp(this.darkness), align: 'left' }
+		// if (typeof style !== 'undefined')
+		// {
+		// 	this.size = style.min+Math.random()*(style.max - style.min)
+		// 	css = { font: this.size * Settings.LETTER_FONT_SCALE +'px ' + style.font, fill: style.fill, align: style.align }
+		// }
 
 		// var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: '020202', align: 'left' }
 
 		// The Bubble
 		this.bubble = new PIXI.Graphics()
-		this.bubble.beginFill(Color.ShadeHexColor(0xffffff, this.darkness))
+		this.bubble.beginFill(Color.GetGrayHex(1 - this.darkness))
 		this.bubble.drawCircle(0, 0, this.size)
 		this.addChild(this.bubble)
 

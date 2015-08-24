@@ -23,6 +23,7 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 
 		this.SpawnThinker = function () {
 		  var thinker = new Thinker()
+			thinker.Init()
 			Manager.AddThinker(thinker)
 		}
 
@@ -36,15 +37,15 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 				Manager.player.Update()
 
 				// Spawn elements
-				// if (this.timeSpawnStart + this.timeSpawnDelay < Manager.timeElapsed) {
-				// 	this.SpawnThinker()
-				// 	this.timeSpawnStart = Manager.timeElapsed
-				// }
-				// // Update elements
-				// for (var i = 0; i < Manager.thinkerList.length; ++i) {
-				// 	var thinker = Manager.thinkerList[i]
-				// 	thinker.Update()
-				// }
+				if (this.timeSpawnStart + this.timeSpawnDelay < Manager.timeElapsed) {
+					this.SpawnThinker()
+					this.timeSpawnStart = Manager.timeElapsed
+				}
+				// Update elements
+				for (var i = 0; i < Manager.thinkerList.length; ++i) {
+					var thinker = Manager.thinkerList[i]
+					thinker.Update()
+				}
 			}
 
 			// The mega boids iteration
@@ -124,9 +125,6 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 						}
 					}
 				}
-
-				// Update graphics positions
-				// Manager.drawer.UpdatePosition(current, boid.x, boid.y)
 			}
 		}
 	}
