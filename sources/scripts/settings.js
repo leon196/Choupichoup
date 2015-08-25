@@ -13,15 +13,15 @@ define([], function()
   Settings.SIZE_DEAD = 1
   Settings.SIZE_DELTA = 1
 
-  Settings.MIN_DIST_TO_FOLLOW = 20
+  Settings.MIN_DIST_TO_FOLLOW = 50
 
-  Settings.MIN_DIST_TO_ABSORB = 30
+  Settings.MIN_DIST_TO_ABSORB = 10
 
   Settings.SCROLL_SPEED = 0.0001
 
   Settings.DARKNESS_SPEED = 0.01
 
-  Settings.ORBIT_SCALE = 30
+  Settings.ORBIT_SCALE = 60
   Settings.ORBIT_SPEED = 0.5
 
   Settings.SPAWN_DELAY = 5

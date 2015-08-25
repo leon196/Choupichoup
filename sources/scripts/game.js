@@ -33,6 +33,7 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 			Manager.timeElapsed = new Date() / 1000 - Manager.timeStarted;
 			Manager.Update()
 
+			var nearestThinker = null
 			if (this.gameState == GAME_STATE_PLAY) {
 
 				Manager.player.Update()
@@ -49,12 +50,25 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 					var thinker = Manager.thinkerList[i]
 					thinker.SetDarkness(thinker.darkness - Settings.DARKNESS_SPEED)
 					thinker.Update()
+					if (nearestThinker) {
+						if (Utils.distanceBetween(nearestThinker, Manager.player) > Utils.distanceBetween(thinker, Manager.player)) {
+							nearestThinker = thinker
+						}
+					} else {
+						nearestThinker = thinker
+					}
 				}
 			}
-
 			// The mega boids iteration
-			for (var current = 0; current < Manager.boidList.length; ++current) {
+			for (var current = 0; current < Manager.boidList.length; ++current)
+			{
 				var boid = Manager.boidList[current]
+
+				if (boid.phylactere) {
+					if (Utils.distanceBetween(boid, boid.phylactere) - boid.size - boid.phylactere.size < Settings.MIN_DIST_TO_ABSORB) {
+						boid.SetDarkness(boid.phylactere.darkness)
+					}
+				}
 
 				this.vectorNear.x = this.vectorNear.y = 0
 				this.vectorGlobal.x = this.vectorGlobal.y = 0
@@ -66,14 +80,16 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 					this.vectorTarget = new Point(renderer.width / 2 - boid.x, renderer.height / 2 - boid.y)
 				}
 
+				var boidBiggerAndNear = boid;
 				var globalCount = 0
+				var nearCount = 0
 				for (var other = 0; other < Manager.boidList.length; ++other) {
 					if (current != other) {
 						var boidOther = Manager.boidList[other]
 
 						// Avoid
-						var dist = Utils.distanceBetween(boid, boidOther)
-						if (dist < (boid.size + boidOther.size) * Settings.BULL_COLLISION_BIAS)
+						var dist = Utils.distanceBetween(boid, boidOther) - (boid.size + boidOther.size)
+						if (dist < Settings.BULL_COLLISION_BIAS)
 						{
 							this.vectorAvoid.x += boid.x - boidOther.x
 							this.vectorAvoid.y += boid.y - boidOther.y
@@ -82,24 +98,34 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 						if (dist < Settings.MIN_DIST_TO_FOLLOW) {
 							this.vectorNear.x += boidOther.velocity.x
 							this.vectorNear.y += boidOther.velocity.y
+							++nearCount
 						}
-
 						// Follow Global
 						this.vectorGlobal.x += boidOther.x
 						this.vectorGlobal.y += boidOther.y
 						++globalCount
-
-						// The game mecanic
-						this.BalanceOfPower(boid, boidOther)
+						// Absorb
+						// var shouldAbsorb = (boid.isPlayer && !boidOther.isPlayer) || (!boid.isPlayer && boidOther.isPlayer)
+						if (dist < Settings.MIN_DIST_TO_FOLLOW) {
+							this.BalanceOfPower(boid, boidOther)
+						}
 					}
 				}
-				this.vectorGlobal.x = this.vectorGlobal.x / globalCount - boid.x
-				this.vectorGlobal.y = this.vectorGlobal.y / globalCount - boid.y
+
+				if (globalCount != 0) {
+					this.vectorGlobal.x = this.vectorGlobal.x / globalCount - boid.x
+					this.vectorGlobal.y = this.vectorGlobal.y / globalCount - boid.y
+					this.vectorGlobal.scale(boid.globalScale)
+				}
+
+				if (nearCount != 0) {
+					this.vectorNear.x = this.vectorNear.x / nearCount - boid.x
+					this.vectorNear.y = this.vectorNear.y / nearCount - boid.y
+					this.vectorNear.scale(boid.nearScale)
+				}
 
 				// Scale them
 				this.vectorAvoid.scale(boid.avoidScale)
-				this.vectorGlobal.scale(boid.globalScale)
-				this.vectorNear.scale(boid.nearScale)
 				this.vectorTarget.scale(boid.targetScale)
 
 				// Apply to Boid
@@ -136,8 +162,31 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 								// Bounce collision
 								boid.BounceFromBoid(collider)
 								this.BalanceOfPower(boid, Manager.player)
+								break;
 							}
 						}
+					}
+				}
+
+				// Check darkness
+				if (boid.isPlayer && boid.darkness <= 0) {
+					var indexCurrent = Manager.player.boidList.indexOf(boid)
+					if (indexCurrent != -1) {
+						boid.isPlayer = false
+						Manager.player.boidList.splice(indexCurrent, 1)
+						if (nearestThinker) {
+							nearestThinker.boidList.push(boid)
+							boid.phylactere = nearestThinker
+						}
+					}
+				}
+				else if (boid.isPlayer == false && boid.darkness >= 1 && boid.phylactere) {
+					var indexCurrent = boid.phylactere.boidList.indexOf(boid)
+					if (indexCurrent != -1) {
+						boid.isPlayer = true
+						boid.phylactere.boidList.splice(indexCurrent, 1)
+						Manager.player.boidList.push(boid)
+						boid.phylactere = Manager.player
 					}
 				}
 			}
@@ -146,58 +195,24 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 		this.BalanceOfPower = function (boid, boidOther)
 		{
 			var dist = Utils.distanceBetween(boid, boidOther)
-			if (dist - boid.size - boidOther.size < Settings.MIN_DIST_TO_ABSORB) {
-				if (boid.size < boidOther.size) {
+			var ratio = boid.size / boidOther.size
+			if (boid.size < boidOther.size) {
+				if (boid.phylactere) {
 					if (boid.darkness > boidOther.darkness) {
-						boid.SetDarkness(boid.darkness - Settings.DARKNESS_SPEED)
+						boid.SetDarkness(boid.darkness - Settings.DARKNESS_SPEED / ratio)
 					}
 					else if (boid.darkness < boidOther.darkness) {
-						boid.SetDarkness(boid.darkness + Settings.DARKNESS_SPEED)
+						boid.SetDarkness(boid.darkness + Settings.DARKNESS_SPEED / ratio)
 					}
 				}
-				else {
+			}
+			else {
+				if (boidOther.phylactere) {
 					if (boid.darkness < boidOther.darkness) {
-						boidOther.SetDarkness(boidOther.darkness - Settings.DARKNESS_SPEED)
+						boidOther.SetDarkness(boidOther.darkness - Settings.DARKNESS_SPEED * ratio)
 					}
 					else if (boid.darkness > boidOther.darkness) {
-						boidOther.SetDarkness(boidOther.darkness + Settings.DARKNESS_SPEED)
-					}
-				}
-
-				// Player got absorbed
-				if (boid.isPlayer && boid.darkness <= 0 && boid.phylactere && !boidOther.isPlayer)
-				{
-					var indexCurrent = boid.phylactere.boidList.indexOf(boid)
-					if (indexCurrent != -1)
-					{
-						boid.isPlayer = false
-						boid.phylactere.boidList.splice(indexCurrent, 1)
-						if (boidOther.phylactere) {
-							boidOther.phylactere.boidList.push(boid)
-							boid.phylactere = boidOther.phylactere
-						}
-						else {
-							boidOther.boidList.push(boid)
-							boid.phylactere = boidOther
-						}
-					}
-				}
-				// Player absorb other
-				else if (!boid.isPlayer && boid.darkness >= 1 && boid.phylactere)
-				{
-					var indexCurrent = boid.phylactere.boidList.indexOf(boid)
-					if (indexCurrent != -1)
-					{
-						boid.isPlayer = true
-						boid.phylactere.boidList.splice(indexCurrent, 1)
-						if (boidOther.phylactere) {
-							boidOther.phylactere.boidList.push(boid)
-							boid.phylactere = boidOther.phylactere
-						}
-						else {
-							boidOther.boidList.push(boid)
-							boid.phylactere = boidOther
-						}
+						boidOther.SetDarkness(boidOther.darkness + Settings.DARKNESS_SPEED * ratio)
 					}
 				}
 			}
