@@ -10,6 +10,10 @@ define(['lib/pixi', 'base/utils', 'base/boid',  'settings', 'manager', 'color'],
 		this.size = Settings.MIN_SIZE+Math.random()*(Settings.MAX_SIZE - Settings.MIN_SIZE)
 
 		this.darkness = 0
+		this.cloud = []
+		var radius = 5
+		var offsetRadius = 5
+		for (var i = 0; i < 5; ++i) { this.cloud.push({x: Math.random()*offsetRadius, y: Math.random()*offsetRadius, size:Math.random()*radius}) }
 
 		// Font stuff
 		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: Color.GetGraySharp(this.darkness), align: 'left' }
@@ -22,9 +26,14 @@ define(['lib/pixi', 'base/utils', 'base/boid',  'settings', 'manager', 'color'],
 		// var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: '020202', align: 'left' }
 
 		// The Bubble
-		this.bubble = new PIXI.Graphics()
-		this.bubble.beginFill(Color.GetGrayHex(1 - this.darkness))
-		this.bubble.drawCircle(0, 0, this.size)
+		this.bubble = new PIXI.Sprite(PIXI.Texture.fromImage('images/poof.png'))
+		this.bubble.anchor.x = 0.5
+		this.bubble.anchor.y = 0.5
+		this.bubble.rotation = Math.random() * Utils.PI2
+		// this.bubble.scale.x = this.size / (Settings.MAX_SIZE - Settings.MIN_SIZE)
+		// this.bubble.scale.y = this.bubble.scale.x
+		this.bubble.width = this.size * 2
+		this.bubble.height = this.size * 2
 		this.addChild(this.bubble)
 
 		// The Pixi Text display
@@ -33,27 +42,30 @@ define(['lib/pixi', 'base/utils', 'base/boid',  'settings', 'manager', 'color'],
 		this.text.anchor.y = 0.5
 		this.addChild(this.text)
 
+		this.color = "#FCFCFC"
+
 		this.SetDarkness = function (darkness)
 		{
 			this.darkness = Utils.clamp(darkness, 0, 1)
 
-			var textStyle = this.text.style
-			textStyle.fill = Color.GetGraySharp(this.darkness)
-			this.text.style = textStyle
-			this.bubble.clear()
-			this.bubble.beginFill(Color.GetGrayHex(1 - this.darkness))
-			this.bubble.drawCircle(0, 0, this.size)
+			// var textStyle = this.text.style
+			// textStyle.fill = Color.GetGraySharp(this.darkness)
+			// this.text.style = textStyle
+
+			this.bubble.tint = Color.BlendColors(this.color, Color.Devil, this.darkness)// Color.ShadeHexColor('#00FF00', 1 - this.darkness)
 		}
 
 		this.SetSize = function (size)
 		{
 			this.size = size
+
 			var textStyle = this.text.style
 			textStyle.font = size * Settings.LETTER_FONT_SCALE + 'px ' + Settings.FONT_NAME
 			this.text.style = textStyle
-			this.bubble.clear()
-			this.bubble.beginFill(Color.GetGrayHex(1 - this.darkness))
-			this.bubble.drawCircle(0, 0, this.size)
+
+			// this.bubble.tint = Color.GetGrayHex(1 - this.darkness)
+			this.bubble.width = this.size * 2
+			this.bubble.height = this.size * 2
 		}
 
 		// IDs of letter

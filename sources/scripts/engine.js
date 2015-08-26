@@ -6,7 +6,7 @@ define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point'
 	// Asset loader
 	Engine.imageReady = false
 	Engine.fontReady = false
-	Engine.assetToLoad = ['images/heads.png']
+	Engine.assetToLoad = ['images/heads.png', 'images/poof.png']
 	for (var i = 0; i < Engine.assetToLoad.length; ++i) { PIXI.loader.add(Engine.assetToLoad[i]) }
 	Engine.ImageLoaded = function () { Engine.imageReady = true; if (Engine.fontReady) { Engine.Init() } }
 	Engine.FontLoaded = function () { Engine.fontReady = true; if (Engine.imageReady) { Engine.Init() } }

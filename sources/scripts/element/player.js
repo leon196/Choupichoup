@@ -4,16 +4,17 @@ define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter', 'base
   {
     Phylactere.call(this)
 
+
     this.Init = function ()
     {
       this.x = Manager.mouse.x
       this.y = Manager.mouse.y
       this.isPlayer = true
-      this.SpawnBubbleLetters(16)
       this.SetDarkness(1)
-      this.SetSize(30)
-      this.avoidScale = 0
-      this.targetScale = 0.2
+      this.SetSize(40)
+      // this.avoidScale = 0
+      this.friction = 0.8
+      this.targetScale = 1
       Manager.AddBoid(this)
 
       for (var i = 0; i < this.boidList.length; ++i)
@@ -36,16 +37,6 @@ define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter', 'base
       this.UpdateTargets()
     }
 
-		this.UpdateTargets = function ()
-		{
-			// Orbit around phylactere root boid
-			for (var i = 0; i < this.boidList.length; ++i)
-			{
-				var boid = this.boidList[i]
-				boid.target.x = Manager.mouse.x
-				boid.target.y = Manager.mouse.y
-			}
-		}
   }
 
   Player.prototype = Object.create(Phylactere.prototype)

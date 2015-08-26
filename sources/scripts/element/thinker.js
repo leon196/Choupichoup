@@ -12,10 +12,48 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager', 'settings', 'b
     this.moveFrom = new Point()
     this.moveTo = new Point()
 
+    this.anchor = new Point()
+    this.orbitRadius = 40
+
     this.Init = function ()
     {
       Manager.AddBoid(this)
 
+      this.x = renderer.width / 2
+      this.y = renderer.height / 2
+      // this.target.x = this.x
+      // this.target.y = this.y
+      // this.anchor.x = this.x
+      // this.anchor.y = this.y
+      this.targetScale = 0.01
+
+      // this.avoidScale = 0
+      this.SetSize(50)
+      this.SpawnBubbleLetters(Settings.MIN_SPAWN_BUBBLE + Math.floor(Math.random() * (Settings.MAX_SPAWN_BUBBLE - Settings.MIN_SPAWN_BUBBLE)))
+
+      for (var i = 0; i < this.boidList.length; ++i)
+      {
+        this.boidList[i].x = this.x
+        this.boidList[i].y = this.y
+      }
+
+      this.timeStart = Manager.timeElapsed
+    }
+
+    this.Update = function ()
+    {
+      this.Move()
+      this.UpdateTargets()
+    }
+
+    this.Move = function ()
+    {
+      // this.x += this.velocity.x * 0.1;
+      // this.y += this.velocity.y * 0.1;
+    }
+
+    this.SetupPassage = function()
+    {
       var horizontal = Math.random() > 0.5
       if (horizontal) {
         var left = Math.random() > 0.5
@@ -47,32 +85,9 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager', 'settings', 'b
           this.moveTo.y = -Settings.OFFSET_OFFSCREN
         }
       }
-
-      this.x = this.moveFrom.x
-      this.y = this.moveFrom.y
-      this.target.x = this.x
-      this.target.y = this.y
-
-      this.avoidScale = 0
-      this.SetSize(30)
-      this.SpawnBubbleLetters(Settings.MIN_SPAWN_BUBBLE + Math.floor(Math.random() * (Settings.MAX_SPAWN_BUBBLE - Settings.MIN_SPAWN_BUBBLE)))
-
-      for (var i = 0; i < this.boidList.length; ++i)
-      {
-        this.boidList[i].x = this.x
-        this.boidList[i].y = this.y
-      }
-
-      this.timeStart = Manager.timeElapsed
     }
 
-    this.Update = function ()
-    {
-      this.Move()
-      this.UpdateTargets()
-    }
-
-    this.Move = function ()
+    this.UpdatePassage = function ()
     {
       var ratio = Utils.clamp((Manager.timeElapsed - this.timeStart) / this.timeDelay, 0, 1)
       if (ratio >= 1)
@@ -82,22 +97,6 @@ define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager', 'settings', 'b
       this.target.x = Utils.mix(this.moveFrom.x, this.moveTo.x, ratio)
       this.target.y = Utils.mix(this.moveFrom.y, this.moveTo.y, ratio)
     }
-
-		this.UpdateTargets = function ()
-		{
-			// Orbit around phylactere root boid
-			for (var i = 0; i < this.boidList.length; ++i)
-			{
-				var boid = this.boidList[i]
-				var p = new Point(this.x - boid.x, this.y - boid.y)
-				var dist = p.magnitude()//Math.max(0, p.magnitude() - 60)
-				var norm = p.getNormal()
-				// {x: norm.y , y: -norm.x} = right
-				var orbitScale = Utils.clamp(this.velocity.magnitude(), 0, 1) * Settings.ORBIT_SCALE
-				boid.target.x = (norm.y * orbitScale + norm.x * dist) * Settings.ORBIT_SPEED + boid.x
-				boid.target.y = (-norm.x * orbitScale + norm.y * dist) * Settings.ORBIT_SPEED + boid.y
-			}
-		}
   }
 
   Thinker.prototype = Object.create(Phylactere.prototype)

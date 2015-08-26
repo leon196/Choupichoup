@@ -19,11 +19,14 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 		this.Init = function() {
 			Manager.player = new Player()
 			Manager.player.Init()
-			this.SpawnThinker()
+			this.SpawnThinker('#F3901B')
+			this.SpawnThinker('#4A22A7')
+			this.SpawnThinker('#88DE18')
 		}
 
-		this.SpawnThinker = function () {
+		this.SpawnThinker = function (color) {
 		  var thinker = new Thinker()
+			thinker.color = color
 			thinker.Init()
 			Manager.AddThinker(thinker)
 		}
@@ -40,11 +43,11 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 				Manager.player.SetDarkness(Manager.player.darkness + Settings.DARKNESS_SPEED)
 
 				// Spawn elements
-				if (this.timeSpawnStart + this.timeSpawnDelay < Manager.timeElapsed) {
-					this.SpawnThinker()
-					this.timeSpawnStart = Manager.timeElapsed
-					this.timeSpawnDelay = Settings.SPAWN_DELAY + Math.random() * Settings.SPAWN_DELAY
-				}
+				// if (this.timeSpawnStart + this.timeSpawnDelay < Manager.timeElapsed) {
+				// 	this.SpawnThinker()
+				// 	this.timeSpawnStart = Manager.timeElapsed
+				// 	this.timeSpawnDelay = Settings.SPAWN_DELAY + Math.random() * Settings.SPAWN_DELAY
+				// }
 				// // Update elements
 				for (var i = 0; i < Manager.thinkerList.length; ++i) {
 					var thinker = Manager.thinkerList[i]
@@ -148,25 +151,25 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 				}
 
 				// Collision with player
-				else {
-
-					if (Manager.player.circleCollision(boid))
-					{
-						boid.BounceFromBoid(Manager.player)
-						this.BalanceOfPower(boid, Manager.player)
-					}
-					else {
-						for (var c = 0; c < Manager.player.boidList.length; ++c) {
-							var collider = Manager.player.boidList[c]
-							if (collider.circleCollision(boid)) {
-								// Bounce collision
-								boid.BounceFromBoid(collider)
-								this.BalanceOfPower(boid, Manager.player)
-								break;
-							}
-						}
-					}
-				}
+				// else {
+				//
+				// 	if (Manager.player.circleCollision(boid))
+				// 	{
+				// 		boid.BounceFromBoid(Manager.player)
+				// 		this.BalanceOfPower(boid, Manager.player)
+				// 	}
+				// 	else {
+				// 		for (var c = 0; c < Manager.player.boidList.length; ++c) {
+				// 			var collider = Manager.player.boidList[c]
+				// 			if (collider.circleCollision(boid)) {
+				// 				// Bounce collision
+				// 				boid.BounceFromBoid(collider)
+				// 				this.BalanceOfPower(boid, Manager.player)
+				// 				break;
+				// 			}
+				// 		}
+				// 	}
+				// }
 
 				// Check darkness
 				if (boid.isPlayer && boid.darkness <= 0) {
@@ -177,6 +180,7 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 						if (nearestThinker) {
 							nearestThinker.boidList.push(boid)
 							boid.phylactere = nearestThinker
+							boid.color = nearestThinker.color
 						}
 					}
 				}
@@ -187,6 +191,7 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 						boid.phylactere.boidList.splice(indexCurrent, 1)
 						Manager.player.boidList.push(boid)
 						boid.phylactere = Manager.player
+						boid.color = Color.Devil
 					}
 				}
 			}
