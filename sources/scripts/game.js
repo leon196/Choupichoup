@@ -19,9 +19,10 @@ define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker
 		this.Init = function() {
 			Manager.player = new Player()
 			Manager.player.Init()
-			this.SpawnThinker('#F3901B')
-			this.SpawnThinker('#4A22A7')
-			this.SpawnThinker('#88DE18')
+			// this.SpawnThinker('#F3901B')
+			// this.SpawnThinker('#4A22A7')
+			// this.SpawnThinker('#88DE18')
+			this.SpawnThinker('#FCFCFC')
 		}
 
 		this.SpawnThinker = function (color) {
