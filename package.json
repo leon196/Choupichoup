@@ -1,7 +1,7 @@
 {
-  "name": "Devil's Thoughts",
+  "name": "DevilsThoughts",
   "version": "0.0.1",
-  "description": "Devil's Thoughts",
+  "description": "Game with Boids engine for Ludum Dare 33",
   "main": "Gruntfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

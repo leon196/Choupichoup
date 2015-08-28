@@ -1,5 +1,7 @@
 
-define(['base/boid', 'engine', 'gui/letter', 'base/utils', 'base/renderer', 'manager', 'base/point', 'settings'], function(Boid, Engine, Letter, Utils, renderer, Manager, Point, Settings)
+define(['../settings', '../core/renderer', '../core/manager',
+'../base/utils', '../base/point', '../base/boid', '../element/letter'],
+function(Settings, renderer, Manager, Utils, Point, Boid, Letter)
 {
 	var Phylactere = function()
 	{
@@ -33,10 +35,10 @@ define(['base/boid', 'engine', 'gui/letter', 'base/utils', 'base/renderer', 'man
 				var p = new Point(this.x - boid.x, this.y - boid.y)
 				var dist = p.magnitude()//Math.max(0, p.magnitude() - 60)
 				var norm = p.getNormal()
-				// {x: norm.y , y: -norm.x} = right
+				var right = { x: norm.y , y: -norm.x }
 				var orbitScale = Utils.clamp(this.velocity.magnitude(), 0, 1) * Settings.ORBIT_SCALE
-				boid.target.x = (norm.y * orbitScale + norm.x * dist) * Settings.ORBIT_SPEED + boid.x
-				boid.target.y = (-norm.x * orbitScale + norm.y * dist) * Settings.ORBIT_SPEED + boid.y
+				boid.target.x = (right.x * orbitScale + norm.x * dist) * Settings.ORBIT_SPEED + boid.x
+				boid.target.y = (right.y * orbitScale + norm.y * dist) * Settings.ORBIT_SPEED + boid.y
 			}
 		}
 

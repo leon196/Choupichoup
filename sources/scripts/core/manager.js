@@ -1,4 +1,4 @@
-define(['lib/pixi', 'base/point'], function(PIXI, Point)
+define(['../lib/pixi', '../base/point'], function(PIXI, Point)
 {
   var Manager = {}
 
@@ -13,9 +13,6 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
   // Garbage Lists
   Manager.garbageList = []
   Manager.garbageThinkerList = []
-
-  // Display Tool
-  Manager.drawer
 
   // Interactivity
 	Manager.mouse = new Point()
@@ -39,7 +36,6 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
   {
     Manager.stage.addChild(boid)
     Manager.boidList.push(boid)
-    // Manager.drawer.AddBubble(boid)
   }
 
   Manager.AddThinker = function(thinker)
@@ -92,7 +88,6 @@ define(['lib/pixi', 'base/point'], function(PIXI, Point)
         }
         Manager.boidList.splice(index, 1)
         Manager.stage.removeChild(boid)
-        Manager.drawer.RemoveBubble(boid, index)
       }
       Manager.garbageList = []
     }

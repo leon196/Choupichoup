@@ -1,5 +1,10 @@
 
-define(['engine', 'base/renderer', 'manager', 'element/player', 'element/thinker', 'settings', 'color', 'base/point', 'gui/letter', 'gui/message', 'base/utils', 'gui/collider', 'gui/phylactere'],function(Engine, renderer, Manager, Player, Thinker, Settings, Color, Point, Letter, Message, Utils, Collider, Phylactere)
+define(['../settings', '../core/renderer', '../core/manager',
+'../base/color', '../base/point', '../base/utils',
+'../element/player', '../element/thinker', '../element/letter', '../element/phylactere'],
+function(Settings, renderer, Manager,
+	Color, Point, Utils,
+	Player, Thinker, Letter, Phylactere)
 {
 	const GAME_STATE_INTRO = 0
 	const GAME_STATE_PLAY = 1

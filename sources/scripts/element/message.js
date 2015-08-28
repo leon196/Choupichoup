@@ -1,5 +1,7 @@
 
-define(['base/boid', 'base/renderer', 'manager', 'gui/letter', 'engine'], function(Boid, renderer, Manager, Letter, Engine)
+define(['../core/engine', '../core/renderer', '../core/manager',
+'../base/boid', '../element/letter'],
+function(Engine, renderer, Manager, Boid, Letter)
 {
 	var Message = function(text, style)
 	{

@@ -1,5 +1,6 @@
 
-define(['lib/pixi', 'base/point', 'gui/button', 'base/renderer', 'gui/label'], function(PIXI, Point, Button, renderer, Label)
+define(['../lib/pixi', '../base/point', '../core/renderer',
+ '../gui/button', '../gui/label'], function(PIXI, Point, renderer, Button, Label)
 {
 	var Interface = function ()
 	{

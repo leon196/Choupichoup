@@ -1,5 +1,5 @@
 
-define(['lib/pixi'], function(PIXI)
+define(['../lib/pixi'], function(PIXI)
 {
   // var renderer = new PIXI.CanvasRenderer(window.innerWidth, window.innerHeight,
   //   {

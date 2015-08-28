@@ -30,6 +30,23 @@ define([], function ()
 
 	Utils.Normalize = function (v) { var dist = Utils.length(v.x, v.y); return { x: v.x / dist, y: v.y / dist }; }
 
+ 	Utils.DrawArrow = function (graphics, origin, dir, length, thinckness, color)
+ 	{
+ 		var forward = { x: dir.x * length, y: dir.y * length }
+ 		var peak = { x: dir.x * (length + 10), y: dir.y * (length + 10) }
+ 		var offset = { x: dir.y * thinckness / 4, y: -dir.x * thinckness / 4 }
+ 		var triangle = { x: dir.y * thinckness, y: -dir.x * thinckness }
+		graphics.clear()
+		graphics.beginFill(color)
+		graphics.moveTo(origin.x - offset.x, origin.y - offset.y)
+		graphics.lineTo(origin.x + forward.x - offset.x, origin.y + forward.y - offset.y)
+		graphics.lineTo(origin.x + forward.x - triangle.x, origin.y + forward.y - triangle.y)
+		graphics.lineTo(origin.x + peak.x, origin.y + peak.y)
+		graphics.lineTo(origin.x + forward.x + triangle.x, origin.y + forward.y + triangle.y)
+		graphics.lineTo(origin.x + forward.x + offset.x, origin.y + forward.y + offset.y)
+		graphics.lineTo(origin.x + offset.x, origin.y + offset.y)
+ 	}
+
 	///// From -> http://www.actionscript.org/forums/showthread.php3?t=176052
 	// By abeall
 

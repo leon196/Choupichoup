@@ -1,9 +1,9 @@
 
-define(['lib/pixi', 'gui/phylactere', 'manager', 'settings', 'gui/letter', 'base/point'], function(PIXI, Phylactere, Manager, Settings, Letter, Point){
+define(['../lib/pixi', '../settings', '../core/manager',
+'../element/phylactere', '../element/letter', '../base/point'], function(PIXI, Settings, Manager, Phylactere, Letter, Point){
   var Player = function ()
   {
     Phylactere.call(this)
-
 
     this.Init = function ()
     {

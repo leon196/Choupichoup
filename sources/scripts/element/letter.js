@@ -1,5 +1,7 @@
 
-define(['lib/pixi', 'base/utils', 'base/boid',  'settings', 'manager', 'color'], function(PIXI, Utils, Boid, Settings, Manager, Color)
+define(['../lib/pixi', '../settings', '../core/manager',
+ '../base/utils', '../base/boid', '../base/color'],
+ function(PIXI, Settings, Manager, Utils, Boid, Color)
 {
 	var Letter = function (character, style)
 	{

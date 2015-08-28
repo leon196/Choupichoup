@@ -1,9 +1,10 @@
 
-define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager', 'settings', 'base/utils', 'base/point'], function(PIXI, Phylactere, renderer, Manager, Settings, Utils, Point){
+define(['../lib/pixi', '../settings', '../core/renderer', '../core/manager',
+'../element/phylactere', '../base/utils', '../base/point'],
+function(PIXI, Settings, renderer, Manager, Phylactere, Utils, Point){
   var Thinker = function ()
   {
     Phylactere.call(this)
-
     this.css = { min:Settings.MIN_SIZE, max:Settings.MAX_SIZE, font: 'Shadows Into Light', fill: '#020202', align: 'left' }
 
     this.timeStart = 0

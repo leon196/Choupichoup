@@ -1,12 +1,17 @@
 
-define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point', 'base/utils', 'base/boid', 'gui/button', 'gui/drawer', 'gui/interface', 'gui/letter', 'gui/message', 'gui/phylactere', 'settings', 'color', 'element/thinker', 'element/player'], function(PIXI, renderer, Manager, Settings, Game, Point, Utils, Boid, Button, Drawer, Interface, Letter, Message, Phylactere, Settings, Color, Thinker, Player)
+define(['../lib/pixi', '../settings', '../core/renderer', '../core/manager', '../core/game',
+'../base/point', '../base/utils', '../base/color', '../base/boid', '../gui/button', '../gui/interface',
+'../element/letter', '../element/phylactere', '../element/thinker', '../element/player'],
+function(PIXI, Settings, renderer, Manager, Game,
+	Point, Utils, Color, Boid, Button, Interface,
+	Letter, Phylactere, Thinker, Player)
 {
 	var Engine = {}
 
 	// Asset loader
+	Engine.assetToLoad = ['images/heads.png', 'images/poof.png']
 	Engine.imageReady = false
 	Engine.fontReady = false
-	Engine.assetToLoad = ['images/heads.png', 'images/poof.png']
 	for (var i = 0; i < Engine.assetToLoad.length; ++i) { PIXI.loader.add(Engine.assetToLoad[i]) }
 	Engine.ImageLoaded = function () { Engine.imageReady = true; if (Engine.fontReady) { Engine.Init() } }
 	Engine.FontLoaded = function () { Engine.fontReady = true; if (Engine.imageReady) { Engine.Init() } }
@@ -26,10 +31,6 @@ define(['lib/pixi', 'base/renderer', 'manager', 'settings', 'game', 'base/point'
 		Manager.stage.interactive = true
 		Manager.stage.on('mousedown', Engine.onClic).on('touchstart', Engine.onClic)
 		Manager.stage.on('mousemove', Engine.onMove).on('touchmove', Engine.onMove)
-
-		// Drawer
-		Manager.drawer = new Drawer()
-		Manager.stage.addChild(Manager.drawer)
 
 		// Setup
 		Manager.timeStarted = new Date() / 1000
