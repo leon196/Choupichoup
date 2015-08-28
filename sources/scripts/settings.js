@@ -37,11 +37,16 @@ define([], function()
   Settings.DEFAULT_GLOBAL_SCALE = 0.0001
   Settings.DEFAULT_NEAR_SCALE = 0.0001
 
-  Settings.LETTER_FONT_SCALE = 1.5
+  Settings.LETTER_FONT_SCALE = 1.0
   Settings.BULL_OUTLINE = 2
   Settings.BULL_COLLISION_BIAS = 1
 
   Settings.FONT_NAME = 'Shadows Into Light'
+  // Settings.SYMBOLS = [→⥇⥈⤔↝⤳☝︎☜⤺☟↯↔︎↕︎↺$€¥¢£₽₩฿₺₮₱₦☞]
+  Settings.SYMBOLS = '☀︎☼☽☾☁︎☂☃★☆☇☈♠︎♣︎♥︎♦︎♤♧♡♢♚♛♜♝♞♟♔♕♖♗♘♙⚀⚂⚁⚃⚄⚅☻☹☺︎☕︎✌︎✍✎✏︎'
+  Settings.currentSymbol = 0
+  Settings.RandomSymbols = function () { return Settings.currentSymbol + ":" + Settings.SYMBOLS.charAt(Settings.currentSymbol++) }
+  //{ return Settings.SYMBOLS.charAt(Math.floor(Settings.SYMBOLS.length * Math.random())) }
 
   return Settings
 })

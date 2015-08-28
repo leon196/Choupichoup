@@ -8,7 +8,7 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		Boid.call(this)
 
 		// The actual string
-		this.character = Utils.getDefaultIfUndefined(character, Utils.randomLetter())
+		this.character = Utils.getDefaultIfUndefined(character, Settings.RandomSymbols())
 		this.size = Settings.MIN_SIZE+Math.random()*(Settings.MAX_SIZE - Settings.MIN_SIZE)
 
 		this.darkness = 0
@@ -18,7 +18,8 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		for (var i = 0; i < 5; ++i) { this.cloud.push({x: Math.random()*offsetRadius, y: Math.random()*offsetRadius, size:Math.random()*radius}) }
 
 		// Font stuff
-		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: Color.GetGraySharp(this.darkness), align: 'left' }
+		// var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: Color.GetGraySharp(this.darkness), align: 'left' }
+		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px EmojiSymbols', fill: Color.GetGraySharp(this.darkness), align: 'left' }
 		// if (typeof style !== 'undefined')
 		// {
 		// 	this.size = style.min+Math.random()*(style.max - style.min)
