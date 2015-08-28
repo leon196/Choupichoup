@@ -56,13 +56,11 @@ function(PIXI, Settings, renderer, Manager, Point, Utils)
 		this.Grow = function (current)
 		{
 			this.size += Settings.SIZE_DELTA
-			Manager.drawer.redraw(Manager.boidList.indexOf(this))
 		}
 
 		this.Shrink = function (current)
 		{
 			this.size = Math.max(Settings.SIZE_DEAD, this.size - Settings.SIZE_DELTA)
-			Manager.drawer.redraw(current)
 		}
 
 		this.Rumble = function ()
