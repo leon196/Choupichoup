@@ -1,10 +1,10 @@
 
 define(['../settings', '../core/renderer', '../core/manager', '../core/logic',
 '../base/color', '../base/point', '../base/utils',
-'../element/player', '../element/thinker', '../element/letter', '../element/phylactere'],
+'../element/player', '../element/thinker', '../element/letter', '../element/phylactere', '../element/message'],
 function(Settings, renderer, Manager, Logic,
 	Color, Point, Utils,
-	Player, Thinker, Letter, Phylactere)
+	Player, Thinker, Letter, Phylactere, Message)
 {
 	const GAME_STATE_INTRO = 0
 	const GAME_STATE_PLAY = 1
@@ -12,11 +12,16 @@ function(Settings, renderer, Manager, Logic,
 
 	var Game = function ()
 	{
-		this.gameState = GAME_STATE_PLAY
+		this.gameState = GAME_STATE_INTRO
 		this.timeSpawnStart = 0
 		this.timeSpawnDelay = Settings.SPAWN_DELAY + Math.random() * Settings.SPAWN_DELAY
 
 		this.Init = function() {
+			this.StartGame()
+			this.gameState = GAME_STATE_PLAY
+		}
+
+		this.StartGame = function() {
 			Manager.player = new Player()
 			Manager.player.Init()
 			this.SpawnThinker('#F3901B')
@@ -27,7 +32,9 @@ function(Settings, renderer, Manager, Logic,
 		this.SpawnThinker = function (color) {
 		  var thinker = new Thinker()
 			thinker.color = color
+			thinker.SetDarkness(thinker.darkness - Settings.DARKNESS_SPEED)
 			thinker.Init()
+			thinker.Update()
 			Manager.AddThinker(thinker)
 		}
 
@@ -36,10 +43,45 @@ function(Settings, renderer, Manager, Logic,
 		    Manager.timeElapsed = new Date() / 1000 - Manager.timeStarted;
 		    Manager.Update()
 
-		    var nearestThinker = null
+				switch (this.gameState) {
 
-		    Manager.player.Update()
-		    Manager.player.SetDarkness(Manager.player.darkness + Settings.DARKNESS_SPEED)
+					case GAME_STATE_INTRO:
+					{
+						// Update boids
+						Logic.Update()
+
+						break;
+					}
+
+					case GAME_STATE_PLAY:
+					{
+						// Update Player
+				    Manager.player.Update()
+				    Manager.player.SetDarkness(Manager.player.darkness + Settings.DARKNESS_SPEED)
+
+			    	// Update thinkers
+				    var nearestThinker = null
+				    for (var i = 0; i < Manager.thinkerList.length; ++i) {
+				      var thinker = Manager.thinkerList[i]
+				      thinker.SetDarkness(thinker.darkness - Settings.DARKNESS_SPEED)
+				      thinker.Update()
+				      if (nearestThinker) {
+				        if (Utils.distanceBetween(nearestThinker, Manager.player) > Utils.distanceBetween(thinker, Manager.player)) {
+				          nearestThinker = thinker
+				        }
+				      } else {
+				        nearestThinker = thinker
+				      }
+				    }
+
+						// Update boids
+						Logic.Update(nearestThinker)
+
+						break;
+					}
+
+					default: {}
+				}
 
 		    // Spawn elements
 		    // if (this.timeSpawnStart + this.timeSpawnDelay < Manager.timeElapsed) {
@@ -47,21 +89,6 @@ function(Settings, renderer, Manager, Logic,
 		    // 	this.timeSpawnStart = Manager.timeElapsed
 		    // 	this.timeSpawnDelay = Settings.SPAWN_DELAY + Math.random() * Settings.SPAWN_DELAY
 		    // }
-		    // // Update elements
-		    for (var i = 0; i < Manager.thinkerList.length; ++i) {
-		      var thinker = Manager.thinkerList[i]
-		      thinker.SetDarkness(thinker.darkness - Settings.DARKNESS_SPEED)
-		      thinker.Update()
-		      if (nearestThinker) {
-		        if (Utils.distanceBetween(nearestThinker, Manager.player) > Utils.distanceBetween(thinker, Manager.player)) {
-		          nearestThinker = thinker
-		        }
-		      } else {
-		        nearestThinker = thinker
-		      }
-		    }
-
-				Logic.Update(nearestThinker)
 		}
 	}
 

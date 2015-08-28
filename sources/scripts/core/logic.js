@@ -1,6 +1,6 @@
 
 define(['../settings', '../core/manager', '../core/renderer',
-'../base/utils', '../base/point'], function(Settings, Manager, renderer, Utils, Point)
+'../base/utils', '../base/point', '../base/color'], function(Settings, Manager, renderer, Utils, Point, Color)
 {
   var Logic = {}
 
@@ -12,7 +12,6 @@ define(['../settings', '../core/manager', '../core/renderer',
   // The mega boids algo
   Logic.Update = function(nearestThinker)
   {
-    // The mega boids iteration
     for (var current = 0; current < Manager.boidList.length; ++current)
     {
       var boid = Manager.boidList[current]
