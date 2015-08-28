@@ -13,23 +13,33 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 	var Game = function ()
 	{
 		this.gameState = GAME_STATE_INTRO
-
 		this.pause = false
+
+		this.message
 
 		this.timeSpawnStart = 0
 		this.timeSpawnDelay = Settings.SPAWN_DELAY + Math.random() * Settings.SPAWN_DELAY
 
 		this.Init = function() {
-			this.StartGame()
-			this.gameState = GAME_STATE_PLAY
+			// ☼☾☂☃★☆\n♤♧♡♢\n♚♛♜♝♞♟♔♕♖♗♘♙\n⚀⚂⚁⚃⚄⚅\n
+			this.message = this.SpawnMessage('☻☹✍✎✐✑✒︎✁✂︎✃\n✄⚾︎✇✈︎⚓︎♨︎\n♂♀\n☍✙✧✚☤⚔☸☯☮⚐\n⚒☭☪☬⚑⚗⚖\n')
 		}
 
 		this.StartGame = function() {
 			Manager.player = new Player()
 			Manager.player.Init()
-			this.SpawnThinker('#F3901B')
-			this.SpawnThinker('#4A22A7')
-			this.SpawnThinker('#88DE18')
+			this.SpawnThinker('#FCFCFC')
+			this.SpawnThinker('#FCFCFC')
+			this.SpawnThinker('#FCFCFC')
+		}
+
+		this.SpawnMessage = function (text) {
+			var message = new Message(text)
+			message.x = renderer.width / 2
+			message.y = renderer.height / 2
+			message.Init()
+			message.Update()
+			return message
 		}
 
 		this.SpawnThinker = function (color) {
@@ -39,6 +49,7 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 			thinker.Init()
 			thinker.Update()
 			Manager.AddThinker(thinker)
+			return thinker
 		}
 
 		this.Update = function ()
@@ -56,8 +67,12 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 				{
 					case GAME_STATE_INTRO:
 					{
-						// Update boids
-						Logic.Update()
+						if (this.pause == false)
+						{
+							// Update boids
+							this.message.Update()
+							Logic.Update()
+						}
 
 						break;
 					}

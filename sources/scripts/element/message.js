@@ -19,53 +19,80 @@ function(renderer, Manager, Boid, Letter)
 		this.offsetY = 0
 		this.lineHeight = 40
 
-		// Setup data and create boids
-		var lineWidth = 0
-		this.lineWidthMax = 0
-		for (var idxLine = 0; idxLine < this.lines.length; ++idxLine)
+		this.Init = function ()
 		{
-			var word = this.lines[idxLine].split(" ")
-			var wordLetters = word.join(" ")
-			lineWidth = 0
-			for (var idxLetter = 0; idxLetter < wordLetters.length; ++idxLetter)
+			// Setup data and create boids
+			var lineWidth = 0
+			this.lineWidthMax = 0
+			for (var idxLine = 0; idxLine < this.lines.length; ++idxLine)
 			{
-				// Boid Creation
-				var letter = new Letter(wordLetters[idxLetter], style)
-				letter.position.set(Math.random() * renderer.width, Math.random() * renderer.height)
+				var word = this.lines[idxLine].split(" ")
+				var wordLetters = word.join(" ")
+				lineWidth = 0
+				for (var idxLetter = 0; idxLetter < wordLetters.length; ++idxLetter)
+				{
+					if (wordLetters[idxLetter] != '︎' )
+					{
+						// Boid Creation
+						var letter = new Letter(wordLetters[idxLetter], style)
+						letter.x = this.x
+						letter.y = this.y
 
-				// Letter logic
-				letter.indexLine = idxLine
-				letter.indexLetter = idxLetter
-				letter.isFromMessage = true
+						// Letter logic
+						letter.indexLine = idxLine
+						letter.indexLetter = idxLetter
+						letter.isFromMessage = true
 
-				// Add to update stack and display
-				Manager.addBoid(letter)
+						letter.targetScale = 0.1
+						letter.avoidScale = 0
+						letter.SetSize(16)
 
-				// Store own letters
-				this.boidList.push(letter)
+						// Add to update stack and display
+						Manager.AddBoid(letter)
 
-				lineWidth += letter.size
+						// Store own letters
+						this.boidList.push(letter)
+
+						lineWidth += letter.size
+					}
+				}
+				this.lineWidthMax = Math.max(this.lineWidthMax, lineWidth)
 			}
-			this.lineWidthMax = Math.max(this.lineWidthMax, lineWidth)
+
+			// Setup position
+			lineWidth = 0
+			for (var l = 0; l < this.boidList.length; ++l)
+			{
+				var boid = this.boidList[l]
+				// var center = Math.ceil(this.lineWidthMax / 2) * boid.size
+				// var offset = (this.lineWidthMax - wordLetters.length) / 2 * boid.size
+
+				// Reset incrementation if letter is at the begining of line
+				lineWidth = boid.indexLetter == 0 ? 0 : lineWidth
+
+				// Setup message grid position
+				boid.gridX = lineWidth - this.lineWidthMax / 2
+				boid.gridY = boid.indexLine * this.lineHeight - this.lineHeight * this.lines.length / 2
+
+				// Increment
+				lineWidth += boid.size * 2
+			}
 		}
 
-		// Setup position
-		lineWidth = 0
-		for (var l = 0; l < this.boidList.length; ++l)
+		this.Update = function ()
 		{
-			var boid = this.boidList[l]
-			// var center = Math.ceil(this.lineWidthMax / 2) * boid.size
-			// var offset = (this.lineWidthMax - wordLetters.length) / 2 * boid.size
+			this.UpdateTargets()
+		}
 
-			// Reset incrementation if letter is at the begining of line
-			lineWidth = boid.indexLetter == 0 ? 0 : lineWidth
-
-			// Setup message grid position
-			boid.gridX = lineWidth - this.lineWidthMax / 2
-			boid.gridY = boid.indexLine * this.lineHeight - this.lineHeight * this.lines.length / 2
-
-			// Increment
-			lineWidth += boid.size
+		this.UpdateTargets = function ()
+		{
+			// Orbit around phylactere root boid
+			for (var i = 0; i < this.boidList.length; ++i)
+			{
+				var boid = this.boidList[i]
+				boid.target.x = boid.gridX + this.GetX()
+				boid.target.y = boid.gridY + this.GetY()
+			}
 		}
 
 		this.GetX = function ()

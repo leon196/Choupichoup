@@ -19,7 +19,7 @@ define(['../lib/pixi', '../settings', '../core/manager',
 
 		// Font stuff
 		// var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: Color.GetGraySharp(this.darkness), align: 'left' }
-		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px EmojiSymbols', fill: Color.GetGraySharp(this.darkness), align: 'left' }
+		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Arial', fill: Color.GetGraySharp(this.darkness), align: 'left' }
 		// if (typeof style !== 'undefined')
 		// {
 		// 	this.size = style.min+Math.random()*(style.max - style.min)

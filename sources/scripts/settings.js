@@ -41,7 +41,7 @@ define([], function()
   Settings.BULL_OUTLINE = 2
   Settings.BULL_COLLISION_BIAS = 1
 
-  Settings.FONT_NAME = 'Shadows Into Light'
+  Settings.FONT_NAME = 'Arial'
   // Settings.SYMBOLS = [→⥇⥈⤔↝⤳☝︎☜⤺☟↯↔︎↕︎↺$€¥¢£₽₩฿₺₮₱₦☞]
   Settings.SYMBOLS = '☀︎☼☽☾☁︎☂☃★☆☇☈♠︎♣︎♥︎♦︎♤♧♡♢♚♛♜♝♞♟♔♕♖♗♘♙⚀⚂⚁⚃⚄⚅☻☹☺︎☕︎✌︎✍✎✏︎'
   Settings.currentSymbol = 0

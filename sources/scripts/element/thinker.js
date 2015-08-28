@@ -5,7 +5,6 @@ function(PIXI, Settings, renderer, Manager, Phylactere, Utils, Point){
   var Thinker = function ()
   {
     Phylactere.call(this)
-    this.css = { min:Settings.MIN_SIZE, max:Settings.MAX_SIZE, font: 'Shadows Into Light', fill: '#020202', align: 'left' }
 
     this.timeStart = 0
     this.timeDelay = Settings.SPAWN_DURATION + Math.random() * Settings.SPAWN_DURATION
