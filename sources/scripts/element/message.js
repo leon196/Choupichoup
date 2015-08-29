@@ -13,17 +13,18 @@ function(renderer, Manager, Boid, Letter)
 
 		// Data strings
 		this.lines = text.split("\n")
+		this.lineWidthList = []
+		this.lineWidthMax = 0
 
 		// Display params
 		this.offsetX = 0
 		this.offsetY = 0
-		this.lineHeight = 40
+		this.letterSize = 32
 
 		this.Init = function ()
 		{
 			// Setup data and create boids
 			var lineWidth = 0
-			this.lineWidthMax = 0
 			for (var idxLine = 0; idxLine < this.lines.length; ++idxLine)
 			{
 				var word = this.lines[idxLine].split(" ")
@@ -45,7 +46,7 @@ function(renderer, Manager, Boid, Letter)
 
 						letter.targetScale = 0.1
 						letter.avoidScale = 0
-						letter.SetSize(16)
+						letter.SetSize(this.letterSize)
 
 						// Add to update stack and display
 						Manager.AddBoid(letter)
@@ -56,11 +57,14 @@ function(renderer, Manager, Boid, Letter)
 						lineWidth += letter.size
 					}
 				}
+				this.lineWidthList.push(lineWidth)
+				console.log(lineWidth);
 				this.lineWidthMax = Math.max(this.lineWidthMax, lineWidth)
 			}
 
 			// Setup position
 			lineWidth = 0
+			var currentLine = -1
 			for (var l = 0; l < this.boidList.length; ++l)
 			{
 				var boid = this.boidList[l]
@@ -68,11 +72,14 @@ function(renderer, Manager, Boid, Letter)
 				// var offset = (this.lineWidthMax - wordLetters.length) / 2 * boid.size
 
 				// Reset incrementation if letter is at the begining of line
-				lineWidth = boid.indexLetter == 0 ? 0 : lineWidth
+				if (boid.indexLetter == 0) {
+					lineWidth = 0
+					++currentLine
+				}
 
 				// Setup message grid position
-				boid.gridX = lineWidth - this.lineWidthMax / 2
-				boid.gridY = boid.indexLine * this.lineHeight - this.lineHeight * this.lines.length / 2
+				boid.gridX = lineWidth - this.lineWidthList[currentLine] + this.letterSize / 2
+				boid.gridY = boid.indexLine * this.letterSize * 2 - this.letterSize * this.lines.length / 2
 
 				// Increment
 				lineWidth += boid.size * 2
