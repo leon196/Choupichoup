@@ -14,13 +14,13 @@ define([], function()
   Settings.SIZE_DEAD = 1
   Settings.SIZE_DELTA = 1
 
-  Settings.MIN_DIST_TO_FOLLOW = 50
+  Settings.MIN_DIST_TO_FOLLOW = 30
 
   Settings.MIN_DIST_TO_ABSORB = 20
 
   Settings.SCROLL_SPEED = 0.0001
 
-  Settings.DARKNESS_SPEED = 0.1
+  Settings.DARKNESS_SPEED = 0.01
 
   Settings.ORBIT_SCALE = 2
   Settings.ORBIT_SPEED = 0.2
@@ -28,8 +28,8 @@ define([], function()
   Settings.SPAWN_DELAY = 5
   Settings.SPAWN_DURATION = 20
 
-  Settings.MIN_SPAWN_BUBBLE = 12
-  Settings.MAX_SPAWN_BUBBLE = 24
+  Settings.MIN_SPAWN_BUBBLE = 4
+  Settings.MAX_SPAWN_BUBBLE = 12
 
   Settings.OFFSET_OFFSCREN = 100
 

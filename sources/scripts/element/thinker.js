@@ -12,6 +12,9 @@ function(PIXI, Settings, renderer, Manager, Phylactere, Utils, Point){
     this.moveFrom = new Point()
     this.moveTo = new Point()
 
+		this.anchorX = renderer.width / 2
+		this.anchorY = renderer.height / 2
+
     this.anchor = new Point()
     this.orbitRadius = 40
 
@@ -19,10 +22,10 @@ function(PIXI, Settings, renderer, Manager, Phylactere, Utils, Point){
     {
       Manager.AddBoid(this)
 
-      this.x = renderer.width / 2
-      this.y = renderer.height / 2
-      // this.target.x = this.x
-      // this.target.y = this.y
+      this.x = this.anchorX
+      this.y = this.anchorY
+      this.target.x = this.x
+      this.target.y = this.y
       // this.anchor.x = this.x
       // this.anchor.y = this.y
       this.targetScale = 0.1
@@ -36,7 +39,7 @@ function(PIXI, Settings, renderer, Manager, Phylactere, Utils, Point){
 
     this.Update = function ()
     {
-      this.Move()
+      // this.Move()
       this.UpdateTargets()
     }
 

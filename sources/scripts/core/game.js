@@ -29,9 +29,9 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 		this.StartGame = function() {
 			Manager.player = new Player()
 			Manager.player.Init()
-			this.SpawnThinker('#FCFCFC')
-			// this.SpawnThinker('#FCFCFC')
-			// this.SpawnThinker('#FCFCFC')
+			this.SpawnThinker(renderer.width / 4, renderer.height / 2, '#FCFCFC')
+			this.SpawnThinker(renderer.width * 2 / 4, renderer.height / 2, '#FCFCFC')
+			this.SpawnThinker(renderer.width * 3 / 4, renderer.height / 2, '#FCFCFC')
 		}
 
 		this.SpawnMessage = function (text) {
@@ -43,10 +43,12 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 			return message
 		}
 
-		this.SpawnThinker = function (color) {
+		this.SpawnThinker = function (x,y,color) {
 		  var thinker = new Thinker()
 			thinker.color = color
 			thinker.SetDarkness(thinker.darkness - Settings.DARKNESS_SPEED)
+			thinker.anchorX = x
+			thinker.anchorY = y
 			thinker.Init()
 			thinker.Update()
 			Manager.AddThinker(thinker)

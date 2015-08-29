@@ -17,6 +17,7 @@ define(['../lib/pixi', '../settings', '../core/manager',
       this.targetScale = 1
       Manager.AddBoid(this)
 
+      this.SpawnBubbleLetters(0)
       for (var i = 0; i < this.boidList.length; ++i)
       {
         this.boidList[i].SetDarkness(1)
