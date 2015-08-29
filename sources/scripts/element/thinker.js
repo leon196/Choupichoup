@@ -28,7 +28,7 @@ function(PIXI, Settings, renderer, Manager, Phylactere, Utils, Point){
       this.target.y = this.y
       // this.anchor.x = this.x
       // this.anchor.y = this.y
-      this.targetScale = 0.1
+      this.targetScale = 0.04
       this.avoidScale = 0.1
 
       this.SetSize(Settings.THINKER_SIZE)

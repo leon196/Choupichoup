@@ -29,6 +29,13 @@ function(Settings, renderer, Manager, Utils, Point, Boid, Letter)
 			}
 		}
 
+		this.Absorb = function (boid)
+		{
+			boid.phylactere = this
+			boid.avoidScale = this.avoidScale
+			this.boidList.push(boid)
+		}
+
 		this.UpdateTargets = function ()
 		{
 			// Orbit around phylactere root boid

@@ -17,16 +17,6 @@ define(['../settings', '../core/manager', '../core/renderer',
     {
       var boid = Manager.boidList[current]
 
-      // if (boid.phylactere) {
-      //   if (Utils.distanceBetween(boid, boid.phylactere) - boid.size - boid.phylactere.size < Settings.MIN_DIST_TO_ABSORB) {
-      //     if (boid.darkness < boid.phylactere.darkness) {
-      //       boid.SetDarkness(boid.darkness + Settings.DARKNESS_SPEED)
-      //     } else if (boid.darkness > boid.phylactere.darkness) {
-      //       boid.SetDarkness(boid.darkness - Settings.DARKNESS_SPEED)
-      //     }
-      //   }
-      // }
-
       Logic.vectorNear.x = Logic.vectorNear.y = 0
       Logic.vectorGlobal.x = Logic.vectorGlobal.y = 0
       Logic.vectorAvoid.x = Logic.vectorAvoid.y = 0
@@ -63,21 +53,9 @@ define(['../settings', '../core/manager', '../core/renderer',
           // var shouldAbsorb = (boid.isPlayer && !boidOther.isPlayer) || (!boid.isPlayer && boidOther.isPlayer)
           if (dist < Settings.MIN_DIST_TO_ABSORB){// && boid.size < boidOther.size) {
             Logic.BalanceOfPower(boid, boidOther)
-            // neighborDarkness += boidOther.darkness// * (boid.size - boidOther.size)
-            // ++neighborDarknessCount
           }
         }
       }
-
-      //   if (neighborDarknessCount != 0) {
-      //     neighborDarkness = neighborDarkness / neighborDarknessCount
-      //     if (boid.darkness > neighborDarkness) {
-      //       boid.SetDarkness(boid.darkness - Settings.DARKNESS_SPEED)
-      //     }
-      //     else if (boid.darkness < neighborDarkness) {
-      //       boid.SetDarkness(boid.darkness + Settings.DARKNESS_SPEED)
-      //     }
-      //   }
 
       if (globalCount != 0) {
         Logic.vectorGlobal.x = Logic.vectorGlobal.x / globalCount - boid.x
@@ -142,8 +120,7 @@ define(['../settings', '../core/manager', '../core/renderer',
           boid.isPlayer = false
           Manager.player.boidList.splice(indexCurrent, 1)
           if (nearestThinker) {
-            nearestThinker.boidList.push(boid)
-            boid.phylactere = nearestThinker
+            nearestThinker.Absorb(boid)
           }
         }
       }
@@ -152,8 +129,7 @@ define(['../settings', '../core/manager', '../core/renderer',
         if (indexCurrent != -1) {
           boid.isPlayer = true
           boid.phylactere.boidList.splice(indexCurrent, 1)
-          Manager.player.boidList.push(boid)
-          boid.phylactere = Manager.player
+          Manager.player.Absorb(boid)
         }
       }
     }

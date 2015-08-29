@@ -20,7 +20,7 @@ define([], function()
 
   Settings.SCROLL_SPEED = 0.0001
 
-  Settings.DARKNESS_SPEED = 0.01
+  Settings.DARKNESS_SPEED = 0.05
 
   Settings.ORBIT_SCALE = 2
   Settings.ORBIT_SPEED = 0.2
@@ -40,7 +40,7 @@ define([], function()
 
   Settings.LETTER_FONT_SCALE = 1.0
   Settings.BULL_OUTLINE = 2
-  Settings.BULL_COLLISION_BIAS = 1
+  Settings.BULL_COLLISION_BIAS = 0.75
 
   Settings.FONT_NAME = 'Arial'
   // Settings.SYMBOLS = [→⥇⥈⤔↝⤳☝︎☜⤺☟↯↔︎↕︎↺$€¥¢£₽₩฿₺₮₱₦☞]
