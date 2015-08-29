@@ -10,11 +10,8 @@ function(PIXI, Settings, renderer, Manager, Game, Keyboard,
 
 	// Asset loader
 	Engine.assetToLoad = ['images/heads.png', 'images/poof.png', 'fonts/EmojiSymbols-Regular.woff']
-	Engine.imageReady = false
-	Engine.fontReady = false
 	for (var i = 0; i < Engine.assetToLoad.length; ++i) { PIXI.loader.add(Engine.assetToLoad[i]) }
-	Engine.ImageLoaded = function () { Engine.imageReady = true; if (Engine.fontReady) { Engine.Init() } }
-	Engine.FontLoaded = function () { Engine.fontReady = true; if (Engine.imageReady) { Engine.Init() } }
+	Engine.ImageLoaded = function () { Engine.Init() }
 	PIXI.loader.once('complete', Engine.ImageLoaded).load();
 
 	Engine.Init = function ()
