@@ -26,7 +26,7 @@ function(PIXI, Settings, renderer, Manager, Phylactere, Utils, Point){
       // this.anchor.x = this.x
       // this.anchor.y = this.y
       this.targetScale = 0.1
-      // this.avoidScale = 0.05
+      this.avoidScale = 0.1
 
       this.SetSize(Settings.THINKER_SIZE)
       this.SpawnBubbleLetters(Settings.MIN_SPAWN_BUBBLE + Math.floor(Math.random() * (Settings.MAX_SPAWN_BUBBLE - Settings.MIN_SPAWN_BUBBLE)))

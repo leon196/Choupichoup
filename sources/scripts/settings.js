@@ -22,8 +22,8 @@ define([], function()
 
   Settings.DARKNESS_SPEED = 0.1
 
-  Settings.ORBIT_SCALE = 20
-  Settings.ORBIT_SPEED = 0.5
+  Settings.ORBIT_SCALE = 2
+  Settings.ORBIT_SPEED = 0.2
 
   Settings.SPAWN_DELAY = 5
   Settings.SPAWN_DURATION = 20
@@ -33,8 +33,8 @@ define([], function()
 
   Settings.OFFSET_OFFSCREN = 100
 
-  Settings.DEFAULT_TARGET_SCALE = 0.05
-  Settings.DEFAULT_AVOID_SCALE = 0.2
+  Settings.DEFAULT_TARGET_SCALE = 0.1
+  Settings.DEFAULT_AVOID_SCALE = 0.3
   Settings.DEFAULT_GLOBAL_SCALE = 0.0001
   Settings.DEFAULT_NEAR_SCALE = 0.0001
 
