@@ -18,10 +18,10 @@ function(PIXI, Settings, renderer, Manager, Game, Keyboard,
 	{
 		// Interface
 		Engine.interface = new Interface()
-		Engine.interface.addButton("&#x1F31A;", function () {}, "https://en.wikipedia.org/wiki/Boids")
-		Engine.interface.addButton("&#x1F31A;", function () {}, "http://www.pixijs.com")
-		Engine.interface.addButton("&#x1F524;", function () {}, "https://github.com/leon196/BubbleLetter")
-		Engine.interface.addButton("&#x1F31A;", function () {}, "http://leon196.github.io")
+		Engine.interface.addButton("Algo Boids", function () {}, "https://en.wikipedia.org/wiki/Boids")
+		Engine.interface.addButton("Pixi.js", function () {}, "http://www.pixijs.com")
+		Engine.interface.addButton("Code Sources", function () {}, "https://github.com/leon196/BubbleLetter")
+		Engine.interface.addButton("by Leon", function () {}, "http://leon196.github.io")
 		Manager.stage.addChild(Engine.interface)
 
 		// Interactivity

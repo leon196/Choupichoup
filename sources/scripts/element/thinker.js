@@ -25,10 +25,10 @@ function(PIXI, Settings, renderer, Manager, Phylactere, Utils, Point){
       // this.target.y = this.y
       // this.anchor.x = this.x
       // this.anchor.y = this.y
-      this.targetScale = 0.01
+      this.targetScale = 0.1
+      // this.avoidScale = 0.05
 
-      // this.avoidScale = 0
-      this.SetSize(50)
+      this.SetSize(Settings.THINKER_SIZE)
       this.SpawnBubbleLetters(Settings.MIN_SPAWN_BUBBLE + Math.floor(Math.random() * (Settings.MAX_SPAWN_BUBBLE - Settings.MIN_SPAWN_BUBBLE)))
 
       this.timeStart = Manager.timeElapsed

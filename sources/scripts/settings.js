@@ -8,7 +8,8 @@ define([], function()
   Settings.DEFAULT_FRICTION_COLLISION = 0.9
 
   Settings.MIN_SIZE = 10
-  Settings.MAX_SIZE = 30
+  Settings.MAX_SIZE = 20
+  Settings.THINKER_SIZE = 30
   Settings.SPAWN_SIZE = 30
   Settings.SIZE_DEAD = 1
   Settings.SIZE_DELTA = 1
@@ -19,7 +20,7 @@ define([], function()
 
   Settings.SCROLL_SPEED = 0.0001
 
-  Settings.DARKNESS_SPEED = 0.01
+  Settings.DARKNESS_SPEED = 0.1
 
   Settings.ORBIT_SCALE = 20
   Settings.ORBIT_SPEED = 0.5

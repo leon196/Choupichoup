@@ -1,6 +1,7 @@
 
 define(['../settings', '../core/manager', '../core/renderer',
-'../base/utils', '../base/point', '../base/color'], function(Settings, Manager, renderer, Utils, Point, Color)
+'../element/Phylactere',
+'../base/utils', '../base/point', '../base/color'], function(Settings, Manager, renderer, Phylactere, Utils, Point, Color)
 {
   var Logic = {}
 
@@ -31,6 +32,8 @@ define(['../settings', '../core/manager', '../core/renderer',
       var boidBiggerAndNear = boid;
       var globalCount = 0
       var nearCount = 0
+      // var neighborDarkness = 0
+      // var neighborDarknessCount = 0
       for (var other = 0; other < Manager.boidList.length; ++other) {
         if (current != other) {
           var boidOther = Manager.boidList[other]
@@ -54,11 +57,23 @@ define(['../settings', '../core/manager', '../core/renderer',
           ++globalCount
           // Absorb
           // var shouldAbsorb = (boid.isPlayer && !boidOther.isPlayer) || (!boid.isPlayer && boidOther.isPlayer)
-          if (dist < Settings.MIN_DIST_TO_FOLLOW) {
+          if (dist < Settings.MIN_DIST_TO_ABSORB){// && boid.size < boidOther.size) {
             Logic.BalanceOfPower(boid, boidOther)
+            // neighborDarkness += boidOther.darkness
+            // ++neighborDarknessCount
           }
         }
       }
+
+      // if (neighborDarknessCount != 0) {
+      //   neighborDarkness = neighborDarkness / neighborDarknessCount
+      //   if (neighborDarkness < boid.darkness) {
+      //     boid.SetDarkness(boid.darkness - Settings.DARKNESS_SPEED)
+      //   }
+      //   else if (neighborDarkness > boid.darkness) {
+      //     boid.SetDarkness(boid.darkness + Settings.DARKNESS_SPEED)
+      //   }
+      // }
 
       if (globalCount != 0) {
         Logic.vectorGlobal.x = Logic.vectorGlobal.x / globalCount - boid.x
@@ -125,7 +140,6 @@ define(['../settings', '../core/manager', '../core/renderer',
           if (nearestThinker) {
             nearestThinker.boidList.push(boid)
             boid.phylactere = nearestThinker
-            boid.color = nearestThinker.color
           }
         }
       }
@@ -136,7 +150,6 @@ define(['../settings', '../core/manager', '../core/renderer',
           boid.phylactere.boidList.splice(indexCurrent, 1)
           Manager.player.boidList.push(boid)
           boid.phylactere = Manager.player
-          boid.color = Color.Devil
         }
       }
     }
@@ -144,25 +157,27 @@ define(['../settings', '../core/manager', '../core/renderer',
 
   Logic.BalanceOfPower = function (boid, boidOther)
   {
-    var dist = Utils.distanceBetween(boid, boidOther)
-    var ratio = boid.size / boidOther.size
-    if (boid.size < boidOther.size) {
-      if (boid.phylactere) {
-        if (boid.darkness > boidOther.darkness) {
-          boid.SetDarkness(boid.darkness - Settings.DARKNESS_SPEED / ratio)
-        }
-        else if (boid.darkness < boidOther.darkness) {
-          boid.SetDarkness(boid.darkness + Settings.DARKNESS_SPEED / ratio)
+    if (boid instanceof Phylactere == false && boidOther instanceof Phylactere == false) {
+      var dist = Utils.distanceBetween(boid, boidOther)
+      var ratio = boid.size / boidOther.size
+      if (boid.size < boidOther.size) {
+        if (boid.phylactere) {
+          if (boid.darkness > boidOther.darkness) {
+            boid.SetDarkness(boid.darkness - Settings.DARKNESS_SPEED / ratio)
+          }
+          else if (boid.darkness < boidOther.darkness) {
+            boid.SetDarkness(boid.darkness + Settings.DARKNESS_SPEED / ratio)
+          }
         }
       }
-    }
-    else {
-      if (boidOther.phylactere) {
-        if (boid.darkness < boidOther.darkness) {
-          boidOther.SetDarkness(boidOther.darkness - Settings.DARKNESS_SPEED * ratio)
-        }
-        else if (boid.darkness > boidOther.darkness) {
-          boidOther.SetDarkness(boidOther.darkness + Settings.DARKNESS_SPEED * ratio)
+      else {
+        if (boidOther.phylactere) {
+          if (boid.darkness < boidOther.darkness) {
+            boidOther.SetDarkness(boidOther.darkness - Settings.DARKNESS_SPEED * ratio)
+          }
+          else if (boid.darkness > boidOther.darkness) {
+            boidOther.SetDarkness(boidOther.darkness + Settings.DARKNESS_SPEED * ratio)
+          }
         }
       }
     }

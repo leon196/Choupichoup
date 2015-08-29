@@ -11,7 +11,7 @@ define(['../lib/pixi', '../settings', '../core/manager',
       this.y = Manager.mouse.y
       this.isPlayer = true
       this.SetDarkness(1)
-      this.SetSize(40)
+      this.SetSize(Settings.THINKER_SIZE)
       // this.avoidScale = 0
       this.friction = 0.8
       this.targetScale = 1
@@ -33,8 +33,12 @@ define(['../lib/pixi', '../settings', '../core/manager',
 			this.target.x = Manager.mouse.x
 			this.target.y = Manager.mouse.y
 
-      //
-      this.UpdateTargets()
+			for (var i = 0; i < this.boidList.length; ++i)
+			{
+				var boid = this.boidList[i]
+        boid.target.x = Manager.mouse.x
+        boid.target.y = Manager.mouse.y
+      }
     }
 
   }

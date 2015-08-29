@@ -7,8 +7,12 @@ define(['../lib/pixi', '../settings', '../core/manager',
 	{
 		Boid.call(this)
 
-		// The actual string
-		this.character = Utils.getDefaultIfUndefined(character, Settings.RandomSymbols())
+    var letter = Settings.RandomSymbols()
+    while (letter == '︎' || letter == ' ') {
+      letter = Settings.RandomSymbols()
+    }
+    this.character = letter
+
 		this.size = Settings.MIN_SIZE+Math.random()*(Settings.MAX_SIZE - Settings.MIN_SIZE)
 
 		this.darkness = 0
@@ -52,7 +56,7 @@ define(['../lib/pixi', '../settings', '../core/manager',
 			this.darkness = Utils.clamp(darkness, 0, 1)
 
 			var textStyle = this.text.style
-			textStyle.fill = Color.GetGraySharp(this.darkness)
+			textStyle.fill = "#"+Color.BlendColors(Color.Devil, this.color, this.darkness).toString(16).slice(1)
 			this.text.style = textStyle
 
 			this.bubble.tint = Color.BlendColors(this.color, Color.Devil, this.darkness)// Color.ShadeHexColor('#00FF00', 1 - this.darkness)
