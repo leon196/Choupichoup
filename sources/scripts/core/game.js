@@ -21,16 +21,17 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 		this.timeSpawnDelay = Settings.SPAWN_DELAY + Math.random() * Settings.SPAWN_DELAY
 
 		this.Init = function() {
-			// ☼☾☂☃★☆\n♤♧♡♢\n♚♛♜♝♞♟♔♕♖♗♘♙\n⚀⚂⚁⚃⚄⚅\n
-			this.message = this.SpawnMessage('☻☹✍✎✐✑✒︎✁✂︎✃\n✄⚾︎✇✈︎⚓︎♨︎\n♂♀\n☍✙✧✚☤⚔☸☯☮⚐\n⚒☭☪☬⚑⚗⚖\n')
+			// this.message = this.SpawnMessage('Coucou')
+			this.StartGame()
+			this.gameState = GAME_STATE_PLAY
 		}
 
 		this.StartGame = function() {
 			Manager.player = new Player()
 			Manager.player.Init()
 			this.SpawnThinker('#FCFCFC')
-			this.SpawnThinker('#FCFCFC')
-			this.SpawnThinker('#FCFCFC')
+			// this.SpawnThinker('#FCFCFC')
+			// this.SpawnThinker('#FCFCFC')
 		}
 
 		this.SpawnMessage = function (text) {

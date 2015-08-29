@@ -3,7 +3,8 @@ define(['../base/utils'], function(Utils)
 {
   var Color = {}
 
-  Color.Devil = "#F32B1B"
+  Color.Devil = "#0c0c0c"
+  // Color.Devil = "#F32B1B"
 
   Color.GRID_HEX = 0xFF3434
   Color.GRID_STR = '#FF3434'

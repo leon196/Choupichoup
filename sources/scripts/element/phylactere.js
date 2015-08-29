@@ -15,8 +15,11 @@ function(Settings, renderer, Manager, Utils, Point, Boid, Letter)
 			for (var i = 0; i < count; ++i)
 			{
 				var letter = new Letter()
-				letter.x = this.x
-				letter.y = this.y
+
+				var rndAngle = Math.random() * Utils.PI2
+				letter.x = this.x + Math.cos(rndAngle) * this.size * 2
+				letter.y = this.y + Math.sin(rndAngle) * this.size * 2
+
 				letter.isPlayer = this.isPlayer
 				letter.phylactere = this
 				letter.color = this.color

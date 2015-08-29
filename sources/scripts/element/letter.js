@@ -51,9 +51,9 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		{
 			this.darkness = Utils.clamp(darkness, 0, 1)
 
-			// var textStyle = this.text.style
-			// textStyle.fill = Color.GetGraySharp(this.darkness)
-			// this.text.style = textStyle
+			var textStyle = this.text.style
+			textStyle.fill = Color.GetGraySharp(this.darkness)
+			this.text.style = textStyle
 
 			this.bubble.tint = Color.BlendColors(this.color, Color.Devil, this.darkness)// Color.ShadeHexColor('#00FF00', 1 - this.darkness)
 		}

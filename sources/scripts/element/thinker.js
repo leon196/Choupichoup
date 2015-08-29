@@ -31,12 +31,6 @@ function(PIXI, Settings, renderer, Manager, Phylactere, Utils, Point){
       this.SetSize(50)
       this.SpawnBubbleLetters(Settings.MIN_SPAWN_BUBBLE + Math.floor(Math.random() * (Settings.MAX_SPAWN_BUBBLE - Settings.MIN_SPAWN_BUBBLE)))
 
-      for (var i = 0; i < this.boidList.length; ++i)
-      {
-        this.boidList[i].x = this.x
-        this.boidList[i].y = this.y
-      }
-
       this.timeStart = Manager.timeElapsed
     }
 

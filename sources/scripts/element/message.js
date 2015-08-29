@@ -58,7 +58,6 @@ function(renderer, Manager, Boid, Letter)
 					}
 				}
 				this.lineWidthList.push(lineWidth)
-				console.log(lineWidth);
 				this.lineWidthMax = Math.max(this.lineWidthMax, lineWidth)
 			}
 

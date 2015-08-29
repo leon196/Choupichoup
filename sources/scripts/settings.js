@@ -27,8 +27,8 @@ define([], function()
   Settings.SPAWN_DELAY = 5
   Settings.SPAWN_DURATION = 20
 
-  Settings.MIN_SPAWN_BUBBLE = 6
-  Settings.MAX_SPAWN_BUBBLE = 12
+  Settings.MIN_SPAWN_BUBBLE = 12
+  Settings.MAX_SPAWN_BUBBLE = 24
 
   Settings.OFFSET_OFFSCREN = 100
 
@@ -43,10 +43,15 @@ define([], function()
 
   Settings.FONT_NAME = 'Arial'
   // Settings.SYMBOLS = [→⥇⥈⤔↝⤳☝︎☜⤺☟↯↔︎↕︎↺$€¥¢£₽₩฿₺₮₱₦☞]
-  Settings.SYMBOLS = '☀︎☼☽☾☁︎☂☃★☆☇☈♠︎♣︎♥︎♦︎♤♧♡♢♚♛♜♝♞♟♔♕♖♗♘♙⚀⚂⚁⚃⚄⚅☻☹☺︎☕︎✌︎✍✎✏︎'
-  Settings.currentSymbol = 0
-  Settings.RandomSymbols = function () { return Settings.currentSymbol + ":" + Settings.SYMBOLS.charAt(Settings.currentSymbol++) }
-  //{ return Settings.SYMBOLS.charAt(Math.floor(Settings.SYMBOLS.length * Math.random())) }
+  Settings.SYMBOLS = '▣▤▥▦▧▨▩▲△◆◇◈◉◊◌◍◎◯◐◑◒◓◔◕◧◨◩◪◫◬◭◮\
+  ☻☹✍✎✐✑✒︎✁✂︎✃✄⚾︎✇✈︎⚓︎♨︎♂♀☍✙✧✚☤⚔☸☯☮⚐⚒☭☪☬\
+  ☜☎☑✄☪☣☢☠☭➸✓✕㊚\
+  ❣✚✪✣✤✥✦❉❥❦❧❃❂❁❀\
+  ♥♠♣◆◇♧♤♧♬♪♫☆☀☂☁☮☺☻♂♀❤ツ!#$%↨↑↓ø¤●†✈㊛\
+  ☼☾☂☃★☆♤♧♡♢♚♛♜♝♞♟♔♕♖♗♘'
+  // Settings.currentSymbol = 0
+  Settings.RandomSymbols = function () //{ return Settings.currentSymbol + ":" + Settings.SYMBOLS.charAt(Settings.currentSymbol++) }
+  { return Settings.SYMBOLS.charAt(Math.floor(Settings.SYMBOLS.length * Math.random())) }
 
   return Settings
 })
