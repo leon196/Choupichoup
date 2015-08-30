@@ -26,6 +26,8 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 			var messagePlay = new Message('Play')
 			Manager.AddMessage(messagePlay, renderer.width / 2, renderer.height * 3 / 4, '0xfc0c0c')
 			messagePlay.SetButton(function () {
+				Manager.RemoveMessage(messageTitle)
+				Manager.RemoveMessage(messagePlay)
 				Manager.game.StartGame()
 			})
 		}

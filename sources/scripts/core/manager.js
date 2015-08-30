@@ -51,7 +51,8 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
     Manager.garbageThinkerList.push({thinker:thinker_, index:Manager.thinkerList.indexOf(thinker_)})
   }
 
-  Manager.AddMessage = function (message,x,y,color) {
+  Manager.AddMessage = function (message,x,y,color)
+  {
     message.x = x
     message.y = y
     message.color = color
@@ -59,6 +60,18 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
     message.Update()
     Manager.messageList.push(message)
     return message
+  }
+
+  Manager.RemoveMessage = function (message)
+  {
+    for (var i = 0; i < message.boidList.length; ++i) {
+      var boid = message.boidList[i]
+      Manager.RemoveBoid(boid, Manager.boidList.indexOf(boid))
+    }
+    var idx = Manager.messageList.indexOf(message)
+    if (idx != -1) {
+      Manager.messageList.splice(idx, 1)
+    }
   }
 
   Manager.AddThinker = function (thinker,x,y,color) {
@@ -104,7 +117,11 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
           boid.phylactere.boidList.splice(boid.phylactere.boidList.indexOf(boid), 1)
         }
         Manager.boidList.splice(index, 1)
-        Manager.stage.removeChild(boid)
+        Manager.layerBubbleBack.removeChild(boid.bubbleBack)
+        Manager.layerBubbleFront.removeChild(boid.bubbleFront)
+        Manager.layerBubbleFront.removeChild(boid.bubbleColor)
+        Manager.layerLetter.removeChild(boid.textBack)
+        Manager.layerLetter.removeChild(boid.textFront)
       }
       Manager.garbageList = []
     }
