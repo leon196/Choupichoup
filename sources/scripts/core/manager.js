@@ -8,6 +8,7 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
 
   // Global Lists
   Manager.boidList = []
+  Manager.messageList = []
   Manager.thinkerList = []
 
   // Garbage Lists
@@ -37,14 +38,7 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
 
   Manager.AddBoid = function (boid)
   {
-    Manager.stage.addChild(boid)
     Manager.boidList.push(boid)
-  }
-
-  Manager.AddThinker = function(thinker)
-  {
-    thinker.Init()
-    Manager.thinkerList.push(thinker)
   }
 
   Manager.RemoveBoid = function (boid_, index_)
@@ -55,6 +49,26 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
   Manager.RemoveThinker = function(thinker_)
   {
     Manager.garbageThinkerList.push({thinker:thinker_, index:Manager.thinkerList.indexOf(thinker_)})
+  }
+
+  Manager.AddMessage = function (message,x,y,color) {
+    message.x = x
+    message.y = y
+    message.color = color
+    message.Init()
+    message.Update()
+    Manager.messageList.push(message)
+    return message
+  }
+
+  Manager.AddThinker = function (thinker,x,y,color) {
+    thinker.color = color
+    thinker.anchorX = x
+    thinker.anchorY = y
+    thinker.Init()
+    thinker.Update()
+    Manager.thinkerList.push(thinker)
+    return thinker
   }
 
   Manager.Update = function ()

@@ -15,42 +15,31 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 		this.gameState = GAME_STATE_INTRO
 		this.pause = false
 
-		this.message
-
 		this.timeSpawnStart = 0
 		this.timeSpawnDelay = Settings.SPAWN_DELAY + Math.random() * Settings.SPAWN_DELAY
 
-		this.Init = function() {
-			this.message = this.SpawnMessage('Hi !\nWelcome to\nFloating\nThoughts')
+		this.Init = function()
+		{
+			var messageTitle = new Message('Floating Thoughts\n \na game by Leon\n \nfor Ludum Dare #33')
+			Manager.AddMessage(messageTitle, renderer.width / 2, renderer.height / 2, '0xFCFCFC')
+
+			var messagePlay = new Message('Play')
+			Manager.AddMessage(messagePlay, renderer.width / 2, renderer.height * 3 / 4, '0xfc0c0c')
+			messagePlay.SetButton(function () {
+				Manager.game.StartGame()
+			})
 		}
 
-		this.StartGame = function() {
+		this.StartGame = function()
+		{
 			Manager.player = new Player()
 			Manager.player.Init()
-			this.SpawnThinker(renderer.width / 4, renderer.height / 2, '#FCFCFC')
-			this.SpawnThinker(renderer.width * 2 / 4, renderer.height / 2, '#FCFCFC')
-			this.SpawnThinker(renderer.width * 3 / 4, renderer.height / 2, '#FCFCFC')
-		}
 
-		this.SpawnMessage = function (text) {
-			var message = new Message(text)
-			message.x = renderer.width / 2
-			message.y = renderer.height / 2
-			message.Init()
-			message.Update()
-			return message
-		}
+			Manager.AddThinker(new Thinker(), renderer.width / 4, renderer.height / 2, '#FCFCFC')
+			Manager.AddThinker(new Thinker(), renderer.width * 2 / 4, renderer.height / 2, '#FCFCFC')
+			Manager.AddThinker(new Thinker(), renderer.width * 3 / 4, renderer.height / 2, '#FCFCFC')
 
-		this.SpawnThinker = function (x,y,color) {
-		  var thinker = new Thinker()
-			thinker.color = color
-			thinker.SetDarkness(thinker.darkness - Settings.DARKNESS_SPEED)
-			thinker.anchorX = x
-			thinker.anchorY = y
-			thinker.Init()
-			thinker.Update()
-			Manager.AddThinker(thinker)
-			return thinker
+			this.gameState = GAME_STATE_PLAY
 		}
 
 		this.Update = function ()
@@ -70,8 +59,11 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 					{
 						if (this.pause == false)
 						{
+					    for (var i = 0; i < Manager.messageList.length; ++i) {
+								var message = Manager.messageList[i]
+								message.Update()
+							}
 							// Update boids
-							this.message.Update()
 							Logic.Update()
 						}
 
@@ -110,7 +102,7 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 					default: {}
 				}
 
-		    // Spawn elements
+		    // Add elements
 		    // if (this.timeSpawnStart + this.timeSpawnDelay < Manager.timeElapsed) {
 		    // 	this.SpawnThinker()
 		    // 	this.timeSpawnStart = Manager.timeElapsed

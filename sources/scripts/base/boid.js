@@ -44,6 +44,15 @@ function(PIXI, Settings, renderer, Manager, Point, Utils)
 			this.velocity.y *= this.friction
 		}
 
+		this.BounceAt = function (x, y, radius)
+		{
+			var angle = Math.atan2(this.y - y, this.x - x)
+			this.x = x + Math.cos(angle) * (this.size + radius)
+			this.y = y + Math.sin(angle) * (this.size + radius)
+			this.velocity.x += Math.cos(angle) * this.velocity.magnitude() * this.frictionCollision
+			this.velocity.y += Math.sin(angle) * this.velocity.magnitude() * this.frictionCollision
+		}
+
 		this.BounceFromBoid = function (boid)
 		{
 			var angle = Math.atan2(this.y - boid.y, this.x - boid.x)

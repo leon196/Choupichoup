@@ -1,13 +1,14 @@
 
 define(['../core/renderer', '../core/manager',
-'../settings',
-'../base/boid', '../element/letter'],
-function(renderer, Manager, Settings, Boid, Letter)
+'../settings', '../base/boid', '../element/letter', '../base/Utils'],
+function(renderer, Manager, Settings, Boid, Letter, Utils)
 {
 	var Message = function(text, style)
 	{
 		// Message is root boid
-		Boid.call(this)
+		Letter.call(this)
+
+		this.isButton = false
 
 		// The list of letter boids that make the message
 		this.boidList = []
@@ -21,6 +22,52 @@ function(renderer, Manager, Settings, Boid, Letter)
 		this.offsetX = 0
 		this.offsetY = 0
 		this.letterSize = 32
+
+		this.Update = function ()
+		{
+			this.UpdateTargets()
+		}
+
+		this.UpdateTargets = function ()
+		{
+			for (var i = 0; i < this.boidList.length; ++i)
+			{
+				var boid = this.boidList[i]
+				boid.target.x = boid.gridX + this.x
+				boid.target.y = boid.gridY + this.y
+				if (this.isButton == false) {
+					if (Utils.distanceBetween(boid, Manager.mouse) < 60) {
+						// boid.BounceAt(Manager.mouse.x, Manager.mouse.y, 10)
+						boid.target.x += (boid.x - Manager.mouse.x) * 2
+						boid.target.y += (boid.y - Manager.mouse.y) * 2
+					}
+				}
+				else {
+					if (Utils.distanceBetween(boid, Manager.mouse) < 60) {
+						boid.SetDarkness(boid.darkness + Settings.DARKNESS_SPEED)
+					}
+					else {
+						boid.SetDarkness(boid.darkness - Settings.DARKNESS_SPEED)
+					}
+				}
+			}
+		}
+
+		this.SetButton = function (callback)
+		{
+			this.isButton = true
+			for (var i = 0; i < this.boidList.length; ++i)
+			{
+				var boid = this.boidList[i]
+				boid.bubbleFront.interactive = boid.bubbleFront.buttonMode = true
+				boid.bubbleColor.interactive = boid.bubbleColor.buttonMode = true
+				boid.textFront.interactive = boid.textFront.buttonMode = true
+				boid.bubbleFront.on('mousedown', callback).on('touchstart', callback)
+				boid.bubbleColor.on('mousedown', callback).on('touchstart', callback)
+				boid.textFront.on('mousedown', callback).on('touchstart', callback)
+			}
+
+		}
 
 		this.Init = function ()
 		{
@@ -47,6 +94,7 @@ function(renderer, Manager, Settings, Boid, Letter)
 
 						letter.targetScale = 0.1
 						letter.avoidScale = 0.01
+						letter.SetColor(this.color)
 						letter.SetSize( 16+Math.random()*(Settings.MAX_SIZE - Settings.MIN_SIZE))
 
 						if (wordLetters[idxLetter] == " ") {
@@ -90,22 +138,6 @@ function(renderer, Manager, Settings, Boid, Letter)
 			}
 		}
 
-		this.Update = function ()
-		{
-			this.UpdateTargets()
-		}
-
-		this.UpdateTargets = function ()
-		{
-			// Orbit around phylactere root boid
-			for (var i = 0; i < this.boidList.length; ++i)
-			{
-				var boid = this.boidList[i]
-				boid.target.x = boid.gridX + this.GetX()
-				boid.target.y = boid.gridY + this.GetY()
-			}
-		}
-
 		this.GetX = function ()
 		{
 			return this.x + this.offsetX
@@ -117,7 +149,7 @@ function(renderer, Manager, Settings, Boid, Letter)
 		}
 	}
 
-	Message.prototype = Object.create(Boid.prototype)
+	Message.prototype = Object.create(Letter.prototype)
 	Message.prototype.constructor = Message
 
 	return Message
