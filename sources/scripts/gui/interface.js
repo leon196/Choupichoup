@@ -6,6 +6,11 @@ define(['../lib/pixi', '../base/point', '../core/renderer', '../core/manager',
 	{
 		PIXI.Container.call(this)
 
+    this.backgroundColor = new PIXI.Graphics()
+    this.backgroundColor.beginFill(0xf8ca7c)
+    this.backgroundColor.drawRect(0,0,renderer.width,renderer.height)
+    Manager.layerBackground.addChild(this.backgroundColor)
+
 		this.background = new PIXI.Sprite(PIXI.Texture.fromImage('images/heads.png'))
 		this.background.anchor.x = 0.5
 		this.background.anchor.y = 0.5

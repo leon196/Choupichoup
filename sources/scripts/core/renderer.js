@@ -9,7 +9,7 @@ define(['../lib/pixi'], function(PIXI)
   var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight,
     {
       view: document.getElementById("container")
-      , transparent:true
+      // , transparent:true
       , antialias:true
     })
 

@@ -1,7 +1,7 @@
 
 define(['../lib/pixi', '../settings', '../core/renderer', '../core/manager',
-'../element/phylactere', '../base/utils', '../base/point'],
-function(PIXI, Settings, renderer, Manager, Phylactere, Utils, Point){
+'../element/phylactere', '../base/utils', '../base/point', '../base/color'],
+function(PIXI, Settings, renderer, Manager, Phylactere, Utils, Point, Color){
   var Thinker = function ()
   {
     Phylactere.call(this)
@@ -33,6 +33,12 @@ function(PIXI, Settings, renderer, Manager, Phylactere, Utils, Point){
 
       this.SetSize(Settings.THINKER_SIZE)
       this.SpawnBubbleLetters(Settings.MIN_SPAWN_BUBBLE + Math.floor(Math.random() * (Settings.MAX_SPAWN_BUBBLE - Settings.MIN_SPAWN_BUBBLE)))
+      for (var i = 0; i < this.boidList.length; ++i)
+      {
+        this.boidList[i].SetColorness(0)
+        // this.boidList[i].SetColor(this.color)
+        // this.boidList[i].SetFrontTint(Color.Unknown)
+      }
 
       this.timeStart = Manager.timeElapsed
     }

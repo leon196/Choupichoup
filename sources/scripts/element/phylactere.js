@@ -5,10 +5,10 @@ function(Settings, renderer, Manager, Utils, Point, Boid, Letter)
 {
 	var Phylactere = function()
 	{
-		Letter.call(this, " ")
+		Letter.call(this)
 
 		this.boidList = []
-		this.color = "#FCFCFC"
+		this.color = "0xFCFCFC"
 
 		this.SpawnBubbleLetters = function (count)
 		{
@@ -22,7 +22,7 @@ function(Settings, renderer, Manager, Utils, Point, Boid, Letter)
 
 				letter.isPlayer = this.isPlayer
 				letter.phylactere = this
-				letter.color = this.color
+				letter.SetColor(this.color)
 				this.boidList.push(letter)
 
 				Manager.AddBoid(letter)

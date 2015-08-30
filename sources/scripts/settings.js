@@ -20,7 +20,7 @@ define([], function()
 
   Settings.SCROLL_SPEED = 0.0001
 
-  Settings.DARKNESS_SPEED = 0.05
+  Settings.COLORNESS_SPEED = 0.05
 
   Settings.ORBIT_SCALE = 2
   Settings.ORBIT_SPEED = 0.2

@@ -44,10 +44,10 @@ function(renderer, Manager, Settings, Boid, Letter, Utils)
 				}
 				else {
 					if (Utils.distanceBetween(boid, Manager.mouse) < 60) {
-						boid.SetDarkness(boid.darkness + Settings.DARKNESS_SPEED)
+						boid.SetColorness(boid.colorness + Settings.COLORNESS_SPEED)
 					}
 					else {
-						boid.SetDarkness(boid.darkness - Settings.DARKNESS_SPEED)
+						boid.SetColorness(boid.colorness - Settings.COLORNESS_SPEED)
 					}
 				}
 			}
@@ -95,7 +95,7 @@ function(renderer, Manager, Settings, Boid, Letter, Utils)
 						letter.targetScale = 0.1
 						letter.avoidScale = 0.01
 						letter.SetColor(this.color)
-						letter.SetSize( 16+Math.random()*(Settings.MAX_SIZE - Settings.MIN_SIZE))
+						letter.SetSize( 16+Math.random()*4)
 
 						if (wordLetters[idxLetter] == " ") {
 							letter.SetBubbleVisible(false)
@@ -131,7 +131,7 @@ function(renderer, Manager, Settings, Boid, Letter, Utils)
 
 				// Setup message grid position
 				boid.gridX = lineWidth - this.lineWidthList[currentLine] / 2 + this.letterSize / 2
-				boid.gridY = boid.indexLine * this.letterSize - this.letterSize * this.lines.length / 2
+				boid.gridY = boid.indexLine * this.letterSize / 2 - this.letterSize * this.lines.length / 2
 
 				// Increment
 				lineWidth += boid.size

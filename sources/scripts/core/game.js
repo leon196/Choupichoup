@@ -20,7 +20,7 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 
 		this.Init = function()
 		{
-			var messageTitle = new Message('Floating Thoughts\n \na game by Leon\n \nfor Ludum Dare #33')
+			var messageTitle = new Message('Floating Thoughts\n \na game by Leon\n \nfor Ludum Dare #33\nand Oujevipo #2')
 			Manager.AddMessage(messageTitle, renderer.width / 2, renderer.height / 2, '0xFCFCFC')
 
 			var messagePlay = new Message('Play')
@@ -37,9 +37,9 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 			Manager.player = new Player()
 			Manager.player.Init()
 
-			Manager.AddThinker(new Thinker(), renderer.width / 4, renderer.height / 2, '#FCFCFC')
-			Manager.AddThinker(new Thinker(), renderer.width * 2 / 4, renderer.height / 2, '#FCFCFC')
-			Manager.AddThinker(new Thinker(), renderer.width * 3 / 4, renderer.height / 2, '#FCFCFC')
+			Manager.AddThinker(new Thinker(), renderer.width / 4, renderer.height / 2, '0x3DE300')
+			Manager.AddThinker(new Thinker(), renderer.width * 2 / 4, renderer.height / 2, '0xff0000')
+			Manager.AddThinker(new Thinker(), renderer.width * 3 / 4, renderer.height / 2, '0x00B1B1')
 
 			this.gameState = GAME_STATE_PLAY
 		}
@@ -78,13 +78,13 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 						{
 							// Update Player
 					    Manager.player.Update()
-					    Manager.player.SetDarkness(Manager.player.darkness + Settings.DARKNESS_SPEED)
+					    Manager.player.SetColorness(Manager.player.colorness + Settings.COLORNESS_SPEED)
 
 				    	// Update thinkers
 					    var nearestThinker = null
 					    for (var i = 0; i < Manager.thinkerList.length; ++i) {
 					      var thinker = Manager.thinkerList[i]
-					      thinker.SetDarkness(thinker.darkness - Settings.DARKNESS_SPEED)
+					      thinker.SetColorness(thinker.colorness - Settings.COLORNESS_SPEED)
 					      thinker.Update()
 					      if (nearestThinker) {
 					        if (Utils.distanceBetween(nearestThinker, Manager.player) > Utils.distanceBetween(thinker, Manager.player)) {

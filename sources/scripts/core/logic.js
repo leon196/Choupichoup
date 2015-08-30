@@ -28,8 +28,8 @@ define(['../settings', '../core/manager', '../core/renderer',
       var boidBiggerAndNear = boid;
       var globalCount = 0
       var nearCount = 0
-      var neighborDarkness = 0
-      var neighborDarknessCount = 0
+      var neighborColorness = 0
+      var neighborColornessCount = 0
       for (var other = 0; other < Manager.boidList.length; ++other) {
         if (current != other) {
           var boidOther = Manager.boidList[other]
@@ -115,8 +115,8 @@ define(['../settings', '../core/manager', '../core/renderer',
       // 	}
       // }
 
-      // Check darkness
-      if (boid.isPlayer && boid.darkness <= 0) {
+      // Check colorness
+      if (boid.isPlayer && boid.colorness <= 0) {
         var indexCurrent = Manager.player.boidList.indexOf(boid)
         if (indexCurrent != -1) {
           boid.isPlayer = false
@@ -126,7 +126,7 @@ define(['../settings', '../core/manager', '../core/renderer',
           }
         }
       }
-      else if (boid.isPlayer == false && boid.darkness >= 1 && boid.phylactere) {
+      else if (boid.isPlayer == false && boid.colorness >= 1 && boid.phylactere) {
         var indexCurrent = boid.phylactere.boidList.indexOf(boid)
         if (indexCurrent != -1) {
           boid.isPlayer = true
@@ -144,21 +144,21 @@ define(['../settings', '../core/manager', '../core/renderer',
       var ratio = boid.size / boidOther.size
       if (boid.size < boidOther.size) {
         if (boid.phylactere) {
-          if (boid.darkness > boidOther.darkness) {
-            boid.SetDarkness(boid.darkness - Settings.DARKNESS_SPEED / ratio)
+          if (boid.colorness > boidOther.colorness) {
+            boid.SetColorness(boid.colorness - Settings.COLORNESS_SPEED / ratio)
           }
-          else if (boid.darkness < boidOther.darkness) {
-            boid.SetDarkness(boid.darkness + Settings.DARKNESS_SPEED / ratio)
+          else if (boid.colorness < boidOther.colorness) {
+            boid.SetColorness(boid.colorness + Settings.COLORNESS_SPEED / ratio)
           }
         }
       }
       else {
         if (boidOther.phylactere) {
-          if (boid.darkness < boidOther.darkness) {
-            boidOther.SetDarkness(boidOther.darkness - Settings.DARKNESS_SPEED * ratio)
+          if (boid.colorness < boidOther.colorness) {
+            boidOther.SetColorness(boidOther.colorness - Settings.COLORNESS_SPEED * ratio)
           }
-          else if (boid.darkness > boidOther.darkness) {
-            boidOther.SetDarkness(boidOther.darkness + Settings.DARKNESS_SPEED * ratio)
+          else if (boid.colorness > boidOther.colorness) {
+            boidOther.SetColorness(boidOther.colorness + Settings.COLORNESS_SPEED * ratio)
           }
         }
       }
