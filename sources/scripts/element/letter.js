@@ -7,11 +7,16 @@ define(['../lib/pixi', '../settings', '../core/manager',
 	{
 		Boid.call(this)
 
-    var letter = Settings.RandomSymbols()
-    while (letter == '︎' || letter == ' ') {
-      letter = Settings.RandomSymbols()
+    if (typeof character !== "undefined") {
+      this.character = character
     }
-    this.character = letter
+    else {
+      var letter = Settings.RandomSymbols()
+      while (letter == '︎' || letter == ' ') {
+        letter = Settings.RandomSymbols()
+      }
+      this.character = letter
+    }
 
 		this.size = Settings.MIN_SIZE+Math.random()*(Settings.MAX_SIZE - Settings.MIN_SIZE)
 
@@ -23,7 +28,7 @@ define(['../lib/pixi', '../settings', '../core/manager',
 
 		// Font stuff
 		// var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: Color.GetGraySharp(this.darkness), align: 'left' }
-		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Arial', fill: '#fcfcfc', align: 'left' }
+		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px ' + Settings.FONT_NAME, fill: '#fcfcfc', align: 'left' }
 		// if (typeof style !== 'undefined')
 		// {
 		// 	this.size = style.min+Math.random()*(style.max - style.min)
@@ -32,18 +37,30 @@ define(['../lib/pixi', '../settings', '../core/manager',
 
 		// var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: '020202', align: 'left' }
 
+		// IDs of letter
+		this.indexLine = undefined
+		this.indexWord = undefined
+		this.indexLetter = undefined
+
+		// Game Logic
+		this.isFromMessage = false
+
+		// Position on message grid
+		this.gridX = 0
+		this.gridY = 0
+
 		// The Bubble
-		this.bubbleW = new PIXI.Sprite(PIXI.Texture.fromImage('images/poof.png'))
-		this.bubbleB = new PIXI.Sprite(PIXI.Texture.fromImage('images/poof.png'))
-    this.bubbleB.tint = '0x0c0c0c'
-		this.bubbleW.anchor.x = this.bubbleW.anchor.y = 0.5
-		this.bubbleB.anchor.x = this.bubbleB.anchor.y = 0.5
-		this.bubbleB.rotation = Math.random() * Utils.PI2
-		this.bubbleW.rotation = this.bubbleB.rotation
-		this.bubbleW.width = this.bubbleB.width = this.size * 2
-		this.bubbleW.height = this.bubbleB.height = this.size * 2
-		this.addChild(this.bubbleB)
-		this.addChild(this.bubbleW)
+		this.bubbleBack = new PIXI.Sprite(PIXI.Texture.fromImage('images/poofBack.png'))
+		this.bubbleFront = new PIXI.Sprite(PIXI.Texture.fromImage('images/poofFront.png'))
+		this.bubbleBack.anchor.x = this.bubbleBack.anchor.y = 0.5
+		this.bubbleFront.anchor.x = this.bubbleFront.anchor.y = 0.5
+		this.bubbleFront.rotation = Math.random() * Utils.PI2
+		this.bubbleBack.rotation = this.bubbleFront.rotation
+		this.bubbleBack.width = this.bubbleFront.width = this.size * 2
+		this.bubbleBack.height = this.bubbleFront.height = this.size * 2
+
+    Manager.layerBubbleBack.addChild(this.bubbleBack)
+		Manager.layerBubbleFront.addChild(this.bubbleFront)
 
 		// The Pixi Text display
 		this.textB = new PIXI.Text(this.character, css)
@@ -51,8 +68,15 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		this.textB.tint = '0x0c0c0c'
 		this.textB.anchor.x = this.textB.anchor.y = 0.5
 		this.textW.anchor.x = this.textW.anchor.y = 0.5
-		this.addChild(this.textW)
-		this.addChild(this.textB)
+
+    Manager.layerLetter.addChild(this.textW)
+		Manager.layerLetter.addChild(this.textB)
+
+    this.UpdateDisplay = function ()
+    {
+      this.textW.x = this.textB.x = this.bubbleBack.x = this.bubbleFront.x = this.x
+      this.textW.y = this.textB.y = this.bubbleBack.y = this.bubbleFront.y = this.y
+    }
 
 		this.SetDarkness = function (darkness)
 		{
@@ -64,7 +88,7 @@ define(['../lib/pixi', '../settings', '../core/manager',
 			// this.text.style = textStyle
       this.textB.alpha = 1 - this.darkness
 
-      this.bubbleW.alpha = 1 - this.darkness
+      this.bubbleBack.alpha = 1 - this.darkness
 			// this.bubble.tint = Color.GetGrayHex(1 - this.darkness)
       //Color.BlendColors(this.color, Color.Devil, this.darkness)// Color.ShadeHexColor('#00FF00', 1 - this.darkness)
 		}
@@ -79,21 +103,15 @@ define(['../lib/pixi', '../settings', '../core/manager',
 			this.textB.style = textStyle
 
 			// this.bubble.tint = Color.GetGrayHex(1 - this.darkness)
-  		this.bubbleW.width = this.bubbleB.width = this.size * 2
-  		this.bubbleW.height = this.bubbleB.height = this.size * 2
+  		this.bubbleBack.width = this.bubbleFront.width = this.size * 2
+  		this.bubbleBack.height = this.bubbleFront.height = this.size * 2
 		}
 
-		// IDs of letter
-		this.indexLine = undefined
-		this.indexWord = undefined
-		this.indexLetter = undefined
-
-		// Game Logic
-		this.isFromMessage = false
-
-		// Position on message grid
-		this.gridX = 0
-		this.gridY = 0
+    this.SetBubbleVisible = function (show)
+    {
+      this.bubbleBack.visible = show
+      this.bubbleFront.visible = show
+    }
 	}
 
 	Letter.prototype = Object.create(Boid.prototype)

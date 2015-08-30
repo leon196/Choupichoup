@@ -1,6 +1,6 @@
 
-define(['../lib/pixi', '../base/point', '../core/renderer',
- '../gui/button', '../gui/label'], function(PIXI, Point, renderer, Button, Label)
+define(['../lib/pixi', '../base/point', '../core/renderer', '../core/manager',
+ '../gui/button', '../gui/label'], function(PIXI, Point, renderer, Manager, Button, Label)
 {
 	var Interface = function ()
 	{
@@ -27,7 +27,7 @@ define(['../lib/pixi', '../base/point', '../core/renderer',
 			this.background.width = this.background.height * this.bgAspectRatio
 		}
 		this.background.alpha = 0.5
-		this.addChild(this.background)
+		Manager.layerBackground.addChild(this.background)
 
 		this.buttonList = []
 		this.labelFontSize = 24

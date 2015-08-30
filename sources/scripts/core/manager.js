@@ -25,12 +25,15 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
   Manager.stage = new PIXI.Container()
 
   // Layers
-	Manager.layerBlack = new PIXI.Container()
-	Manager.layerWhite = new PIXI.Container()
-  Manager.layerCollider = new PIXI.Container()
-	Manager.stage.addChild(Manager.layerCollider)
-	Manager.stage.addChild(Manager.layerBlack)
-	Manager.stage.addChild(Manager.layerWhite)
+	Manager.layerBackground = new PIXI.Container()
+	Manager.layerBubbleBack = new PIXI.Container()
+	Manager.layerBubbleFront = new PIXI.Container()
+	Manager.layerLetter = new PIXI.Container()
+
+	Manager.stage.addChild(Manager.layerBackground)
+	Manager.stage.addChild(Manager.layerBubbleBack)
+	Manager.stage.addChild(Manager.layerBubbleFront)
+	Manager.stage.addChild(Manager.layerLetter)
 
   Manager.AddBoid = function (boid)
   {

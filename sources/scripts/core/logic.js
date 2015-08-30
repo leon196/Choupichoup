@@ -17,6 +17,8 @@ define(['../settings', '../core/manager', '../core/renderer',
     {
       var boid = Manager.boidList[current]
 
+      boid.UpdateDisplay()
+
       Logic.vectorNear.x = Logic.vectorNear.y = 0
       Logic.vectorGlobal.x = Logic.vectorGlobal.y = 0
       Logic.vectorAvoid.x = Logic.vectorAvoid.y = 0

@@ -21,9 +21,7 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 		this.timeSpawnDelay = Settings.SPAWN_DELAY + Math.random() * Settings.SPAWN_DELAY
 
 		this.Init = function() {
-			// this.message = this.SpawnMessage('Coucou')
-			this.StartGame()
-			this.gameState = GAME_STATE_PLAY
+			this.message = this.SpawnMessage('Hi !\nWelcome to\nFloating\nThoughts')
 		}
 
 		this.StartGame = function() {

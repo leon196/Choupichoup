@@ -1,7 +1,8 @@
 
 define(['../core/renderer', '../core/manager',
+'../settings',
 '../base/boid', '../element/letter'],
-function(renderer, Manager, Boid, Letter)
+function(renderer, Manager, Settings, Boid, Letter)
 {
 	var Message = function(text, style)
 	{
@@ -45,8 +46,12 @@ function(renderer, Manager, Boid, Letter)
 						letter.isFromMessage = true
 
 						letter.targetScale = 0.1
-						letter.avoidScale = 0
-						letter.SetSize(this.letterSize)
+						letter.avoidScale = 0.01
+						letter.SetSize( 16+Math.random()*(Settings.MAX_SIZE - Settings.MIN_SIZE))
+
+						if (wordLetters[idxLetter] == " ") {
+							letter.SetBubbleVisible(false)
+						}
 
 						// Add to update stack and display
 						Manager.AddBoid(letter)
@@ -77,11 +82,11 @@ function(renderer, Manager, Boid, Letter)
 				}
 
 				// Setup message grid position
-				boid.gridX = lineWidth - this.lineWidthList[currentLine] + this.letterSize / 2
-				boid.gridY = boid.indexLine * this.letterSize * 2 - this.letterSize * this.lines.length / 2
+				boid.gridX = lineWidth - this.lineWidthList[currentLine] / 2 + this.letterSize / 2
+				boid.gridY = boid.indexLine * this.letterSize - this.letterSize * this.lines.length / 2
 
 				// Increment
-				lineWidth += boid.size * 2
+				lineWidth += boid.size
 			}
 		}
 

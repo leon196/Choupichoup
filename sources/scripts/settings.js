@@ -42,7 +42,7 @@ define([], function()
   Settings.BULL_OUTLINE = 2
   Settings.BULL_COLLISION_BIAS = 0.75
 
-  Settings.FONT_NAME = 'Arial'
+  Settings.FONT_NAME = 'DK Liquid Embrace'
   // Settings.SYMBOLS = [→⥇⥈⤔↝⤳☝︎☜⤺☟↯↔︎↕︎↺$€¥¢£₽₩฿₺₮₱₦☞]
   Settings.SYMBOLS = '▣▤▥▦▧▨▩▲△◆◇◈◉◊◌◍◎◯◐◑◒◓◔◕◧◨◩◪◫◬◭◮\
   ☻☹✍✎✐✑✒︎✁✂︎✃✄⚾︎✇✈︎⚓︎♨︎♂♀☍✙✧✚☤⚔☸☯☮⚐⚒☭☪☬\
