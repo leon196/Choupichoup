@@ -8,6 +8,9 @@ define(['../scripts/base/utils'], function(Utils)
 
   Color.Background = 0xf8ca7c
 
+  Color.textFront = "0x0c0c0c"
+  Color.textBack = "0xfcfcfc"
+
   Color.GRID_HEX = 0xFF3434
   Color.GRID_STR = '#FF3434'
   Color.TARGET_HEX = 0xFFD834

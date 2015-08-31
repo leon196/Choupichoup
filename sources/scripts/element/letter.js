@@ -20,7 +20,7 @@ define(['../lib/pixi', '../settings', '../core/manager',
 
 		this.size = Settings.MIN_SIZE+Math.random()*(Settings.MAX_SIZE - Settings.MIN_SIZE)
 
-    this.color = '0x0cfcfc'
+    this.color = '0xfcfcfc'
 		this.colorness = 0
 
 		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px ' + Settings.FONT_NAME, fill: '#fcfcfc', align: 'left' }
@@ -61,7 +61,8 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		// The Pixi Text display
 		this.textFront = new PIXI.Text(this.character, css)
 		this.textBack = new PIXI.Text(this.character, css)
-		this.textFront.tint = '0x0c0c0c'
+		this.textFront.tint = Color.textFront
+		this.textBack.tint = Color.textBack
 		this.textFront.anchor.x = this.textFront.anchor.y = 0.5
 		this.textBack.anchor.x = this.textBack.anchor.y = 0.5
 
@@ -91,7 +92,6 @@ define(['../lib/pixi', '../settings', '../core/manager',
 			this.colorness = Utils.clamp(colorness, 0, 1)
       this.bubbleFront.alpha = 1 - this.colorness
       this.textFront.alpha = 1 - this.colorness
-      // this.bubbleFront.alpha = 1 - this.colorness * 0.5
 		}
 
     this.SetFrontTint = function (color)
