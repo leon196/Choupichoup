@@ -11,7 +11,8 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
   Manager.messageList = []
   Manager.thinkerList = []
 
-  // Garbage Lists
+  // Recycling
+  Manager.addingList = []
   Manager.garbageList = []
   Manager.garbageThinkerList = []
 
@@ -42,7 +43,7 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
 
   Manager.AddBoid = function (boid)
   {
-    Manager.boidList.push(boid)
+    Manager.addingList.push(boid)
   }
 
   Manager.RemoveBoid = function (boid_, index_)
@@ -76,6 +77,7 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
     if (idx != -1) {
       Manager.messageList.splice(idx, 1)
     }
+    Manager.RemoveBoid(message, Manager.boidList.indexOf(message))
   }
 
   Manager.AddThinker = function (thinker,x,y,color) {
@@ -128,6 +130,15 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
         Manager.layerLetter.removeChild(boid.textFront)
       }
       Manager.garbageList = []
+    }
+
+    // Add Boids
+    if (Manager.addingList.length > 0) {
+      for (var i = 0; i < Manager.addingList.length; ++i)
+      {
+        Manager.boidList.push(Manager.addingList[i])
+      }
+      Manager.addingList = []
     }
   }
 

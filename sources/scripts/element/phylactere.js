@@ -7,7 +7,7 @@ function(Settings, renderer, Manager, Utils, Point, Boid, Letter)
 	{
 		Letter.call(this)
 
-		this.bubbleColor.blendMode = PIXI.BLEND_MODES.SCREEN
+		// this.bubbleColor.blendMode = PIXI.BLEND_MODES.SCREEN
     Manager.layerThinker.addChild(this.textBack)
 		Manager.layerThinker.addChild(this.textFront)
 

@@ -6,7 +6,7 @@ function(renderer, Manager, Settings, Boid, Letter, Utils)
 	var Message = function(text, style)
 	{
 		// Message is root boid
-		Letter.call(this)
+		Boid.call(this)
 
 		this.isButton = false
 
@@ -149,7 +149,7 @@ function(renderer, Manager, Settings, Boid, Letter, Utils)
 		}
 	}
 
-	Message.prototype = Object.create(Letter.prototype)
+	Message.prototype = Object.create(Boid.prototype)
 	Message.prototype.constructor = Message
 
 	return Message
