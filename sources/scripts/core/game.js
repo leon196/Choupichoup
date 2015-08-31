@@ -34,13 +34,7 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 			Manager.player = new Player()
 			Manager.player.Init()
 
-			var characterList = Level.GetCharacterList()
-			for (var i = 0; i < characterList.length; ++i) {
-				var character = characterList[i]
-				Manager.AddThinker(new Thinker(),
-				character.x * renderer.width, character.y * renderer.height, 
-				character.size, character.color)
-			}
+			Level.SpawnLevel()
 
 			this.gameState = GAME_STATE_PLAY
 		}

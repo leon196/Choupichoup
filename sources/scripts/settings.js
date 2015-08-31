@@ -8,7 +8,7 @@ define([], function()
   Settings.DEFAULT_FRICTION_COLLISION = 0.9
 
   Settings.MIN_SIZE = 10
-  Settings.MAX_SIZE = 20
+  Settings.MAX_SIZE = 100
   Settings.THINKER_SIZE = 30
   Settings.SPAWN_SIZE = 30
   Settings.SIZE_DEAD = 1

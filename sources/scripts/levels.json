@@ -1,9 +1,11 @@
 [
-  { "characterList" :
+  {
+    "playerSize" : 0.35,
+    "characterList" :
     [
-      { "x": 0.25, "y": 0.65, "size": 0.1, "color": "0x3DE300"},
-      { "x": 0.50, "y": 0.45, "size": 0.2, "color": "0xff0000"},
-      { "x": 0.75, "y": 0.65, "size": 0.3, "color": "0x00B1B1"}
+      { "color": "0x3DE300", "x": 0.25, "y": 0.65, "size": 0.3, "bubbles": [ 0.1, 0.2, 0.15 ] },
+      { "color": "0xff0000", "x": 0.50, "y": 0.45, "size": 0.4, "bubbles": [ 0.1, 0.2, 0.3 ] },
+      { "color": "0x00B1B1", "x": 0.75, "y": 0.65, "size": 0.6, "bubbles": [ 0.3, 0.2, 0.4 ] }
     ]
   }
 ]

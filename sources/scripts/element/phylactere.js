@@ -16,6 +16,22 @@ function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
 		this.boidList = []
 		this.color = "0xFCFCFC"
 
+		this.SpawnBubble = function (size)
+		{
+			var letter = new Letter()
+
+			var rndAngle = Math.random() * Utils.PI2
+			letter.x = this.x + Math.cos(rndAngle) * this.size * 2
+			letter.y = this.y + Math.sin(rndAngle) * this.size * 2
+
+			letter.isPlayer = this.isPlayer
+			letter.phylactere = this
+			letter.SetColor(this.color)
+			letter.SetSize(size)
+			this.boidList.push(letter)
+
+			Manager.AddBoid(letter)
+		}
 		this.SpawnBubbleLetters = function (count)
 		{
 			for (var i = 0; i < count; ++i)
