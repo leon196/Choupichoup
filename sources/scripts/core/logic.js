@@ -35,11 +35,15 @@ define(['../settings', '../core/manager', '../core/renderer',
           var boidOther = Manager.boidList[other]
 
           // Avoid
-          var dist = Utils.distanceBetween(boid, boidOther) - (boid.size + boidOther.size)
+          var distance = Utils.distanceBetween(boid, boidOther)
+          var dist = distance - (boid.size + boidOther.size)
           if (dist < Settings.BULL_COLLISION_BIAS)
           {
-            Logic.vectorAvoid.x += boid.x - boidOther.x
-            Logic.vectorAvoid.y += boid.y - boidOther.y
+            var avoidX = boid.x - boidOther.x
+            var avoidY = boid.y - boidOther.y
+            var angle = Math.atan2(avoidY, avoidX)
+            Logic.vectorAvoid.x += Math.cos(angle) * Math.max(distance, boid.size + boidOther.size)
+            Logic.vectorAvoid.y += Math.sin(angle) * Math.max(distance, boid.size + boidOther.size)
           }
           // Follow Near
           if (dist < Settings.MIN_DIST_TO_FOLLOW) {
