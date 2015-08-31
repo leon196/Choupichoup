@@ -1,22 +1,28 @@
 
-define(['../lib/pixi', '../settings', '../core/renderer', '../core/manager', '../core/game', '../core/keyboard',
+define(['../lib/pixi', '../lib/jquery', '../settings', '../core/renderer',
+'../core/manager', '../core/game', '../core/keyboard', '../core/level',
 '../base/point', '../base/utils', '../color', '../base/boid', '../gui/button', '../gui/interface',
 '../element/letter', '../element/phylactere', '../element/thinker', '../element/player'],
-function(PIXI, Settings, renderer, Manager, Game, Keyboard,
+function(PIXI, $, Settings, renderer, Manager, Game, Keyboard, Level,
 	Point, Utils, Color, Boid, Button, Interface,
 	Letter, Phylactere, Thinker, Player)
 {
 	var Engine = {}
 
 	Engine.assetToLoad = [
-		// Image to load
+		// Images
 		'images/heads.png', 'images/poof.png',
-		// Font to load
-		'fonts/EmojiSymbols-Regular.woff', 'fonts/DK Liquid Embrace.woff']
+		// Fonts
+		'fonts/EmojiSymbols-Regular.woff', 'fonts/DK Liquid Embrace.woff',
+		// Json
+		'scripts/levels.json'	]
 
 	// Asset loader
 	for (var i = 0; i < Engine.assetToLoad.length; ++i) { PIXI.loader.add(Engine.assetToLoad[i]) }
-	PIXI.loader.once('complete', function () { Engine.Init() }).load();
+	PIXI.loader.once('complete', function () {
+		$.getJSON( "scripts/levels.json", function( data ) { Level.data = data });
+		Engine.Init()
+	}).load();
 
 	Engine.Init = function ()
 	{

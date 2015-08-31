@@ -1,9 +1,9 @@
 
 define(['../settings', '../core/renderer', '../core/manager', '../core/logic', '../core/keyboard',
-'../color', '../base/point', '../base/utils',
+'../color', '../base/point', '../base/utils', '../core/level',
 '../element/player', '../element/thinker', '../element/letter', '../element/phylactere', '../element/message'],
 function(Settings, renderer, Manager, Logic, Keyboard,
-	Color, Point, Utils,
+	Color, Point, Utils, Level,
 	Player, Thinker, Letter, Phylactere, Message)
 {
 	const GAME_STATE_INTRO = 0
@@ -14,9 +14,6 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 	{
 		this.gameState = GAME_STATE_INTRO
 		this.pause = false
-
-		this.timeSpawnStart = 0
-		this.timeSpawnDelay = Settings.SPAWN_DELAY + Math.random() * Settings.SPAWN_DELAY
 
 		this.Init = function()
 		{
@@ -37,9 +34,13 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 			Manager.player = new Player()
 			Manager.player.Init()
 
-			Manager.AddThinker(new Thinker(), renderer.width / 4, renderer.height / 2, '0x3DE300')
-			Manager.AddThinker(new Thinker(), renderer.width * 2 / 4, renderer.height / 2, '0xff0000')
-			Manager.AddThinker(new Thinker(), renderer.width * 3 / 4, renderer.height / 2, '0x00B1B1')
+			var characterList = Level.GetCharacterList()
+			for (var i = 0; i < characterList.length; ++i) {
+				var character = characterList[i]
+				Manager.AddThinker(new Thinker(),
+				character.x * renderer.width, character.y * renderer.height, 
+				character.size, character.color)
+			}
 
 			this.gameState = GAME_STATE_PLAY
 		}
