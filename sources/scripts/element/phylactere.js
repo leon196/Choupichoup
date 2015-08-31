@@ -1,7 +1,7 @@
 
-define(['../settings', '../core/renderer', '../core/manager',
+define(['../settings', '../core/renderer', '../core/manager', '../symbol',
 '../base/utils', '../base/point', '../base/boid', '../element/letter'],
-function(Settings, renderer, Manager, Utils, Point, Boid, Letter)
+function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
 {
 	var Phylactere = function()
 	{
@@ -10,6 +10,8 @@ function(Settings, renderer, Manager, Utils, Point, Boid, Letter)
 		// this.bubbleColor.blendMode = PIXI.BLEND_MODES.SCREEN
     Manager.layerThinker.addChild(this.textBack)
 		Manager.layerThinker.addChild(this.textFront)
+
+		this.SetCharacter(Symbol.hearth)
 
 		this.boidList = []
 		this.color = "0xFCFCFC"

@@ -1,8 +1,7 @@
 
 define(['../lib/pixi', '../settings', '../core/manager',
- '../element/phylactere',
- '../base/utils', '../base/boid', '../color'],
- function(PIXI, Settings, Manager, Phylactere, Utils, Boid, Color)
+ '../element/phylactere', '../base/utils', '../base/boid', '../color', '../symbol'],
+ function(PIXI, Settings, Manager, Phylactere, Utils, Boid, Color, Symbol)
 {
 	var Letter = function (character, style)
 	{
@@ -12,32 +11,19 @@ define(['../lib/pixi', '../settings', '../core/manager',
       this.character = character
     }
     else {
-      var letter = Settings.RandomSymbols()
+      var letter = Symbol.GetRandom()
       while (letter == '︎' || letter == ' ') {
-        letter = Settings.RandomSymbols()
+        letter = Symbol.GetRandom()
       }
       this.character = letter
     }
 
 		this.size = Settings.MIN_SIZE+Math.random()*(Settings.MAX_SIZE - Settings.MIN_SIZE)
-    this.color = '0x0c0c0c'
 
+    this.color = '0x0cfcfc'
 		this.colorness = 0
-		this.cloud = []
-		var radius = 5
-		var offsetRadius = 5
-		for (var i = 0; i < 5; ++i) { this.cloud.push({x: Math.random()*offsetRadius, y: Math.random()*offsetRadius, size:Math.random()*radius}) }
 
-		// Font stuff
-		// var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: Color.GetGraySharp(this.colorness), align: 'left' }
 		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px ' + Settings.FONT_NAME, fill: '#fcfcfc', align: 'left' }
-		// if (typeof style !== 'undefined')
-		// {
-		// 	this.size = style.min+Math.random()*(style.max - style.min)
-		// 	css = { font: this.size * Settings.LETTER_FONT_SCALE +'px ' + style.font, fill: style.fill, align: style.align }
-		// }
-
-		// var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px Shadows Into Light', fill: '020202', align: 'left' }
 
 		// IDs of letter
 		this.indexLine = undefined
@@ -75,7 +61,7 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		// The Pixi Text display
 		this.textFront = new PIXI.Text(this.character, css)
 		this.textBack = new PIXI.Text(this.character, css)
-		this.textFront.tint = this.color
+		this.textFront.tint = '0x0c0c0c'
 		this.textFront.anchor.x = this.textFront.anchor.y = 0.5
 		this.textBack.anchor.x = this.textBack.anchor.y = 0.5
 
@@ -86,6 +72,12 @@ define(['../lib/pixi', '../settings', '../core/manager',
     {
       this.textBack.x = this.textFront.x = this.bubbleBack.x = this.bubbleFront.x = this.bubbleColor.x = this.x
       this.textBack.y = this.textFront.y = this.bubbleBack.y = this.bubbleFront.y = this.bubbleColor.y = this.y
+    }
+
+    this.SetCharacter = function(character)
+    {
+      this.character = character
+      this.textFront.text = this.textBack.text = character
     }
 
     this.SetColor = function (color)

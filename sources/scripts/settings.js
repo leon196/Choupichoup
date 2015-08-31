@@ -43,16 +43,6 @@ define([], function()
   Settings.BULL_COLLISION_BIAS = 0.75
 
   Settings.FONT_NAME = 'DK Liquid Embrace'
-  // Settings.SYMBOLS = [→⥇⥈⤔↝⤳☝︎☜⤺☟↯↔︎↕︎↺$€¥¢£₽₩฿₺₮₱₦☞]
-  Settings.SYMBOLS = '▣▤▥▦▧▨▩▲△◆◇◈◉◊◌◍◎◯◐◑◒◓◔◕◧◨◩◪◫◬◭◮\
-  ☻☹✍✎✐✑✒︎✁✂︎✃✄⚾︎✇✈︎⚓︎♨︎♂♀☍✙✧✚☤⚔☸☯☮⚐⚒☭☪☬\
-  ☜☎☑✄☪☣☢☠☭➸✓✕㊚\
-  ❣✚✪✣✤✥✦❉❥❦❧❃❂❁❀\
-  ♥♠♣◆◇♧♤♧♬♪♫☆☀☂☁☮☺☻♂♀❤ツ!#$%↨↑↓ø¤●†✈㊛\
-  ☼☾☂☃★☆♤♧♡♢♚♛♜♝♞♟♔♕♖♗♘'
-  // Settings.currentSymbol = 0
-  Settings.RandomSymbols = function () //{ return Settings.currentSymbol + ":" + Settings.SYMBOLS.charAt(Settings.currentSymbol++) }
-  { return Settings.SYMBOLS.charAt(Math.floor(Settings.SYMBOLS.length * Math.random())) }
 
   return Settings
 })
