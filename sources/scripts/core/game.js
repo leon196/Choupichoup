@@ -1,6 +1,6 @@
 
 define(['../settings', '../core/renderer', '../core/manager', '../core/logic', '../core/keyboard',
-'../base/color', '../base/point', '../base/utils',
+'../color', '../base/point', '../base/utils',
 '../element/player', '../element/thinker', '../element/letter', '../element/phylactere', '../element/message'],
 function(Settings, renderer, Manager, Logic, Keyboard,
 	Color, Point, Utils,

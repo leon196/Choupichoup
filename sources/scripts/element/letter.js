@@ -1,7 +1,8 @@
 
 define(['../lib/pixi', '../settings', '../core/manager',
- '../base/utils', '../base/boid', '../base/color'],
- function(PIXI, Settings, Manager, Utils, Boid, Color)
+ '../element/phylactere',
+ '../base/utils', '../base/boid', '../color'],
+ function(PIXI, Settings, Manager, Phylactere, Utils, Boid, Color)
 {
 	var Letter = function (character, style)
 	{
@@ -78,7 +79,7 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		this.textFront.anchor.x = this.textFront.anchor.y = 0.5
 		this.textBack.anchor.x = this.textBack.anchor.y = 0.5
 
-    // Manager.layerLetter.addChild(this.textBack)
+    Manager.layerLetter.addChild(this.textBack)
 		Manager.layerLetter.addChild(this.textFront)
 
     this.UpdateDisplay = function ()
@@ -97,6 +98,7 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		{
 			this.colorness = Utils.clamp(colorness, 0, 1)
       this.bubbleFront.alpha = 1 - this.colorness
+      this.textFront.alpha = 1 - this.colorness
       // this.bubbleFront.alpha = 1 - this.colorness * 0.5
 		}
 

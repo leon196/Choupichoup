@@ -1,6 +1,6 @@
 
 define(['../lib/pixi', '../settings', '../core/renderer', '../core/manager', '../core/game', '../core/keyboard',
-'../base/point', '../base/utils', '../base/color', '../base/boid', '../gui/button', '../gui/interface',
+'../base/point', '../base/utils', '../color', '../base/boid', '../gui/button', '../gui/interface',
 '../element/letter', '../element/phylactere', '../element/thinker', '../element/player'],
 function(PIXI, Settings, renderer, Manager, Game, Keyboard,
 	Point, Utils, Color, Boid, Button, Interface,

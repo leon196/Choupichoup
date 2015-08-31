@@ -1,13 +1,13 @@
 
-define(['../lib/pixi', '../base/point', '../core/renderer', '../core/manager',
- '../gui/button', '../gui/label'], function(PIXI, Point, renderer, Manager, Button, Label)
+define(['../lib/pixi', '../base/point', '../core/renderer', '../core/manager', '../color',
+ '../gui/button', '../gui/label'], function(PIXI, Point, renderer, Manager, Color, Button, Label)
 {
 	var Interface = function ()
 	{
 		PIXI.Container.call(this)
 
     this.backgroundColor = new PIXI.Graphics()
-    this.backgroundColor.beginFill(0xf8ca7c)
+    this.backgroundColor.beginFill(Color.Background)
     this.backgroundColor.drawRect(0,0,renderer.width,renderer.height)
     Manager.layerBackground.addChild(this.backgroundColor)
 

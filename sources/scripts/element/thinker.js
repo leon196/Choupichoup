@@ -1,6 +1,6 @@
 
 define(['../lib/pixi', '../settings', '../core/renderer', '../core/manager',
-'../element/phylactere', '../base/utils', '../base/point', '../base/color'],
+'../element/phylactere', '../base/utils', '../base/point', '../color'],
 function(PIXI, Settings, renderer, Manager, Phylactere, Utils, Point, Color){
   var Thinker = function ()
   {

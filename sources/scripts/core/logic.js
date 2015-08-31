@@ -1,7 +1,7 @@
 
 define(['../settings', '../core/manager', '../core/renderer',
 '../element/phylactere',
-'../base/utils', '../base/point', '../base/color'], function(Settings, Manager, renderer, Phylactere, Utils, Point, Color)
+'../base/utils', '../base/point', '../color'], function(Settings, Manager, renderer, Phylactere, Utils, Point, Color)
 {
   var Logic = {}
 

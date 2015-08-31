@@ -1,6 +1,6 @@
 
 define(['../lib/pixi', '../settings', '../core/manager',
-'../element/phylactere', '../element/letter', '../base/point', '../base/color'],
+'../element/phylactere', '../element/letter', '../base/point', '../color'],
 function(PIXI, Settings, Manager, Phylactere, Letter, Point, Color){
   var Player = function ()
   {
