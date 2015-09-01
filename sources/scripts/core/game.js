@@ -17,13 +17,17 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 
 		this.Init = function()
 		{
-			var messageTitle = new Message('Floating Thoughts\n \na game by Leon\n \nfor Ludum Dare #33\nand Oujevipo #2')
-			Manager.AddMessage(messageTitle, renderer.width / 2, renderer.height / 2, '0xFCFCFC')
+			var messageTitle = new Message('CHOUPICHOUP', 42)
+			Manager.AddMessage(messageTitle, renderer.width / 2, renderer.height / 4, '0xFCFCFC')
+
+			var messageSubtitle = new Message('a game by Leon\n \nfor Ludum Dare #33\nand Oujevipo #2', 20)
+			Manager.AddMessage(messageSubtitle, renderer.width / 2, renderer.height / 2, '0xFCFCFC')
 
 			var messagePlay = new Message('Play')
 			Manager.AddMessage(messagePlay, renderer.width / 2, renderer.height * 3 / 4, '0xfc0c0c')
 			messagePlay.SetButton(function () {
 				Manager.RemoveMessage(messageTitle)
+				Manager.RemoveMessage(messageSubtitle)
 				Manager.RemoveMessage(messagePlay)
 				Manager.game.StartGame()
 			})

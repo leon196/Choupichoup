@@ -1,7 +1,7 @@
 {
-  "name": "DevilsThoughts",
-  "version": "0.0.1",
-  "description": "Game with Boids engine for Ludum Dare 33",
+  "name": "Choupichoup",
+  "version": "0.5.0",
+  "description": "A game about floating thought with Boids engine for Ludum Dare #33 and Oujevipo #2",
   "main": "Gruntfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
