@@ -12,7 +12,7 @@ function(renderer, Manager, Settings, Boid, Letter, Utils)
 		this.color = "0xfcfcfc"
 		if (typeof size !== "undefined") { this.size = size }
 		if (typeof color !== "undefined") { this.color = color }
-		
+
 		this.isButton = false
 
 		// The list of letter boids that make the message

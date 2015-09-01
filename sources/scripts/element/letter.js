@@ -24,7 +24,7 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		this.colorness = 0
     this.range = 1
 
-		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px ' + Settings.FONT_NAME, fill: '#fcfcfc', align: 'left' }
+		var css = { font: Settings.FONT_SIZE + 'px ' + Settings.FONT_NAME, fill: '#fcfcfc', align: 'left' }
 
 		// IDs of letter
 		this.indexLine = undefined
@@ -42,18 +42,14 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		this.bubbleBack = new PIXI.Sprite(PIXI.Texture.fromImage('images/poofBack.png'))
 		this.bubbleFront = new PIXI.Sprite(PIXI.Texture.fromImage('images/poofFront.png'))
 		this.bubbleColor = new PIXI.Sprite(PIXI.Texture.fromImage('images/poofFront.png'))
-    // this.bubbleFront.tint = '0x0c0c0c'
     this.bubbleColor.tint = this.color
-    // this.bubbleColor.alpha = 1 / 3
     this.bubbleColor.blendMode = PIXI.BLEND_MODES.ADD
+
 		this.bubbleBack.anchor.x = this.bubbleBack.anchor.y = 0.5
 		this.bubbleFront.anchor.x = this.bubbleFront.anchor.y = 0.5
 		this.bubbleColor.anchor.x = this.bubbleColor.anchor.y = 0.5
 		this.bubbleFront.rotation = Math.random() * Utils.PI2
 		this.bubbleBack.rotation = this.bubbleColor.rotation = this.bubbleFront.rotation
-		// this.bubbleBack.width = this.bubbleFront.width = this.size * 2
-		// this.bubbleBack.height = this.bubbleFront.height = this.size * 2
-		// this.bubbleColor.width = this.bubbleColor.height = this.size * 2
 
     Manager.layerBubbleBack.addChild(this.bubbleBack)
 		Manager.layerBubbleFront.addChild(this.bubbleFront)
@@ -103,36 +99,13 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		this.SetSize = function (size)
 		{
 			this.size = size
-
-			var textStyle = this.textBack.style
-			textStyle.font = this.size * Settings.LETTER_FONT_SCALE + 'px ' + Settings.FONT_NAME
-			this.textBack.style = textStyle
-			this.textFront.style = textStyle
-
-      // this.bubbleBack.scale.x = this.bubbleBack.scale.y = this.size / 10
-      // this.bubbleFront.scale.x = this.bubbleFront.scale.y = this.size / 10
-      // this.bubbleColor.scale.x = this.bubbleColor.scale.y = this.size / 10
-  		this.bubbleBack.width = this.bubbleFront.width = this.size * 2
-  		this.bubbleBack.height = this.bubbleFront.height = this.size * 2
-  		this.bubbleColor.width = this.bubbleColor.height = this.size * 2
+      this.SetScale(this.size * 2 / Settings.MAX_SIZE)
 		}
 
 		this.SetRange = function (range)
 		{
       this.range = range
-			this.size = Settings.MIN_SIZE + Settings.MAX_SIZE * this.range / 10
-
-			var textStyle = this.textBack.style
-			textStyle.font = this.size * Settings.LETTER_FONT_SCALE + 'px ' + Settings.FONT_NAME
-			this.textBack.style = textStyle
-			this.textFront.style = textStyle
-
-      // this.bubbleBack.scale.x = this.bubbleBack.scale.y = this.size / 10
-      // this.bubbleFront.scale.x = this.bubbleFront.scale.y = this.size / 10
-      // this.bubbleColor.scale.x = this.bubbleColor.scale.y = this.size / 10
-  		this.bubbleBack.width = this.bubbleFront.width = this.size * 2
-  		this.bubbleBack.height = this.bubbleFront.height = this.size * 2
-  		this.bubbleColor.width = this.bubbleColor.height = this.size * 2
+			this.SetSize(Settings.MIN_SIZE + Settings.MAX_SIZE * this.range / Settings.RANGE_SCALE)
 		}
 
     this.GetRange = function ()
@@ -145,6 +118,20 @@ define(['../lib/pixi', '../settings', '../core/manager',
       this.bubbleBack.visible = show
       this.bubbleFront.visible = show
       this.bubbleColor.visible = show
+    }
+
+    this.UpdateScale = function (ratio)
+    {
+      this.textBack.scale.x = this.textFront.scale.x = this.scaleInitial * ratio
+      this.bubbleBack.scale.x = this.bubbleFront.scale.x = this.bubbleColor.scale.x = this.scaleInitial * ratio
+      this.textBack.scale.y = this.textFront.scale.y = this.scaleInitial * ratio
+      this.bubbleBack.scale.y = this.bubbleFront.scale.y = this.bubbleColor.scale.y = this.scaleInitial * ratio
+    }
+
+    this.SetScale = function (scale)
+    {
+      this.scaleInitial = scale
+      this.UpdateScale(1)
     }
 	}
 

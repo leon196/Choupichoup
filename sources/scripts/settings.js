@@ -5,6 +5,7 @@ define([], function()
 
   Settings.MIN_SIZE = 10
   Settings.MAX_SIZE = 80
+  Settings.RANGE_SCALE = 10
 
   Settings.COLORNESS_SPEED = 0.05
 
@@ -25,9 +26,11 @@ define([], function()
   Settings.DEFAULT_SPEED = 1
   Settings.ORBIT_SCALE = 2
   Settings.ORBIT_SPEED = 0.2
+  Settings.TRANSITION_IMPULSE_SCALE = 200
+  Settings.TRANSITION_UPDATE_SCALE = 100
 
   // Boid display
-  Settings.LETTER_FONT_SCALE = 1.0
+  Settings.FONT_SIZE = 32
   Settings.FONT_NAME = 'DK Liquid Embrace'
 
   return Settings
