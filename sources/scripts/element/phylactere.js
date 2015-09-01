@@ -16,7 +16,7 @@ function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
 		this.boidList = []
 		this.color = "0xFCFCFC"
 
-		this.SpawnBubble = function (size)
+		this.SpawnBubble = function (range)
 		{
 			var letter = new Letter()
 
@@ -27,7 +27,7 @@ function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
 			letter.isPlayer = this.isPlayer
 			letter.phylactere = this
 			letter.SetColor(this.color)
-			letter.SetSize(size)
+			letter.SetRange(range)
 			this.boidList.push(letter)
 
 			Manager.AddBoid(letter)

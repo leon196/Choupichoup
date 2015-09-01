@@ -13,7 +13,6 @@ function(PIXI, Settings, Manager, Phylactere, Letter, Point, Color){
       this.isPlayer = true
       this.SetColorness(1)
       this.SetColor(Color.Player)
-      this.SetSize(Settings.THINKER_SIZE)
       this.avoidScale = 0.05
       this.friction = 0.8
       this.targetScale = 1
@@ -39,6 +38,16 @@ function(PIXI, Settings, Manager, Phylactere, Letter, Point, Color){
         boid.target.x = Manager.mouse.x
         boid.target.y = Manager.mouse.y
       }
+    }
+
+    this.GetRange = function ()
+    {
+      var range = this.range
+			for (var i = 0; i < this.boidList.length; ++i)
+			{
+				range += this.boidList[i].range
+      }
+      return range
     }
 
   }

@@ -1,11 +1,16 @@
 [
   {
-    "playerSize" : 0.35,
+    "playerRange" : 3,
     "characterList" :
     [
-      { "color": "0x3DE300", "x": 0.25, "y": 0.65, "size": 0.3, "bubbles": [ 0.1, 0.2, 0.15 ] },
-      { "color": "0xff0000", "x": 0.50, "y": 0.45, "size": 0.4, "bubbles": [ 0.1, 0.2, 0.3 ] },
-      { "color": "0x00B1B1", "x": 0.75, "y": 0.65, "size": 0.6, "bubbles": [ 0.3, 0.2, 0.4 ] }
+      { "color": "0x3DE300", "x": 0.25, "y": 0.65,
+        "range": 3, "bubbles": [ 1, 2, 1 ] },
+
+      { "color": "0xff0000", "x": 0.50, "y": 0.45,
+        "range": 4, "bubbles": [ 1, 2, 3 ] },
+
+      { "color": "0x00B1B1", "x": 0.75, "y": 0.65,
+        "range": 6, "bubbles": [ 3, 2, 4 ] }
     ]
   }
 ]

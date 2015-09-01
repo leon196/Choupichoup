@@ -18,10 +18,11 @@ define(['../lib/pixi', '../settings', '../core/manager',
       this.character = letter
     }
 
-		this.size = Settings.MIN_SIZE+Math.random()*(Settings.MAX_SIZE - Settings.MIN_SIZE)
-
+		this.size = Settings.MIN_SIZE
     this.color = '0xfcfcfc'
+
 		this.colorness = 0
+    this.range = 1
 
 		var css = { font: this.size * Settings.LETTER_FONT_SCALE +'px ' + Settings.FONT_NAME, fill: '#fcfcfc', align: 'left' }
 
@@ -50,9 +51,9 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		this.bubbleColor.anchor.x = this.bubbleColor.anchor.y = 0.5
 		this.bubbleFront.rotation = Math.random() * Utils.PI2
 		this.bubbleBack.rotation = this.bubbleColor.rotation = this.bubbleFront.rotation
-		this.bubbleBack.width = this.bubbleFront.width = this.size * 2
-		this.bubbleBack.height = this.bubbleFront.height = this.size * 2
-		this.bubbleColor.width = this.bubbleColor.height = this.size * 2
+		// this.bubbleBack.width = this.bubbleFront.width = this.size * 2
+		// this.bubbleBack.height = this.bubbleFront.height = this.size * 2
+		// this.bubbleColor.width = this.bubbleColor.height = this.size * 2
 
     Manager.layerBubbleBack.addChild(this.bubbleBack)
 		Manager.layerBubbleFront.addChild(this.bubbleFront)
@@ -104,15 +105,40 @@ define(['../lib/pixi', '../settings', '../core/manager',
 			this.size = size
 
 			var textStyle = this.textBack.style
-			textStyle.font = size * Settings.LETTER_FONT_SCALE + 'px ' + Settings.FONT_NAME
+			textStyle.font = this.size * Settings.LETTER_FONT_SCALE + 'px ' + Settings.FONT_NAME
 			this.textBack.style = textStyle
 			this.textFront.style = textStyle
 
-			// this.bubble.tint = Color.GetGrayHex(1 - this.colorness)
+      // this.bubbleBack.scale.x = this.bubbleBack.scale.y = this.size / 10
+      // this.bubbleFront.scale.x = this.bubbleFront.scale.y = this.size / 10
+      // this.bubbleColor.scale.x = this.bubbleColor.scale.y = this.size / 10
   		this.bubbleBack.width = this.bubbleFront.width = this.size * 2
   		this.bubbleBack.height = this.bubbleFront.height = this.size * 2
   		this.bubbleColor.width = this.bubbleColor.height = this.size * 2
 		}
+
+		this.SetRange = function (range)
+		{
+      this.range = range
+			this.size = Settings.MIN_SIZE + Settings.MAX_SIZE * this.range / 10
+
+			var textStyle = this.textBack.style
+			textStyle.font = this.size * Settings.LETTER_FONT_SCALE + 'px ' + Settings.FONT_NAME
+			this.textBack.style = textStyle
+			this.textFront.style = textStyle
+
+      // this.bubbleBack.scale.x = this.bubbleBack.scale.y = this.size / 10
+      // this.bubbleFront.scale.x = this.bubbleFront.scale.y = this.size / 10
+      // this.bubbleColor.scale.x = this.bubbleColor.scale.y = this.size / 10
+  		this.bubbleBack.width = this.bubbleFront.width = this.size * 2
+  		this.bubbleBack.height = this.bubbleFront.height = this.size * 2
+  		this.bubbleColor.width = this.bubbleColor.height = this.size * 2
+		}
+
+    this.GetRange = function ()
+    {
+      return this.range
+    }
 
     this.SetBubbleVisible = function (show)
     {

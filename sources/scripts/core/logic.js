@@ -55,6 +55,7 @@ define(['../settings', '../core/manager', '../core/renderer',
           Logic.vectorGlobal.x += boidOther.x
           Logic.vectorGlobal.y += boidOther.y
           ++globalCount
+
           // Absorb
           // var shouldAbsorb = (boid.isPlayer && !boidOther.isPlayer) || (!boid.isPlayer && boidOther.isPlayer)
           if (dist < Settings.MIN_DIST_TO_ABSORB){// && boid.size < boidOther.size) {
@@ -62,6 +63,8 @@ define(['../settings', '../core/manager', '../core/renderer',
           }
         }
       }
+
+      Logic.CheckColorness(boid, nearestThinker)
 
       if (globalCount != 0) {
         Logic.vectorGlobal.x = Logic.vectorGlobal.x / globalCount - boid.x
@@ -97,47 +100,6 @@ define(['../settings', '../core/manager', '../core/renderer',
         boid.x = Utils.clamp(boid.x, 0, renderer.width)
         boid.y = Utils.clamp(boid.y, 0, renderer.height)
       }
-
-      // Collision with player
-      // else {
-      //
-      // 	if (Manager.player.circleCollision(boid))
-      // 	{
-      // 		boid.BounceFromBoid(Manager.player)
-      // 		Logic.BalanceOfPower(boid, Manager.player)
-      // 	}
-      // 	else {
-      // 		for (var c = 0; c < Manager.player.boidList.length; ++c) {
-      // 			var collider = Manager.player.boidList[c]
-      // 			if (collider.circleCollision(boid)) {
-      // 				// Bounce collision
-      // 				boid.BounceFromBoid(collider)
-      // 				Logic.BalanceOfPower(boid, Manager.player)
-      // 				break;
-      // 			}
-      // 		}
-      // 	}
-      // }
-
-      // Check colorness
-      if (boid.isPlayer && boid.colorness <= 0) {
-        var indexCurrent = Manager.player.boidList.indexOf(boid)
-        if (indexCurrent != -1) {
-          boid.isPlayer = false
-          Manager.player.boidList.splice(indexCurrent, 1)
-          if (nearestThinker) {
-            nearestThinker.Absorb(boid)
-          }
-        }
-      }
-      else if (boid.isPlayer == false && boid.colorness >= 1 && boid.phylactere) {
-        var indexCurrent = boid.phylactere.boidList.indexOf(boid)
-        if (indexCurrent != -1) {
-          boid.isPlayer = true
-          boid.phylactere.boidList.splice(indexCurrent, 1)
-          Manager.player.Absorb(boid)
-        }
-      }
     }
   }
 
@@ -146,7 +108,9 @@ define(['../settings', '../core/manager', '../core/renderer',
     // if (boid instanceof Phylactere == false && boidOther instanceof Phylactere == false) {
       var dist = Utils.distanceBetween(boid, boidOther)
       var ratio = boid.size / boidOther.size
-      if (boid.size < boidOther.size) {
+      var currentRange = boid.GetRange()
+      var otherRange = boidOther.GetRange()
+      if (currentRange < otherRange) {
         if (boid.phylactere) {
           if (boid.colorness > boidOther.colorness) {
             boid.SetColorness(boid.colorness - Settings.COLORNESS_SPEED / ratio)
@@ -156,7 +120,7 @@ define(['../settings', '../core/manager', '../core/renderer',
           }
         }
       }
-      else {
+      else if (currentRange > otherRange) {
         if (boidOther.phylactere) {
           if (boid.colorness < boidOther.colorness) {
             boidOther.SetColorness(boidOther.colorness - Settings.COLORNESS_SPEED * ratio)
@@ -167,6 +131,28 @@ define(['../settings', '../core/manager', '../core/renderer',
         }
       }
     // }
+  }
+
+  Logic.CheckColorness = function (boid, nearestThinker)
+  {
+    if (boid.isPlayer && boid.colorness <= 0) {
+      var indexCurrent = Manager.player.boidList.indexOf(boid)
+      if (indexCurrent != -1) {
+        boid.isPlayer = false
+        Manager.player.boidList.splice(indexCurrent, 1)
+        if (nearestThinker) {
+          nearestThinker.Absorb(boid)
+        }
+      }
+    }
+    else if (boid.isPlayer == false && boid.colorness >= 1 && boid.phylactere) {
+      var indexCurrent = boid.phylactere.boidList.indexOf(boid)
+      if (indexCurrent != -1) {
+        boid.isPlayer = true
+        boid.phylactere.boidList.splice(indexCurrent, 1)
+        Manager.player.Absorb(boid)
+      }
+    }
   }
 
   return Logic
