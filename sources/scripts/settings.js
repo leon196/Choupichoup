@@ -33,5 +33,10 @@ define([], function()
   Settings.FONT_SIZE = 32
   Settings.FONT_NAME = 'DK Liquid Embrace'
 
+	Settings.GAME_STATE_INTRO = 0
+	Settings.GAME_STATE_PLAY = 1
+	Settings.GAME_STATE_OVER = 2
+	Settings.GAME_STATE_TRANSITION = 3
+
   return Settings
 })

@@ -1,19 +1,14 @@
 
 define(['../settings', '../core/renderer', '../core/manager', '../core/logic', '../core/keyboard',
-'../color', '../base/point', '../base/utils', '../core/level', '../core/animation',
+'../color', '../base/point', '../base/utils', '../core/level', '../core/animation', '../core/transition',
 '../element/player', '../element/thinker', '../element/letter', '../element/phylactere', '../element/message'],
 function(Settings, renderer, Manager, Logic, Keyboard,
-	Color, Point, Utils, Level, Animation,
+	Color, Point, Utils, Level, Animation, Transition,
 	Player, Thinker, Letter, Phylactere, Message)
 {
-	const GAME_STATE_INTRO = 0
-	const GAME_STATE_PLAY = 1
-	const GAME_STATE_OVER = 2
-	const GAME_STATE_TRANSITION = 3
-
 	var Game = function ()
 	{
-		this.gameState = GAME_STATE_INTRO
+		this.gameState = Settings.GAME_STATE_INTRO
 		this.pause = false
 
 		this.Init = function()
@@ -27,39 +22,21 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 			var messagePlay = new Message('Play')
 			Manager.AddMessage(messagePlay, renderer.width / 2, renderer.height * 3 / 4, '0xfc0c0c')
 			messagePlay.SetButton(function () {
-				Manager.game.StartTransitionOut()
-				Animation.Add(5,
-					function(ratio){
-						for (var i = 0; i < Manager.boidList.length; ++i) {
-							var boid = Manager.boidList[i]
-							boid.UpdateScale(1 - ratio)
-							var ratio2 = Math.min(ratio * 10, 1)
-							var targetX = Utils.mix(boid.x - renderer.width / 2, renderer.width / 2 - boid.x, ratio2)
-							var targetY = Utils.mix(boid.y - renderer.height / 2, renderer.height / 2 - boid.y, ratio2)
-							// var dist = Utils.Distance(boid.x, boid.y, renderer.width, renderer.height)
-							var angle = Math.atan2(targetY, targetX)
-							boid.target.x = boid.x + Math.cos(angle) * Settings.TRANSITION_UPDATE_SCALE
-							boid.target.y = boid.y + Math.sin(angle) * Settings.TRANSITION_UPDATE_SCALE
-						}
-					},
+	    	Manager.game.gameState = Settings.GAME_STATE_TRANSITION
+				Transition.StartOut()
+				Animation.Add(2, Transition.UpdateOut,
 					function() {
 						Manager.RemoveMessage(messageTitle)
 						Manager.RemoveMessage(messageSubtitle)
 						Manager.RemoveMessage(messagePlay)
 						Manager.game.StartGame()
+						Manager.game.gameState = Settings.GAME_STATE_PLAY
+						Transition.StartIn()
+						Animation.Add(2, Transition.UpdateIn,
+							function() {
+							})
 					})
 			})
-		}
-
-		this.StartTransitionOut = function ()
-		{
-			for (var i = 0; i < Manager.boidList.length; ++i) {
-				var boid = Manager.boidList[i]
-				var angle = Math.random() * Utils.PI2
-				boid.velocity.x = Math.cos(angle) * Settings.TRANSITION_IMPULSE_SCALE
-				boid.velocity.y = Math.sin(angle) * Settings.TRANSITION_IMPULSE_SCALE
-			}
-			this.gameState = GAME_STATE_TRANSITION
 		}
 
 		this.StartGame = function()
@@ -67,8 +44,6 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 			Manager.player = new Player()
 			Manager.player.Init()
 			Level.SpawnLevel()
-
-			this.gameState = GAME_STATE_PLAY
 		}
 
 		this.Update = function ()
@@ -77,15 +52,9 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 		    Manager.Update()
 				Animation.Update()
 
-				if (Keyboard.P.down)
-				{
-					this.pause = !this.pause
-					Keyboard.P.down = false
-				}
-
 				switch (this.gameState)
 				{
-					case GAME_STATE_INTRO:
+					case Settings.GAME_STATE_INTRO:
 					{
 						if (this.pause == false)
 						{
@@ -100,14 +69,19 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 						break;
 					}
 
-					case GAME_STATE_TRANSITION:
+					case Settings.GAME_STATE_TRANSITION:
 					{
 						Logic.Update()
 						break;
 					}
 
-					case GAME_STATE_PLAY:
+					case Settings.GAME_STATE_PLAY:
 					{
+						if (Keyboard.P.down)
+						{
+							this.pause = !this.pause
+							Keyboard.P.down = false
+						}
 						if (this.pause == false)
 						{
 							// Update Player

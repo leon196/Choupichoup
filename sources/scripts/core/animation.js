@@ -54,9 +54,9 @@ define(['../core/manager', '../base/utils'], function(Manager, Utils)
       for (var i = Animation.garbage.length - 1; i >= 0; --i)
       {
         var animIndex = Animation.garbage[i]
-        Animation.list.slice(animIndex, 1)
+        Animation.list.splice(animIndex, 1)
       }
-      Animation.list = []
+      Animation.garbage = []
     }
   }
 
