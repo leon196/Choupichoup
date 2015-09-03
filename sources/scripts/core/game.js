@@ -13,29 +13,29 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 
 		this.Init = function()
 		{
-			var messageTitle = new Message('CHOUPICHOUP', 42)
+			var messageTitle = new Message('CHOUPICHOUP', 30)
 			Manager.AddMessage(messageTitle, renderer.width / 2, renderer.height / 4, '0xFCFCFC')
 
-			var messageSubtitle = new Message('a game by Leon\n \nfor Ludum Dare #33\nand Oujevipo #2', 20)
+			var messageSubtitle = new Message('a game by Leon\n \nfor Ludum Dare #33\nand Oujevipo #2', 15)
 			Manager.AddMessage(messageSubtitle, renderer.width / 2, renderer.height / 2, '0xFCFCFC')
 
-			var messagePlay = new Message('Play')
+			var messagePlay = new Message('Play', 20)
 			Manager.AddMessage(messagePlay, renderer.width / 2, renderer.height * 3 / 4, '0xfc0c0c')
 			messagePlay.SetButton(function () {
-	    	Manager.game.gameState = Settings.GAME_STATE_TRANSITION
-				Transition.StartOut()
-				Animation.Add(2, Transition.UpdateOut,
-					function() {
-						Manager.RemoveMessage(messageTitle)
-						Manager.RemoveMessage(messageSubtitle)
-						Manager.RemoveMessage(messagePlay)
-						Manager.game.StartGame()
-						Manager.game.gameState = Settings.GAME_STATE_PLAY
-						Transition.StartIn()
-						Animation.Add(2, Transition.UpdateIn,
-							function() {
-							})
-					})
+				if (Manager.game.gameState != Settings.GAME_STATE_TRANSITION) {
+		    	Manager.game.gameState = Settings.GAME_STATE_TRANSITION
+					Transition.StartOut()
+					Animation.Add(Transition.delayOut, Transition.UpdateOut,
+						function() {
+								Manager.RemoveMessage(messageTitle)
+								Manager.RemoveMessage(messageSubtitle)
+								Manager.RemoveMessage(messagePlay)
+								Manager.game.StartGame()
+								Manager.game.gameState = Settings.GAME_STATE_PLAY
+								Transition.StartIn()
+								Animation.Add(2, Transition.UpdateIn)
+						})
+					}
 			})
 		}
 
@@ -62,7 +62,6 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 								var message = Manager.messageList[i]
 								message.Update()
 							}
-							// Update boids
 							Logic.Update()
 						}
 
@@ -84,11 +83,9 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 						}
 						if (this.pause == false)
 						{
-							// Update Player
 					    Manager.player.Update()
 					    Manager.player.SetColorness(Manager.player.colorness + Settings.COLORNESS_SPEED)
 
-				    	// Update thinkers
 					    var nearestThinker = null
 					    for (var i = 0; i < Manager.thinkerList.length; ++i) {
 					      var thinker = Manager.thinkerList[i]
@@ -103,13 +100,11 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 					      }
 					    }
 
-							// Update boids
 							Logic.Update(nearestThinker)
 						}
 						break;
 					}
-
-					default: {}
+					default: { break; }
 				}
 		}
 	}

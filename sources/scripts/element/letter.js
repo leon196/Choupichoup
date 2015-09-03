@@ -60,6 +60,8 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		this.textBack = new PIXI.Text(this.character, css)
 		this.textFront.tint = Color.textFront
 		this.textBack.tint = Color.textBack
+		this.textFront.blendMode = PIXI.BLEND_MODES.MULTIPLY
+		this.textBack.blendMode = PIXI.BLEND_MODES.ADD
 		this.textFront.anchor.x = this.textFront.anchor.y = 0.5
 		this.textBack.anchor.x = this.textBack.anchor.y = 0.5
 

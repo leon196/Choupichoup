@@ -37,7 +37,7 @@ define(['../settings', '../core/manager', '../core/renderer',
           // Avoid
           var distance = Utils.distanceBetween(boid, boidOther)
           var dist = distance - (boid.size + boidOther.size)
-          if (dist < Settings.BULL_COLLISION_BIAS)
+          if (dist < Settings.COLLISION_BIAS)
           {
             var avoidX = boid.x - boidOther.x
             var avoidY = boid.y - boidOther.y

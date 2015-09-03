@@ -4,7 +4,7 @@ define([], function()
   var Settings = {}
 
   Settings.MIN_SIZE = 10
-  Settings.MAX_SIZE = 80
+  Settings.MAX_SIZE = 30
   Settings.RANGE_SCALE = 10
 
   Settings.COLORNESS_SPEED = 0.05
@@ -18,7 +18,7 @@ define([], function()
   // Boid condition rules
   Settings.MIN_DIST_TO_FOLLOW = 30
   Settings.MIN_DIST_TO_ABSORB = 20
-  Settings.BULL_COLLISION_BIAS = 0.75
+  Settings.COLLISION_BIAS = 0.75
   Settings.DEFAULT_FRICTION = 0.98
   Settings.DEFAULT_FRICTION_COLLISION = 0.9
 
