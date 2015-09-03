@@ -27,7 +27,7 @@ function(Manager, renderer, Thinker, Settings)
 
   Level.GetCurrent = function ()
   {
-    return Level.data[Level.currentLevel]
+    return Level.data["levelList"][Level.currentLevel]
   }
 
   Level.GetCharacterList = function ()
@@ -37,7 +37,11 @@ function(Manager, renderer, Thinker, Settings)
 
   Level.GetPlayerRange = function ()
   {
-    return Level.GetCurrent()["playerRange"]
+    if (Level.GetCurrent().hasOwnProperty("playerRange")) {
+      return Level.GetCurrent()["playerRange"]
+    } else {
+      return Level.data["playerRange"]
+    }
   }
 
   return Level

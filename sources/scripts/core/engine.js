@@ -20,8 +20,11 @@ function(PIXI, $, Settings, renderer, Manager, Game, Keyboard, Level,
 	// Asset loader
 	for (var i = 0; i < Engine.assetToLoad.length; ++i) { PIXI.loader.add(Engine.assetToLoad[i]) }
 	PIXI.loader.once('complete', function () {
-		$.getJSON( "scripts/levels.json", function( data ) { Level.data = data });
-		Engine.Init()
+		$.getJSON( "scripts/levels.json", function( data ) {
+			Level.data = data
+			Engine.Init()
+			console.log(data)
+		});
 	}).load();
 
 	Engine.Init = function ()
