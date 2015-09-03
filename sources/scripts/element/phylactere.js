@@ -14,6 +14,8 @@ function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
 
 		this.boidList = []
 		this.color = "0xFCFCFC"
+    this.hearthColor = "0xff0000"
+    this.satisfied = false
 
 		this.SpawnBubble = function (range)
 		{
@@ -50,13 +52,6 @@ function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
 			}
 		}
 
-		this.Absorb = function (boid)
-		{
-			boid.phylactere = this
-			boid.avoidScale = this.avoidScale
-			this.boidList.push(boid)
-		}
-
 		this.UpdateTargets = function ()
 		{
 			// Orbit around phylactere root boid
@@ -70,6 +65,10 @@ function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
 				var orbitScale = Utils.clamp(this.velocity.magnitude(), 0, 1) * Settings.ORBIT_SCALE
 				boid.target.x = (right.x * orbitScale + norm.x * dist) * Settings.ORBIT_SPEED + boid.x
 				boid.target.y = (right.y * orbitScale + norm.y * dist) * Settings.ORBIT_SPEED + boid.y
+
+				if (this.satisfied) {
+					boid.Boogie()
+				}
 			}
 		}
 

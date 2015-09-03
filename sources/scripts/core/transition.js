@@ -20,7 +20,7 @@ function(Manager, renderer, Utils, Settings)
     }
   }
 
-  Transition.delayOut = 3
+  Transition.delayOut = 5
 
   Transition.StartOut = function ()
   {
@@ -31,6 +31,16 @@ function(Manager, renderer, Utils, Settings)
       boid.velocity.y = Math.sin(angle) * Settings.TRANSITION_IMPULSE_SCALE
       boid.target.x = renderer.width / 2
       boid.target.y = renderer.height / 2
+    }
+  }
+
+  Transition.StartNext = function ()
+  {
+    for (var i = 0; i < Manager.boidList.length; ++i) {
+      var boid = Manager.boidList[i]
+      var angle = Math.random() * Utils.PI2
+      boid.velocity.x = Math.cos(angle) * Settings.TRANSITION_IMPULSE_SCALE
+      boid.velocity.y = Math.sin(angle) * Settings.TRANSITION_IMPULSE_SCALE
     }
   }
 

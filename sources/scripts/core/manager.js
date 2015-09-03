@@ -80,14 +80,14 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
     Manager.RemoveBoid(message, Manager.boidList.indexOf(message))
   }
 
-  Manager.AddThinker = function (thinker,x,y,range,color)
+  Manager.AddThinker = function (thinker,x,y,range,color,hearthColor)
   {
     thinker.color = color
+    thinker.hearthColor = hearthColor
     thinker.SetRange(range)
-    thinker.anchorX = x
-    thinker.anchorY = y
+    thinker.x = x
+    thinker.y = y
     thinker.Init()
-    thinker.Update()
     Manager.thinkerList.push(thinker)
     return thinker
   }

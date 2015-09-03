@@ -135,7 +135,7 @@ define(['../settings', '../core/manager', '../core/renderer',
 
   Logic.CheckColorness = function (boid, nearestThinker)
   {
-    if (boid.isPlayer && boid.colorness <= 0) {
+    if (boid.isPlayer && boid.colorness <= 0 && boid.phylactere) {
       var indexCurrent = Manager.player.boidList.indexOf(boid)
       if (indexCurrent != -1) {
         boid.isPlayer = false

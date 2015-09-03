@@ -3,7 +3,7 @@ define(['../scripts/base/utils'], function(Utils)
 {
   var Color = {}
 
-  Color.Player = "0xFF3434"
+  Color.Player = "0x0c0c0c"
   Color.Unknown = "0x3c3c3c"
 
   Color.Background = 0xf8ca7c

@@ -46,66 +46,98 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 			Level.SpawnLevel()
 		}
 
+		this.StartWinning = function ()
+		{
+			Manager.game.gameState = Settings.GAME_STATE_TRANSITION
+			Transition.StartOut()
+
+			Animation.Add(Transition.delayOut, Transition.UpdateOut,
+				function() {
+					if (Level.HasMore()) {
+				    for (var i = 0; i < Manager.thinkerList.length; ++i) {
+				      var thinker = Manager.thinkerList[i]
+							Manager.RemoveThinker(thinker)
+						}
+				    for (var i = 0; i < Manager.player.boidList.length; ++i) {
+				      var boid = Manager.player.boidList[i]
+							Manager.RemoveBoid(boid, Manager.boidList.indexOf(boid))
+						}
+						Manager.Update()
+						++Level.currentLevel
+						Level.SpawnLevel()
+						Manager.game.gameState = Settings.GAME_STATE_PLAY
+						Transition.StartNext()
+						Animation.Add(2, Transition.UpdateIn)
+					}
+				})
+		}
+
 		this.Update = function ()
 		{
-		    Manager.timeElapsed = new Date() / 1000 - Manager.timeStarted;
-		    Manager.Update()
-				Animation.Update()
+	    Manager.timeElapsed = new Date() / 1000 - Manager.timeStarted;
+	    Manager.Update()
+			Animation.Update()
 
-				switch (this.gameState)
+			switch (this.gameState)
+			{
+				case Settings.GAME_STATE_INTRO:
 				{
-					case Settings.GAME_STATE_INTRO:
+					if (this.pause == false)
 					{
-						if (this.pause == false)
-						{
-					    for (var i = 0; i < Manager.messageList.length; ++i) {
-								var message = Manager.messageList[i]
-								message.Update()
-							}
-							Logic.Update()
+				    for (var i = 0; i < Manager.messageList.length; ++i) {
+							var message = Manager.messageList[i]
+							message.Update()
 						}
-
-						break;
-					}
-
-					case Settings.GAME_STATE_TRANSITION:
-					{
 						Logic.Update()
-						break;
 					}
 
-					case Settings.GAME_STATE_PLAY:
-					{
-						if (Keyboard.P.down)
-						{
-							this.pause = !this.pause
-							Keyboard.P.down = false
-						}
-						if (this.pause == false)
-						{
-					    Manager.player.Update()
-					    Manager.player.SetColorness(Manager.player.colorness + Settings.COLORNESS_SPEED)
-
-					    var nearestThinker = null
-					    for (var i = 0; i < Manager.thinkerList.length; ++i) {
-					      var thinker = Manager.thinkerList[i]
-					      thinker.SetColorness(thinker.colorness - Settings.COLORNESS_SPEED)
-					      thinker.Update()
-					      if (nearestThinker) {
-					        if (Utils.distanceBetween(nearestThinker, Manager.player) > Utils.distanceBetween(thinker, Manager.player)) {
-					          nearestThinker = thinker
-					        }
-					      } else {
-					        nearestThinker = thinker
-					      }
-					    }
-
-							Logic.Update(nearestThinker)
-						}
-						break;
-					}
-					default: { break; }
+					break;
 				}
+
+				case Settings.GAME_STATE_TRANSITION:
+				{
+					Logic.Update()
+					break;
+				}
+
+				case Settings.GAME_STATE_PLAY:
+				{
+					if (Keyboard.P.down)
+					{
+						this.pause = !this.pause
+						Keyboard.P.down = false
+					}
+					if (this.pause == false)
+					{
+				    Manager.player.Update()
+
+						var thinkersAreSatisfied = true
+				    var nearestThinker = null
+				    for (var i = 0; i < Manager.thinkerList.length; ++i) {
+				      var thinker = Manager.thinkerList[i]
+				      thinker.Update()
+							if (thinker.satisfied == false) {
+								thinkersAreSatisfied = false
+							}
+							if (nearestThinker) {
+				        if (Utils.distanceBetween(nearestThinker, Manager.player) > Utils.distanceBetween(thinker, Manager.player)) {
+				          nearestThinker = thinker
+				        }
+				      } else {
+				        nearestThinker = thinker
+				      }
+				    }
+
+						Logic.Update(nearestThinker)
+
+						if (thinkersAreSatisfied) {
+							this.StartWinning()
+						}
+					}
+					break;
+				}
+				default: { break; }
+			}
 		}
 	}
 

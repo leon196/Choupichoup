@@ -26,6 +26,13 @@ function(PIXI, Settings, Manager, Phylactere, Letter, Point, Color){
       }
     }
 
+		this.Absorb = function (boid)
+		{
+			boid.phylactere = this
+			boid.unknown = false
+			this.boidList.push(boid)
+		}
+
     this.Update = function ()
     {
 			// Move to mouse

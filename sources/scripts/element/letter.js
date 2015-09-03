@@ -23,6 +23,7 @@ define(['../lib/pixi', '../settings', '../core/manager',
 
 		this.colorness = 0
     this.range = 1
+    this.unknown = true
 
 		var css = { font: Settings.FONT_SIZE + 'px ' + Settings.FONT_NAME, fill: '#fcfcfc', align: 'left' }
 
@@ -31,8 +32,6 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		this.indexWord = undefined
 		this.indexLetter = undefined
 
-		// Game Logic
-		this.isFromMessage = false
 
 		// Position on message grid
 		this.gridX = 0
@@ -48,8 +47,6 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		this.bubbleBack.anchor.x = this.bubbleBack.anchor.y = 0.5
 		this.bubbleFront.anchor.x = this.bubbleFront.anchor.y = 0.5
 		this.bubbleColor.anchor.x = this.bubbleColor.anchor.y = 0.5
-		this.bubbleFront.rotation = Math.random() * Utils.PI2
-		this.bubbleBack.rotation = this.bubbleColor.rotation = this.bubbleFront.rotation
 
     Manager.layerBubbleBack.addChild(this.bubbleBack)
 		Manager.layerBubbleFront.addChild(this.bubbleFront)
@@ -60,8 +57,6 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		this.textBack = new PIXI.Text(this.character, css)
 		this.textFront.tint = Color.textFront
 		this.textBack.tint = Color.textBack
-		this.textFront.blendMode = PIXI.BLEND_MODES.MULTIPLY
-		this.textBack.blendMode = PIXI.BLEND_MODES.ADD
 		this.textFront.anchor.x = this.textFront.anchor.y = 0.5
 		this.textBack.anchor.x = this.textBack.anchor.y = 0.5
 
@@ -72,6 +67,14 @@ define(['../lib/pixi', '../settings', '../core/manager',
     {
       this.textBack.x = this.textFront.x = this.bubbleBack.x = this.bubbleFront.x = this.bubbleColor.x = this.x
       this.textBack.y = this.textFront.y = this.bubbleBack.y = this.bubbleFront.y = this.bubbleColor.y = this.y
+    }
+
+    this.Boogie = function ()
+    {
+      // this.textBack.scale.x = this.textFront.scale.x =
+      this.bubbleBack.scale.x = this.bubbleFront.scale.x = this.bubbleColor.scale.x = this.scaleInitial + Math.cos(Manager.timeElapsed * Settings.BOOGIE_SPEED) * Settings.BOOGIE_SCALE
+      // this.textBack.scale.y = this.textFront.scale.y = 
+      this.bubbleBack.scale.y = this.bubbleFront.scale.y = this.bubbleColor.scale.y = this.scaleInitial - Math.cos(Manager.timeElapsed * Settings.BOOGIE_SPEED) * Settings.BOOGIE_SCALE
     }
 
     this.SetCharacter = function(character)
@@ -89,8 +92,10 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		this.SetColorness = function (colorness)
 		{
 			this.colorness = Utils.clamp(colorness, 0, 1)
-      this.bubbleFront.alpha = 1 - this.colorness
-      this.textFront.alpha = 1 - this.colorness
+      if (this.unknown) {
+        this.bubbleFront.alpha = 1 - this.colorness
+        this.textFront.alpha = 1 - this.colorness
+      }
 		}
 
     this.SetFrontTint = function (color)

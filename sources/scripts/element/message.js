@@ -48,7 +48,6 @@ function(renderer, Manager, Settings, Boid, Letter, Utils)
 						// Letter logic
 						letter.indexLine = idxLine
 						letter.indexLetter = idxLetter
-						letter.isFromMessage = true
 
 						letter.targetScale = 0.1
 						letter.avoidScale = 0.01

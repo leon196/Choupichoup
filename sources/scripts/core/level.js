@@ -16,7 +16,7 @@ function(Manager, renderer, Thinker, Settings)
 			var character = characterList[i]
 			var thinker = Manager.AddThinker(new Thinker(),
 			character.x * renderer.width, character.y * renderer.height,
-      character.range, character.color)
+      character.range, character.color, character.hearthColor)
 
       for (var b = 0; b < character.bubbles.length; ++b) {
         var range = character.bubbles[b]
@@ -25,9 +25,19 @@ function(Manager, renderer, Thinker, Settings)
 		}
   }
 
+  Level.HasMore = function ()
+  {
+    return Level.currentLevel < Level.GetLevels().length - 1
+  }
+
+  Level.GetLevels = function ()
+  {
+    return Level.data["levelList"]
+  }
+
   Level.GetCurrent = function ()
   {
-    return Level.data["levelList"][Level.currentLevel]
+    return Level.GetLevels()[Level.currentLevel]
   }
 
   Level.GetCharacterList = function ()
