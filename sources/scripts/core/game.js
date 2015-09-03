@@ -54,17 +54,9 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 			Animation.Add(Transition.delayOut, Transition.UpdateOut,
 				function() {
 					if (Level.HasMore()) {
-				    for (var i = 0; i < Manager.thinkerList.length; ++i) {
-				      var thinker = Manager.thinkerList[i]
-							Manager.RemoveThinker(thinker)
-						}
-				    for (var i = 0; i < Manager.player.boidList.length; ++i) {
-				      var boid = Manager.player.boidList[i]
-							Manager.RemoveBoid(boid, Manager.boidList.indexOf(boid))
-						}
-						Manager.Update()
+				    Manager.ClearAll()
 						++Level.currentLevel
-						Level.SpawnLevel()
+						Manager.game.StartGame()
 						Manager.game.gameState = Settings.GAME_STATE_PLAY
 						Transition.StartNext()
 						Animation.Add(2, Transition.UpdateIn)

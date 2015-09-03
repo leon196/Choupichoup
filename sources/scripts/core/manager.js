@@ -92,6 +92,15 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
     return thinker
   }
 
+  Manager.ClearBoid = function (boid)
+  {
+    Manager.layerBubbleBack.removeChild(boid.bubbleBack)
+    Manager.layerBubbleFront.removeChild(boid.bubbleFront)
+    Manager.layerBubbleColor.removeChild(boid.bubbleColor)
+    Manager.layerLetter.removeChild(boid.textBack)
+    Manager.layerLetter.removeChild(boid.textFront)
+  }
+
   Manager.Update = function ()
   {
     // Clean Thinkers
@@ -124,12 +133,8 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
         if (boid.phylactere) {
           boid.phylactere.boidList.splice(boid.phylactere.boidList.indexOf(boid), 1)
         }
+        Manager.ClearBoid(boid)
         Manager.boidList.splice(index, 1)
-        Manager.layerBubbleBack.removeChild(boid.bubbleBack)
-        Manager.layerBubbleFront.removeChild(boid.bubbleFront)
-        Manager.layerBubbleColor.removeChild(boid.bubbleColor)
-        Manager.layerLetter.removeChild(boid.textBack)
-        Manager.layerLetter.removeChild(boid.textFront)
       }
       Manager.garbageList = []
     }
@@ -142,6 +147,16 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
       }
       Manager.addingList = []
     }
+  }
+
+  Manager.ClearAll = function ()
+  {
+    for (var i = 0; i < Manager.boidList.length; ++i)
+    {
+      var boid = Manager.boidList[i]
+      Manager.ClearBoid(boid)
+    }
+    Manager.boidList = []
   }
 
   return Manager
