@@ -47,16 +47,6 @@ function(PIXI, Settings, Manager, Phylactere, Letter, Point, Color){
       }
     }
 
-    this.GetRange = function ()
-    {
-      var range = this.range
-			for (var i = 0; i < this.boidList.length; ++i)
-			{
-				range += this.boidList[i].range
-      }
-      return range
-    }
-
   }
 
   Player.prototype = Object.create(Phylactere.prototype)

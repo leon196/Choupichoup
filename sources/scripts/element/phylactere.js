@@ -72,6 +72,16 @@ function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
 			}
 		}
 
+    this.GetRange = function ()
+    {
+      var range = this.range
+			for (var i = 0; i < this.boidList.length; ++i)
+			{
+				range += this.boidList[i].range
+      }
+      return range
+    }
+
 		this.Clear = function ()
 		{
 			for (var i = 0; i < this.boidList.length; ++i)

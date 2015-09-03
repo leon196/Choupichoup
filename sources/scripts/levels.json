@@ -14,6 +14,16 @@
 
     ,{"characterList":[
 
+      {"color":"0x3DE300","hearthColor":"0xff0000"
+        ,"x":0.4,"y":0.6
+        ,"range":4,"bubbles":[2,1,1,1]}
+      ,{"color":"0xff0000","hearthColor":"0x3DE300"
+        ,"x":0.75,"y":0.75
+        ,"range":4,"bubbles":[6]}
+    ]}
+
+    ,{"characterList":[
+
       {"color":"0x3DE300"
         ,"x":0.25,"y":0.65
         ,"range":4,"bubbles":[1,2,3,1,1,1]}
