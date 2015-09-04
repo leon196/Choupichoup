@@ -1,9 +1,15 @@
 
-define(['lib/pixi', 'base/point', 'gui/button', 'base/renderer', 'gui/label'], function(PIXI, Point, Button, renderer, Label)
+define(['../lib/pixi', '../base/point', '../core/renderer', '../core/manager', '../color',
+ '../gui/button', '../gui/label'], function(PIXI, Point, renderer, Manager, Color, Button, Label)
 {
 	var Interface = function ()
 	{
 		PIXI.Container.call(this)
+
+    this.backgroundColor = new PIXI.Graphics()
+    this.backgroundColor.beginFill(Color.Background)
+    this.backgroundColor.drawRect(0,0,renderer.width,renderer.height)
+    Manager.layerBackground.addChild(this.backgroundColor)
 
 		this.background = new PIXI.Sprite(PIXI.Texture.fromImage('images/heads.png'))
 		this.background.anchor.x = 0.5
@@ -26,7 +32,7 @@ define(['lib/pixi', 'base/point', 'gui/button', 'base/renderer', 'gui/label'], f
 			this.background.width = this.background.height * this.bgAspectRatio
 		}
 		this.background.alpha = 0.5
-		this.addChild(this.background)
+		Manager.layerBackground.addChild(this.background)
 
 		this.buttonList = []
 		this.labelFontSize = 24

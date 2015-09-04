@@ -1,22 +1,24 @@
 
-define(['base/utils'], function(Utils)
+define(['../scripts/base/utils'], function(Utils)
 {
   var Color = {}
 
-  Color.Devil = "#F32B1B"
+  Color.Player = "0x0c0c0c"
+  Color.Unknown = "0x3c3c3c"
 
-  Color.GRID_HEX = 0xFF3434
-  Color.GRID_STR = '#FF3434'
-  Color.TARGET_HEX = 0xFFD834
-  Color.TARGET_STR = '#FFD834'
-  Color.AVOID_HEX = 0x5B40D5
-  Color.AVOID_STR = '#5B40D5'
+  Color.Background = 0xf8ca7c
+
+  Color.textFront = "0x0c0c0c"
+  Color.textBack = "0xfcfcfc"
+
+  Color.TARGET_HEX = 0x00B1B1
+  Color.TARGET_STR = '#00B1B1'
+  Color.AVOID_HEX = 0xFF3434
+  Color.AVOID_STR = '#FF3434'
   Color.NEAR_HEX = 0x2FE42F
   Color.NEAR_STR = '#2FE42F'
-  Color.GLOBAL_HEX = 0xDE2DA8
-  Color.GLOBAL_STR = '#DE2DA8'
-  Color.BOID_HEX = 0x3E3175
-  Color.BOID_STR = '#3E3175'
+  Color.GLOBAL_HEX = 0xFFD834
+  Color.GLOBAL_STR = '#FFD834'
 
   Color.grayListHex = [0x000000, 0x111111, 0x222222, 0x333333, 0x444444, 0x555555, 0x666666, 0x777777, 0x888888, 0x999999, 0xAAAAAA, 0xBBBBBB, 0xCCCCCC, 0xDDDDDD, 0xEEEEEE, 0xFFFFFF]
   Color.grayListSharp = ['#000000', '#111111', '#222222', '#333333', '#444444', '#555555', '#666666', '#777777', '#888888', '#999999', '#AAAAAA', '#BBBBBB', '#CCCCCC', '#DDDDDD', '#EEEEEE', '#FFFFFF']

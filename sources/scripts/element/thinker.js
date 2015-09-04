@@ -1,101 +1,70 @@
 
-define(['lib/pixi', 'gui/phylactere', 'base/renderer', 'manager', 'settings', 'base/utils', 'base/point'], function(PIXI, Phylactere, renderer, Manager, Settings, Utils, Point){
+define(['../lib/pixi', '../settings', '../core/renderer', '../core/manager', '../core/animation',
+'../element/phylactere', '../base/utils', '../base/point', '../color'],
+function(PIXI, Settings, renderer, Manager, Animation, Phylactere, Utils, Point, Color){
   var Thinker = function ()
   {
     Phylactere.call(this)
 
-    this.css = { min:Settings.MIN_SIZE, max:Settings.MAX_SIZE, font: 'Shadows Into Light', fill: '#020202', align: 'left' }
-
-    this.timeStart = 0
-    this.timeDelay = Settings.SPAWN_DURATION + Math.random() * Settings.SPAWN_DURATION
-
-    this.moveFrom = new Point()
-    this.moveTo = new Point()
-
-    this.anchor = new Point()
-    this.orbitRadius = 40
+    this.targetScale = 0.1
+    this.avoidScale = Settings.THINKER_AVOID_SCALE
 
     this.Init = function ()
     {
       Manager.AddBoid(this)
 
-      this.x = renderer.width / 2
-      this.y = renderer.height / 2
-      // this.target.x = this.x
-      // this.target.y = this.y
-      // this.anchor.x = this.x
-      // this.anchor.y = this.y
-      this.targetScale = 0.01
-
-      // this.avoidScale = 0
-      this.SetSize(50)
-      this.SpawnBubbleLetters(Settings.MIN_SPAWN_BUBBLE + Math.floor(Math.random() * (Settings.MAX_SPAWN_BUBBLE - Settings.MIN_SPAWN_BUBBLE)))
-
-      for (var i = 0; i < this.boidList.length; ++i)
-      {
-        this.boidList[i].x = this.x
-        this.boidList[i].y = this.y
-      }
+      this.target.x = this.x
+      this.target.y = this.y
 
       this.timeStart = Manager.timeElapsed
     }
 
+		this.Absorb = function (boid)
+		{
+			boid.phylactere = this
+			this.boidList.push(boid)
+      if (this.revealed && !this.satisfied) {
+        for (var i = 0; i < this.boidList.length; ++i) {
+          var boid = this.boidList[i]
+          if (boid.color == this.hearthColor) {
+            this.satisfied = true
+            break
+          }
+        }
+      }
+		}
+
+    this.Resorb = function (boid)
+    {
+      this.boidList.splice(this.boidList.indexOf(boid), 1)
+      if (this.boidList.length == 0) {
+        this.satisfied = false
+      }
+    }
+
     this.Update = function ()
     {
-      this.Move()
       this.UpdateTargets()
-    }
 
-    this.Move = function ()
-    {
-      // this.x += this.velocity.x * 0.1;
-      // this.y += this.velocity.y * 0.1;
-    }
-
-    this.SetupPassage = function()
-    {
-      var horizontal = Math.random() > 0.5
-      if (horizontal) {
-        var left = Math.random() > 0.5
-        if (left) {
-          this.moveFrom.x = -Settings.OFFSET_OFFSCREN
-          this.moveFrom.y = Math.random() * renderer.height
-          this.moveTo.x = renderer.width + Settings.OFFSET_OFFSCREN
-          this.moveTo.y = Math.random() * renderer.height
-        }
-        else {
-          this.moveFrom.x = renderer.width + Settings.OFFSET_OFFSCREN
-          this.moveFrom.y = Math.random() * renderer.height
-          this.moveTo.x = -Settings.OFFSET_OFFSCREN
-          this.moveTo.y = Math.random() * renderer.height
-        }
-      }
-      else {
-        var top = Math.random() > 0.5
-        if (top) {
-          this.moveFrom.x = Math.random() * renderer.width
-          this.moveFrom.y = -Settings.OFFSET_OFFSCREN
-          this.moveTo.x = Math.random() * renderer.width
-          this.moveTo.y = renderer.height + Settings.OFFSET_OFFSCREN
-        }
-        else {
-          this.moveFrom.x = Math.random() * renderer.width
-          this.moveFrom.y = renderer.height + Settings.OFFSET_OFFSCREN
-          this.moveTo.x = Math.random() * renderer.width
-          this.moveTo.y = -Settings.OFFSET_OFFSCREN
-        }
-      }
-    }
-
-    this.UpdatePassage = function ()
-    {
-      var ratio = Utils.clamp((Manager.timeElapsed - this.timeStart) / this.timeDelay, 0, 1)
-      if (ratio >= 1)
+      if (this.satisfied)
       {
-        Manager.RemoveThinker(this)
+        this.Boogie()
       }
-      this.target.x = Utils.mix(this.moveFrom.x, this.moveTo.x, ratio)
-      this.target.y = Utils.mix(this.moveFrom.y, this.moveTo.y, ratio)
+
+      // Reveal hearth color
+      if (this.unknown && this.boidList.length == 0)
+      {
+        this.unknown = false
+        this.bubbleColor.tint = this.hearthColor
+        var self = this
+        Animation.Add(3,
+          function(ratio){
+            self.bubbleFront.alpha = 1 - ratio
+            self.textFront.alpha = 1 - ratio
+          }, function(){
+            self.revealed = true
+          })
+      }
     }
   }
 

@@ -1,5 +1,5 @@
 
-define(['base/utils'], function(Utils)
+define(['../base/utils'], function(Utils)
 {
 	var Point = function(x, y)
 	{

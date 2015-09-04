@@ -1,5 +1,7 @@
 
-define(['lib/pixi', 'base/renderer', 'base/point', 'settings', 'base/utils', 'manager'], function(PIXI, renderer, Point, Settings, Utils, Manager)
+define(['../lib/pixi', '../settings', '../core/renderer', '../core/manager',
+'../base/point', '../base/utils', '../color'],
+function(PIXI, Settings, renderer, Manager, Point, Utils, Color)
 {
 	var Boid = function()
 	{
@@ -27,6 +29,13 @@ define(['lib/pixi', 'base/renderer', 'base/point', 'settings', 'base/utils', 'ma
 		this.nearScale = Settings.DEFAULT_NEAR_SCALE
 		this.globalScale = Settings.DEFAULT_GLOBAL_SCALE
 
+		this.arrowTarget = new PIXI.Graphics()
+		this.arrowAvoid = new PIXI.Graphics()
+		Utils.DrawArrow(this.arrowTarget, {x:0,y:0}, {x:1,y:0}, 50, 5, Color.TARGET_HEX)
+		Utils.DrawArrow(this.arrowAvoid, {x:0,y:0}, {x:1,y:0}, 50, 5, Color.AVOID_HEX)
+		this.addChild(this.arrowTarget)
+		this.addChild(this.arrowAvoid)
+
 		this.update = function(moveX, moveY)
 		{
 			// Accumulate velocity
@@ -34,12 +43,21 @@ define(['lib/pixi', 'base/renderer', 'base/point', 'settings', 'base/utils', 'ma
 			this.velocity.y += moveY
 
 			// Apply
-			this.x += this.velocity.x * this.speed / Math.max(Settings.MIN_SIZE, this.size)
-			this.y += this.velocity.y * this.speed / Math.max(Settings.MIN_SIZE, this.size)
+			this.x += this.velocity.x * this.speed / Math.max(1, this.size)
+			this.y += this.velocity.y * this.speed / Math.max(1, this.size)
 
 			// Friction
 			this.velocity.x *= this.friction
 			this.velocity.y *= this.friction
+		}
+
+		this.BounceAt = function (x, y, radius)
+		{
+			var angle = Math.atan2(this.y - y, this.x - x)
+			this.x = x + Math.cos(angle) * (this.size + radius)
+			this.y = y + Math.sin(angle) * (this.size + radius)
+			this.velocity.x += Math.cos(angle) * this.velocity.magnitude() * this.frictionCollision
+			this.velocity.y += Math.sin(angle) * this.velocity.magnitude() * this.frictionCollision
 		}
 
 		this.BounceFromBoid = function (boid)
@@ -54,13 +72,11 @@ define(['lib/pixi', 'base/renderer', 'base/point', 'settings', 'base/utils', 'ma
 		this.Grow = function (current)
 		{
 			this.size += Settings.SIZE_DELTA
-			Manager.drawer.redraw(Manager.boidList.indexOf(this))
 		}
 
 		this.Shrink = function (current)
 		{
 			this.size = Math.max(Settings.SIZE_DEAD, this.size - Settings.SIZE_DELTA)
-			Manager.drawer.redraw(current)
 		}
 
 		this.Rumble = function ()

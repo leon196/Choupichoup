@@ -35,3 +35,11 @@ http://emojisymbols.com/
     text-decoration: none;
     font-style: normal;
 }
+
+
+@font-face {
+    font-family: 'DKLiquidEmbrace';
+    src: url('fonts/DK Liquid Embrace.woff') format('woff');
+    text-decoration: none;
+    font-style: normal;
+}
