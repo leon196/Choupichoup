@@ -111,53 +111,48 @@ define(['../settings', '../core/manager', '../core/renderer',
 
   Logic.BalanceOfPower = function (boid, boidOther)
   {
-    // if (boid instanceof Phylactere == false && boidOther instanceof Phylactere == false) {
-      var dist = Utils.distanceBetween(boid, boidOther)
-      // var ratio = boid.size / boidOther.size
-      var currentRange = boid.GetRange()
-      var otherRange = boidOther.GetRange()
-      if (currentRange < otherRange) {
-        if (boid.phylactere) {
-          if (boid.colorness > boidOther.colorness) {
-            boid.SetColorness(boid.colorness - Settings.COLORNESS_SPEED)// / ratio)
-          }
-          else if (boid.colorness < boidOther.colorness) {
-            boid.SetColorness(boid.colorness + Settings.COLORNESS_SPEED)// / ratio)
-          }
+    // Thinker is in transition
+    if ((!boid.phylactere && !boid.unknown && !boid.revealed)
+      || (!boidOther.phylactere && !boidOther.unknown && !boidOther.revealed)) {
+      return
+    }
+    var dist = Utils.distanceBetween(boid, boidOther)
+    // var ratio = boid.size / boidOther.size
+    var currentRange = boid.GetRange()
+    var otherRange = boidOther.GetRange()
+    if (currentRange < otherRange) {
+      if (boid.phylactere) {
+        if (boid.colorness > boidOther.colorness) {
+          boid.SetColorness(boid.colorness - Settings.COLORNESS_SPEED)// / ratio)
+        }
+        else if (boid.colorness < boidOther.colorness) {
+          boid.SetColorness(boid.colorness + Settings.COLORNESS_SPEED)// / ratio)
         }
       }
-      else if (currentRange > otherRange) {
-        if (boidOther.phylactere) {
-          if (boid.colorness < boidOther.colorness) {
-            boidOther.SetColorness(boidOther.colorness - Settings.COLORNESS_SPEED)// * ratio)
-          }
-          else if (boid.colorness > boidOther.colorness) {
-            boidOther.SetColorness(boidOther.colorness + Settings.COLORNESS_SPEED)// * ratio)
-          }
+    }
+    else if (currentRange > otherRange) {
+      if (boidOther.phylactere) {
+        if (boid.colorness < boidOther.colorness) {
+          boidOther.SetColorness(boidOther.colorness - Settings.COLORNESS_SPEED)// * ratio)
+        }
+        else if (boid.colorness > boidOther.colorness) {
+          boidOther.SetColorness(boidOther.colorness + Settings.COLORNESS_SPEED)// * ratio)
         }
       }
-    // }
+    }
   }
 
   Logic.CheckColorness = function (boid, nearestThinker)
   {
     if (boid.isPlayer && boid.colorness <= 0 && boid.phylactere) {
-      var indexCurrent = Manager.player.boidList.indexOf(boid)
-      if (indexCurrent != -1) {
-        boid.isPlayer = false
-        Manager.player.boidList.splice(indexCurrent, 1)
-        if (nearestThinker) {
-          nearestThinker.Absorb(boid)
-        }
+      if (nearestThinker && (nearestThinker.unknown || nearestThinker.revealed)) {
+        Manager.player.Resorb(boid)
+        nearestThinker.Absorb(boid)
       }
     }
     else if (boid.isPlayer == false && boid.colorness >= 1 && boid.phylactere) {
-      var indexCurrent = boid.phylactere.boidList.indexOf(boid)
-      if (indexCurrent != -1) {
-        boid.isPlayer = true
-        boid.phylactere.boidList.splice(indexCurrent, 1)
-        Manager.player.Absorb(boid)
-      }
+      boid.phylactere.Resorb(boid)
+      Manager.player.Absorb(boid)
     }
   }
 

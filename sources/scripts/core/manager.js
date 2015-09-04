@@ -161,6 +161,7 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
       Manager.ClearBoid(boid)
     }
     Manager.boidList = []
+    Manager.thinkerList = []
   }
 
   return Manager

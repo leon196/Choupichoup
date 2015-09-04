@@ -28,10 +28,17 @@ function(PIXI, Settings, Manager, Phylactere, Letter, Point, Color){
 
 		this.Absorb = function (boid)
 		{
+      boid.isPlayer = true
 			boid.phylactere = this
 			boid.unknown = false
 			this.boidList.push(boid)
 		}
+
+    this.Resorb = function (boid)
+    {
+      boid.isPlayer = false
+      this.boidList.splice(this.boidList.indexOf(boid), 1)
+    }
 
     this.Update = function ()
     {

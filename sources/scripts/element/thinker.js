@@ -23,7 +23,7 @@ function(PIXI, Settings, renderer, Manager, Animation, Phylactere, Utils, Point,
 		{
 			boid.phylactere = this
 			this.boidList.push(boid)
-      if (!this.unknown && !this.satisfied) {
+      if (this.revealed && !this.satisfied) {
         for (var i = 0; i < this.boidList.length; ++i) {
           var boid = this.boidList[i]
           if (boid.color == this.hearthColor) {
@@ -33,6 +33,14 @@ function(PIXI, Settings, renderer, Manager, Animation, Phylactere, Utils, Point,
         }
       }
 		}
+
+    this.Resorb = function (boid)
+    {
+      this.boidList.splice(this.boidList.indexOf(boid), 1)
+      if (this.boidList.length == 0) {
+        this.satisfied = false
+      }
+    }
 
     this.Update = function ()
     {
@@ -54,7 +62,7 @@ function(PIXI, Settings, renderer, Manager, Animation, Phylactere, Utils, Point,
             self.bubbleFront.alpha = 1 - ratio
             self.textFront.alpha = 1 - ratio
           }, function(){
-
+            self.revealed = true
           })
       }
     }

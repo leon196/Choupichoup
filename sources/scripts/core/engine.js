@@ -23,7 +23,6 @@ function(PIXI, $, Settings, renderer, Manager, Game, Keyboard, Level,
 		$.getJSON( "scripts/levels.json", function( data ) {
 			Level.data = data
 			Engine.Init()
-			console.log(data)
 		});
 	}).load();
 
@@ -37,6 +36,8 @@ function(PIXI, $, Settings, renderer, Manager, Game, Keyboard, Level,
 		Engine.interface.addButton("Code Sources", function () {}, "https://github.com/leon196/BubbleLetter")
 		Engine.interface.addButton("by Leon", function () {}, "http://leon196.github.io")
 		Manager.stage.addChild(Engine.interface)
+
+		Manager.layerDebug.visible = false
 
 		// Interactivity
 		Manager.stage.interactive = true

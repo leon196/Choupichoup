@@ -4,6 +4,13 @@
   [
     {"characterList":[
 
+      {"color":"0xff0000","hearthColor":"0xff0000"
+        ,"x":0.5,"y":0.5
+        ,"range":4,"bubbles":[1,1,1]}
+    ]}
+
+    ,{"characterList":[
+
       {"color":"0x3DE300","hearthColor":"0xff0000"
         ,"x":0.25,"y":0.5
         ,"range":4,"bubbles":[1]}

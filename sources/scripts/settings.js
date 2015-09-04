@@ -10,8 +10,8 @@ define([], function()
   Settings.COLORNESS_SPEED = 0.05
 
   // Boid ratio rules
-  Settings.DEFAULT_TARGET_SCALE = 0.05
-  Settings.DEFAULT_AVOID_SCALE = 0.3
+  Settings.DEFAULT_TARGET_SCALE = 0.1
+  Settings.DEFAULT_AVOID_SCALE = 0.1
   Settings.DEFAULT_GLOBAL_SCALE = 0.0001
   Settings.DEFAULT_NEAR_SCALE = 0.0001
 
@@ -21,7 +21,7 @@ define([], function()
   Settings.MIN_DIST_TO_FOLLOW = 30
   Settings.MIN_DIST_TO_ABSORB = 20
   Settings.COLLISION_BIAS = 1
-  Settings.DEFAULT_FRICTION = 0.98
+  Settings.DEFAULT_FRICTION = 0.985
   Settings.DEFAULT_FRICTION_COLLISION = 0.9
 
   // Boid animation

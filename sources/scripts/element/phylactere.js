@@ -16,6 +16,7 @@ function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
 		this.color = "0xFCFCFC"
     this.hearthColor = "0xff0000"
     this.satisfied = false
+		this.revealed = false
 
 		this.SpawnBubble = function (range)
 		{
