@@ -1,7 +1,7 @@
 
 define(['../lib/pixi', '../settings', '../core/renderer', '../core/manager',
-'../base/point', '../base/utils'],
-function(PIXI, Settings, renderer, Manager, Point, Utils)
+'../base/point', '../base/utils', '../color'],
+function(PIXI, Settings, renderer, Manager, Point, Utils, Color)
 {
 	var Boid = function()
 	{
@@ -29,6 +29,13 @@ function(PIXI, Settings, renderer, Manager, Point, Utils)
 		this.nearScale = Settings.DEFAULT_NEAR_SCALE
 		this.globalScale = Settings.DEFAULT_GLOBAL_SCALE
 
+		this.arrowTarget = new PIXI.Graphics()
+		this.arrowAvoid = new PIXI.Graphics()
+		Utils.DrawArrow(this.arrowTarget, {x:0,y:0}, {x:1,y:0}, 50, 5, Color.TARGET_HEX)
+		Utils.DrawArrow(this.arrowAvoid, {x:0,y:0}, {x:1,y:0}, 50, 5, Color.AVOID_HEX)
+		this.addChild(this.arrowTarget)
+		this.addChild(this.arrowAvoid)
+
 		this.update = function(moveX, moveY)
 		{
 			// Accumulate velocity
@@ -36,8 +43,8 @@ function(PIXI, Settings, renderer, Manager, Point, Utils)
 			this.velocity.y += moveY
 
 			// Apply
-			this.x += this.velocity.x * this.speed / Math.max(Settings.MIN_SIZE, this.size)
-			this.y += this.velocity.y * this.speed / Math.max(Settings.MIN_SIZE, this.size)
+			this.x += this.velocity.x * this.speed / Math.max(1, this.size)
+			this.y += this.velocity.y * this.speed / Math.max(1, this.size)
 
 			// Friction
 			this.velocity.x *= this.friction

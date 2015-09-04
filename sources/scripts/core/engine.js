@@ -31,6 +31,7 @@ function(PIXI, $, Settings, renderer, Manager, Game, Keyboard, Level,
 	{
 		// Interface
 		Engine.interface = new Interface()
+		Engine.interface.addButton("Debug View", function () { Manager.layerDebug.visible = !Manager.layerDebug.visible })
 		Engine.interface.addButton("Algo Boids", function () {}, "https://en.wikipedia.org/wiki/Boids")
 		Engine.interface.addButton("Pixi.js", function () {}, "http://www.pixijs.com")
 		Engine.interface.addButton("Code Sources", function () {}, "https://github.com/leon196/BubbleLetter")

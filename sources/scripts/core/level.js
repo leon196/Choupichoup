@@ -1,5 +1,5 @@
 
-define(['../core/manager', '../core/renderer', '../element/Thinker', '../settings'],
+define(['../core/manager', '../core/renderer', '../element/thinker', '../settings'],
 function(Manager, renderer, Thinker, Settings)
 {
   var Level = {}

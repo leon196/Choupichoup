@@ -82,6 +82,12 @@ define(['../settings', '../core/manager', '../core/renderer',
       Logic.vectorAvoid.scale(boid.avoidScale)
       Logic.vectorTarget.scale(boid.targetScale)
 
+      // Debug View
+      boid.arrowTarget.rotation = Math.atan2(Logic.vectorTarget.y, Logic.vectorTarget.x)
+      boid.arrowAvoid.rotation = Math.atan2(Logic.vectorAvoid.y, Logic.vectorAvoid.x)
+      boid.arrowTarget.scale.x = boid.arrowTarget.scale.y = Math.min(5, Logic.vectorTarget.magnitude() * 0.1)
+      boid.arrowAvoid.scale.x = boid.arrowAvoid.scale.y = Math.min(5, Logic.vectorAvoid.magnitude() * 0.5)
+
       // Apply to Boid
       boid.update(
         Logic.vectorTarget.x + Logic.vectorNear.x + Logic.vectorGlobal.x + Logic.vectorAvoid.x,
@@ -107,26 +113,26 @@ define(['../settings', '../core/manager', '../core/renderer',
   {
     // if (boid instanceof Phylactere == false && boidOther instanceof Phylactere == false) {
       var dist = Utils.distanceBetween(boid, boidOther)
-      var ratio = boid.size / boidOther.size
+      // var ratio = boid.size / boidOther.size
       var currentRange = boid.GetRange()
       var otherRange = boidOther.GetRange()
       if (currentRange < otherRange) {
         if (boid.phylactere) {
           if (boid.colorness > boidOther.colorness) {
-            boid.SetColorness(boid.colorness - Settings.COLORNESS_SPEED / ratio)
+            boid.SetColorness(boid.colorness - Settings.COLORNESS_SPEED)// / ratio)
           }
           else if (boid.colorness < boidOther.colorness) {
-            boid.SetColorness(boid.colorness + Settings.COLORNESS_SPEED / ratio)
+            boid.SetColorness(boid.colorness + Settings.COLORNESS_SPEED)// / ratio)
           }
         }
       }
       else if (currentRange > otherRange) {
         if (boidOther.phylactere) {
           if (boid.colorness < boidOther.colorness) {
-            boidOther.SetColorness(boidOther.colorness - Settings.COLORNESS_SPEED * ratio)
+            boidOther.SetColorness(boidOther.colorness - Settings.COLORNESS_SPEED)// * ratio)
           }
           else if (boid.colorness > boidOther.colorness) {
-            boidOther.SetColorness(boidOther.colorness + Settings.COLORNESS_SPEED * ratio)
+            boidOther.SetColorness(boidOther.colorness + Settings.COLORNESS_SPEED)// * ratio)
           }
         }
       }

@@ -1,6 +1,6 @@
 
 define(['../core/renderer', '../core/manager',
-'../settings', '../base/boid', '../element/letter', '../base/Utils'],
+'../settings', '../base/boid', '../element/letter', '../base/utils'],
 function(renderer, Manager, Settings, Boid, Letter, Utils)
 {
 	var Message = function(text, size, color)
@@ -119,7 +119,6 @@ function(renderer, Manager, Settings, Boid, Letter, Utils)
 				boid.target.y = boid.gridY + this.y
 				if (this.isButton == false) {
 					if (Utils.distanceBetween(boid, Manager.mouse) < 60) {
-						// boid.BounceAt(Manager.mouse.x, Manager.mouse.y, 10)
 						boid.target.x += (boid.x - Manager.mouse.x) * 2
 						boid.target.y += (boid.y - Manager.mouse.y) * 2
 					}
@@ -141,12 +140,10 @@ function(renderer, Manager, Settings, Boid, Letter, Utils)
 			for (var i = 0; i < this.boidList.length; ++i)
 			{
 				var boid = this.boidList[i]
-				boid.bubbleFront.interactive = boid.bubbleFront.buttonMode = true
 				boid.bubbleColor.interactive = boid.bubbleColor.buttonMode = true
-				boid.textFront.interactive = boid.textFront.buttonMode = true
-				boid.bubbleFront.on('mousedown', callback).on('touchstart', callback)
+				boid.textColor.interactive = boid.textColor.buttonMode = true
 				boid.bubbleColor.on('mousedown', callback).on('touchstart', callback)
-				boid.textFront.on('mousedown', callback).on('touchstart', callback)
+				boid.textColor.on('mousedown', callback).on('touchstart', callback)
 			}
 		}
 	}

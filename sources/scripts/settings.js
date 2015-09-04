@@ -3,8 +3,8 @@ define([], function()
 {
   var Settings = {}
 
-  Settings.MIN_SIZE = 5
-  Settings.MAX_SIZE = 30
+  Settings.MIN_SIZE = 10
+  Settings.MAX_SIZE = 60
   Settings.RANGE_SCALE = 10
 
   Settings.COLORNESS_SPEED = 0.05

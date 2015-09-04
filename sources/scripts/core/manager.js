@@ -32,6 +32,7 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
 	Manager.layerBubbleFront = new PIXI.Container()
 	Manager.layerBubbleColor = new PIXI.Container()
 	Manager.layerThinker = new PIXI.Container()
+	Manager.layerDebug = new PIXI.Container()
 	Manager.layerLetter = new PIXI.Container()
 
 	Manager.stage.addChild(Manager.layerBackground)
@@ -39,10 +40,12 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
 	Manager.stage.addChild(Manager.layerBubbleFront)
 	Manager.stage.addChild(Manager.layerBubbleColor)
 	Manager.stage.addChild(Manager.layerThinker)
+	Manager.stage.addChild(Manager.layerDebug)
 	Manager.stage.addChild(Manager.layerLetter)
 
   Manager.AddBoid = function (boid)
   {
+    Manager.layerDebug.addChild(boid)
     Manager.addingList.push(boid)
   }
 
@@ -94,6 +97,7 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
 
   Manager.ClearBoid = function (boid)
   {
+    Manager.layerDebug.removeChild(boid)
     Manager.layerBubbleBack.removeChild(boid.bubbleBack)
     Manager.layerBubbleFront.removeChild(boid.bubbleFront)
     Manager.layerBubbleColor.removeChild(boid.bubbleColor)

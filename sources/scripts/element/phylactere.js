@@ -62,7 +62,8 @@ function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
 				var dist = p.magnitude()//Math.max(0, p.magnitude() - 60)
 				var norm = p.getNormal()
 				var right = { x: norm.y , y: -norm.x }
-				var orbitScale = Utils.clamp(this.velocity.magnitude(), 0, 1) * Settings.ORBIT_SCALE
+				// var orbitScale = Utils.clamp(this.velocity.magnitude(), 0, 1) * Settings.ORBIT_SCALE
+				var orbitScale = Settings.ORBIT_SCALE
 				boid.target.x = (right.x * orbitScale + norm.x * dist) * Settings.ORBIT_SPEED + boid.x
 				boid.target.y = (right.y * orbitScale + norm.y * dist) * Settings.ORBIT_SPEED + boid.y
 
