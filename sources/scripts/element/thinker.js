@@ -9,12 +9,21 @@ function(PIXI, Settings, renderer, Manager, Animation, Phylactere, Utils, Point,
     this.targetScale = 0.1
     this.avoidScale = Settings.THINKER_AVOID_SCALE
 
+    this.character = new PIXI.Sprite(PIXI.Texture.fromFrame(Settings.GetRandomCharacter()))
+    this.character.anchor.x = 0.5
+    // this.character.anchor.y = 0.25
+    this.character.scale.x = this.character.scale.y = 0.5
+    Manager.layerCharacter.addChild(this.character)
+
     this.Init = function ()
     {
       Manager.AddBoid(this)
 
       this.target.x = this.x
       this.target.y = this.y
+
+      this.character.x = this.x
+      this.character.y = this.y
 
       this.timeStart = Manager.timeElapsed
     }

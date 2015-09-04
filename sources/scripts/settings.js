@@ -4,7 +4,7 @@ define([], function()
   var Settings = {}
 
   Settings.MIN_SIZE = 10
-  Settings.MAX_SIZE = 60
+  Settings.MAX_SIZE = 30
   Settings.RANGE_SCALE = 10
 
   Settings.COLORNESS_SPEED = 0.05
@@ -41,6 +41,13 @@ define([], function()
 	Settings.GAME_STATE_PLAY = 1
 	Settings.GAME_STATE_OVER = 2
 	Settings.GAME_STATE_TRANSITION = 3
+
+  //
+  Settings.characterNames = ['Lou', 'Toto', 'Tom', 'Lucie', 'Hely', 'Raoul', 'Chou', 'Poupou', 'Mya', 'Bea', 'Nini']
+  Settings.GetRandomCharacter = function ()
+  {
+    return Settings.characterNames[Math.floor(Math.random() * Settings.characterNames.length)]
+  }
 
   return Settings
 })

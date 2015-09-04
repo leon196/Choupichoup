@@ -6,33 +6,15 @@ define(['../lib/pixi', '../base/point', '../core/renderer', '../core/manager', '
 	{
 		PIXI.Container.call(this)
 
-    this.backgroundColor = new PIXI.Graphics()
-    this.backgroundColor.beginFill(Color.Background)
-    this.backgroundColor.drawRect(0,0,renderer.width,renderer.height)
-    Manager.layerBackground.addChild(this.backgroundColor)
+    // this.backgroundColor = new PIXI.Graphics()
+    // this.backgroundColor.beginFill(Color.Background)
+    // this.backgroundColor.drawRect(0,0,renderer.width,renderer.height)
+    // Manager.layerBackground.addChild(this.backgroundColor)
+    this.background = new PIXI.Sprite(PIXI.Texture.fromImage('images/background.jpg'))
+    this.background.width = renderer.width
+    this.background.height = renderer.height
+    Manager.layerBackground.addChild(this.background)
 
-		this.background = new PIXI.Sprite(PIXI.Texture.fromImage('images/heads.png'))
-		this.background.anchor.x = 0.5
-		this.background.anchor.y = 0.5
-		this.background.x = renderer.width / 2
-		this.background.y = renderer.height / 2
-		this.bgAspectRatio = this.background.width / this.background.height
-		if (renderer.width > renderer.height)
-		{
-			this.background.width = renderer.width
-			this.background.height = this.background.width / this.bgAspectRatio
-			if (this.background.height < renderer.height)
-			{
-				this.background.height = renderer.height
-				this.background.width = this.background.height * this.bgAspectRatio
-			}
-		}
-		else {
-			this.background.height = renderer.height
-			this.background.width = this.background.height * this.bgAspectRatio
-		}
-		this.background.alpha = 0.5
-		Manager.layerBackground.addChild(this.background)
 
 		this.buttonList = []
 		this.labelFontSize = 24

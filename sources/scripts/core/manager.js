@@ -28,6 +28,7 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
 
   // Layers
 	Manager.layerBackground = new PIXI.Container()
+	Manager.layerCharacter = new PIXI.Container()
 	Manager.layerBubbleBack = new PIXI.Container()
 	Manager.layerBubbleFront = new PIXI.Container()
 	Manager.layerBubbleColor = new PIXI.Container()
@@ -36,6 +37,7 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
 	Manager.layerLetter = new PIXI.Container()
 
 	Manager.stage.addChild(Manager.layerBackground)
+	Manager.stage.addChild(Manager.layerCharacter)
 	Manager.stage.addChild(Manager.layerBubbleBack)
 	Manager.stage.addChild(Manager.layerBubbleFront)
 	Manager.stage.addChild(Manager.layerBubbleColor)

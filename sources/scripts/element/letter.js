@@ -37,9 +37,11 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		this.gridY = 0
 
 		// The Bubble
-		this.bubbleBack = new PIXI.Sprite(PIXI.Texture.fromImage('images/poofBack.png'))
-		this.bubbleFront = new PIXI.Sprite(PIXI.Texture.fromImage('images/poofFront.png'))
-		this.bubbleColor = new PIXI.Sprite(PIXI.Texture.fromImage('images/poofFront.png'))
+		this.bubbleBack = new PIXI.Sprite(PIXI.Texture.fromFrame('bubble4'))
+		this.bubbleFront = new PIXI.Sprite(PIXI.Texture.fromFrame('bubble4'))
+		this.bubbleColor = new PIXI.Sprite(PIXI.Texture.fromFrame('bubble4'))
+
+    this.bubbleBack.tint = '0x0c0c0c'
     this.bubbleColor.tint = this.color
     this.bubbleColor.blendMode = PIXI.BLEND_MODES.ADD
 
@@ -115,13 +117,16 @@ define(['../lib/pixi', '../settings', '../core/manager',
 		this.SetSize = function (size)
 		{
 			this.size = size
-      this.SetScale(this.size * 2 / Settings.MAX_SIZE)
+      this.SetScale(this.size / Settings.MAX_SIZE)
 		}
 
 		this.SetRange = function (range)
 		{
       this.range = range
 			this.SetSize(Settings.MIN_SIZE + Settings.MAX_SIZE * this.range / Settings.RANGE_SCALE)
+      this.bubbleBack.texture = PIXI.Texture.fromFrame('bubble'+range)
+      this.bubbleFront.texture = PIXI.Texture.fromFrame('bubble'+range)
+      this.bubbleColor.texture = PIXI.Texture.fromFrame('bubble'+range)
 		}
 
     this.GetRange = function ()
@@ -138,10 +143,14 @@ define(['../lib/pixi', '../settings', '../core/manager',
 
     this.UpdateScale = function (ratio)
     {
-      this.textBack.scale.x = this.textFront.scale.x = this.textColor.scale.x = this.scaleInitial * ratio
-      this.textBack.scale.y = this.textFront.scale.y = this.textColor.scale.y = this.scaleInitial * ratio
-      this.bubbleBack.scale.x = this.bubbleFront.scale.x = this.bubbleColor.scale.x = this.scaleInitial * ratio
-      this.bubbleBack.scale.y = this.bubbleFront.scale.y = this.bubbleColor.scale.y = this.scaleInitial * ratio
+      this.textBack.scale.x = this.textFront.scale.x = this.textColor.scale.x = this.scaleInitial * ratio * 2
+      this.textBack.scale.y = this.textFront.scale.y = this.textColor.scale.y = this.scaleInitial * ratio * 2
+      this.bubbleBack.scale.x = this.scaleInitial * ratio * 0.55
+      this.bubbleBack.scale.y = this.scaleInitial * ratio * 0.55
+      this.bubbleFront.scale.x = this.scaleInitial * ratio * 0.5
+      this.bubbleFront.scale.y = this.scaleInitial * ratio * 0.5
+      this.bubbleColor.scale.x = this.scaleInitial * ratio * 0.45
+      this.bubbleColor.scale.y = this.scaleInitial * ratio * 0.45
     }
 
     this.SetScale = function (scale)

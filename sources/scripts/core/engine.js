@@ -11,7 +11,9 @@ function(PIXI, $, Settings, renderer, Manager, Game, Keyboard, Level,
 
 	Engine.assetToLoad = [
 		// Images
-		'images/heads.png', 'images/poof.png',
+		'images/background.jpg',
+		'images/characters.png', 'images/characters.json',
+		'images/bubbles.png', 'images/bubbles.json',
 		// Fonts
 		'fonts/EmojiSymbols-Regular.woff', 'fonts/DK Liquid Embrace.woff',
 		// Json
