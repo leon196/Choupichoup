@@ -3,7 +3,7 @@
     padding: 0;
     margin: 0;
     font-size: 16px;
-    font-family: sans-serif;
+    font-family: 'dk_liquid_embraceregular';
 }
 
 body
@@ -32,14 +32,6 @@ http://emojisymbols.com/
 @font-face {
     font-family: 'EmojiSymbols';
     src: url('fonts/EmojiSymbols-Regular.woff') format('woff');
-    text-decoration: none;
-    font-style: normal;
-}
-
-
-@font-face {
-    font-family: 'DKLiquidEmbrace';
-    src: url('fonts/DK Liquid Embrace.woff') format('woff');
     text-decoration: none;
     font-style: normal;
 }

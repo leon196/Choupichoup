@@ -17,5 +17,13 @@ define([], function(){
     return Symbol.all.charAt(Math.floor(Symbol.all.length * Math.random()))
   }
 
+  Symbol.GetValidRandom = function () {
+    var letter = Symbol.GetRandom()
+    while (letter == '︎' || letter == ' ') {
+      letter = Symbol.GetRandom()
+    }
+    return letter
+  }
+
   return Symbol
 })

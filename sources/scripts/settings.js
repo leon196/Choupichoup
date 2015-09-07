@@ -3,8 +3,8 @@ define([], function()
 {
   var Settings = {}
 
-  Settings.MIN_SIZE = 10
-  Settings.MAX_SIZE = 30
+  Settings.MIN_RADIUS = 8
+  Settings.STEP_RADIUS = 8
   Settings.RANGE_SCALE = 10
 
   Settings.COLORNESS_SPEED = 0.05
@@ -34,8 +34,10 @@ define([], function()
   Settings.BOOGIE_SPEED = 15
 
   // Boid display
+  Settings.BUBBLE_OUTLINE = 2
+  Settings.LETTER_FONT_SCALE = 1
   Settings.FONT_SIZE = 32
-  Settings.FONT_NAME = 'DK Liquid Embrace'
+  Settings.FONT_NAME = 'dk_liquid_embraceregular'
 
 	Settings.GAME_STATE_INTRO = 0
 	Settings.GAME_STATE_PLAY = 1
