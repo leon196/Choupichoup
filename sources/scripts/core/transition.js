@@ -6,6 +6,7 @@ function(Manager, renderer, Utils, Settings)
 
   Transition.StartIn = function ()
   {
+    Manager.layerCharacter.alpha = 0
     for (var i = 0; i < Manager.boidList.length; ++i) {
       var boid = Manager.boidList[i]
       boid.UpdateScale(0)
@@ -14,6 +15,7 @@ function(Manager, renderer, Utils, Settings)
 
   Transition.UpdateIn = function (ratio)
   {
+    Manager.layerCharacter.alpha = ratio
     for (var i = 0; i < Manager.boidList.length; ++i) {
       var boid = Manager.boidList[i]
       boid.UpdateScale(ratio)
@@ -24,6 +26,7 @@ function(Manager, renderer, Utils, Settings)
 
   Transition.StartOut = function ()
   {
+    Manager.layerCharacter.alpha = 1
     for (var i = 0; i < Manager.boidList.length; ++i) {
       var boid = Manager.boidList[i]
       var angle = Math.random() * Utils.PI2
@@ -38,6 +41,7 @@ function(Manager, renderer, Utils, Settings)
 
   Transition.StartNext = function ()
   {
+    Manager.layerCharacter.alpha = 1
     for (var i = 0; i < Manager.boidList.length; ++i) {
       var boid = Manager.boidList[i]
       var angle = Math.random() * Utils.PI2
@@ -48,6 +52,7 @@ function(Manager, renderer, Utils, Settings)
 
   Transition.UpdateOut = function (ratio)
   {
+    Manager.layerCharacter.alpha = 1 - ratio
     for (var i = 0; i < Manager.boidList.length; ++i) {
       var boid = Manager.boidList[i]
       var ratio2 = Math.min(ratio * 10, 1)

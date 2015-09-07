@@ -14,6 +14,7 @@ define(['../lib/pixi', '../settings', '../core/manager', '../core/graphics',
     this.unknown = true
     this.range = 1
     this.scaleInitial = 1
+    this.boogieStart = 0
 
 		var css = { font: Settings.FONT_SIZE + 'px ' + Settings.FONT_NAME, fill: '#fcfcfc', align: 'left' }
 
@@ -27,7 +28,8 @@ define(['../lib/pixi', '../settings', '../core/manager', '../core/graphics',
 		this.gridY = 0
 
 		// The Bubble
-		this.bubbleBack = Graphics.Circle(this.size + Settings.BUBBLE_OUTLINE)
+		this.bubbleBack = Graphics.Circle(this.size)
+    this.bubbleBack.resizeAt(0, Settings.BUBBLE_OUTLINE/2, this.size + Settings.BUBBLE_OUTLINE)
 		this.bubbleFront = Graphics.Circle(this.size)
 		this.bubbleColor = Graphics.Circle(this.size)
 
@@ -65,8 +67,8 @@ define(['../lib/pixi', '../settings', '../core/manager', '../core/graphics',
 
     this.Boogie = function ()
     {
-      this.bubbleBack.scale.x = this.bubbleFront.scale.x = this.bubbleColor.scale.x = this.scaleInitial + Math.cos(Manager.timeElapsed * Settings.BOOGIE_SPEED) * Settings.BOOGIE_SCALE
-      this.bubbleBack.scale.y = this.bubbleFront.scale.y = this.bubbleColor.scale.y = this.scaleInitial - Math.cos(Manager.timeElapsed * Settings.BOOGIE_SPEED) * Settings.BOOGIE_SCALE
+      this.bubbleBack.scale.x = this.bubbleFront.scale.x = this.bubbleColor.scale.x = this.scaleInitial + Math.sin((this.boogieStart - Manager.timeElapsed) * Settings.BOOGIE_SPEED) * Settings.BOOGIE_SCALE
+      this.bubbleBack.scale.y = this.bubbleFront.scale.y = this.bubbleColor.scale.y = this.scaleInitial - Math.sin((this.boogieStart - Manager.timeElapsed) * Settings.BOOGIE_SPEED) * Settings.BOOGIE_SCALE
     }
 
     this.SetCharacter = function(character)
@@ -103,7 +105,7 @@ define(['../lib/pixi', '../settings', '../core/manager', '../core/graphics',
 		this.SetSize = function (size)
 		{
 			this.size = size
-  		this.bubbleBack.resize(this.size + Settings.BUBBLE_OUTLINE)
+  		this.bubbleBack.resizeAt(0, Settings.BUBBLE_OUTLINE/2, this.size + Settings.BUBBLE_OUTLINE)
   		this.bubbleFront.resize(this.size)
   		this.bubbleColor.resize(this.size)
 

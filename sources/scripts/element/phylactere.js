@@ -68,9 +68,6 @@ function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
 				boid.target.x = (right.x * orbitScale + norm.x * dist) * Settings.ORBIT_SPEED + boid.x
 				boid.target.y = (right.y * orbitScale + norm.y * dist) * Settings.ORBIT_SPEED + boid.y
 
-				if (this.satisfied) {
-					boid.Boogie()
-				}
 			}
 		}
 

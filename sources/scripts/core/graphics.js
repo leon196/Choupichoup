@@ -14,6 +14,12 @@ define(['../lib/pixi'], function(PIXI)
       circle.beginFill(0xfcfcfc)
       circle.drawCircle(0,0,size)
     }
+    circle.resizeAt = function(x,y,size)
+    {
+      this.clear()
+      circle.beginFill(0xfcfcfc)
+      circle.drawCircle(x,y,size)
+    }
     return circle
   }
 

@@ -164,6 +164,7 @@ define(['../lib/pixi', '../base/point'], function(PIXI, Point)
     }
     Manager.boidList = []
     Manager.thinkerList = []
+    Manager.layerCharacter.removeChildren()
   }
 
   return Manager

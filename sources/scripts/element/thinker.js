@@ -55,9 +55,16 @@ function(PIXI, Settings, renderer, Manager, Animation, Phylactere, Utils, Point,
     {
       this.UpdateTargets()
 
-      if (this.satisfied)
+      if (!this.satisfied && this.revealed)
       {
         this.Boogie()
+      }
+      else if (this.revealed && this.satisfied)
+      {
+        // if (this.bubbleBack.scale.x < 0.99)
+        // {
+          this.UpdateScale(1)
+        // }
       }
 
       // Reveal hearth color
@@ -72,6 +79,7 @@ function(PIXI, Settings, renderer, Manager, Animation, Phylactere, Utils, Point,
             self.textFront.alpha = 1 - ratio
           }, function(){
             self.revealed = true
+            self.boogieStart = Manager.timeElapsed
           })
       }
     }

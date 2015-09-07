@@ -12,9 +12,15 @@ define([], function(){
   ❣✚✪✣✤✥✦❉❥❦❧❃❂❁❀\
   ♥♠♣◆◇♧♤♧♬♪♫☆☀☂☁☮☺☻♂♀❤ツ!#$%↨↑↓ø¤●†✈㊛\
   ☼☾☂☃★☆♤♧♡♢♚♛♜♝♞♟♔♕♖♗♘'
+  Symbol.full = '▣▤▥▦▧▨▩▲◆◈◉◍◐◑◒◓◔◕◧◨◩◪◭◮\
+  ☻✎✐✒︎✂︎✇✈︎⚓︎♂♀☍✙✧✚☤⚔☸☯☮⚒☭☪☬\
+  ☎☣☢☭➸✓✕\
+  ❣✚✪✣✤✥✦❉❥❦❧❃❂❁❀\
+  ♥♠♣◆♬♪♫☀☂☁☮☻♂♀❤!#$%↨↑↓●†✈\
+  ☂☃★♚♛♜♝♞♟'
 
   Symbol.GetRandom = function () {
-    return Symbol.all.charAt(Math.floor(Symbol.all.length * Math.random()))
+    return Symbol.full.charAt(Math.floor(Symbol.full.length * Math.random()))
   }
 
   Symbol.GetValidRandom = function () {

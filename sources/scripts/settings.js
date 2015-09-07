@@ -30,7 +30,7 @@ define([], function()
   Settings.ORBIT_SPEED = 0.3
   Settings.TRANSITION_IMPULSE_SCALE = 200
   Settings.TRANSITION_UPDATE_SCALE = 100
-  Settings.BOOGIE_SCALE = 0.05
+  Settings.BOOGIE_SCALE = 0.1
   Settings.BOOGIE_SPEED = 15
 
   // Boid display
