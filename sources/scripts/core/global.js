@@ -3,8 +3,6 @@ define(['../settings'], function(Settings)
 {
   var Global = {}
 
-  Global.boidList = []
-
   Global.pause = false
   Global.timeStarted = 0
   Global.timeElapsed = 0

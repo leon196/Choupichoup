@@ -1,7 +1,7 @@
 
 define(['../lib/pixi', '../core/global', '../settings', '../core/render',
-'../core/graphics', '../utils/tool', '../color'],
-function(PIXI, Global, Settings, Render, Graphics, Tool, Color)
+'../utils/tool', '../color'],
+function(PIXI, Global, Settings, Render, Tool, Color)
 {
 	var Boid = function()
 	{
@@ -23,13 +23,6 @@ function(PIXI, Global, Settings, Render, Graphics, Tool, Color)
 		this.nearScale = Settings.DEFAULT_NEAR_SCALE
 		this.globalScale = Settings.DEFAULT_GLOBAL_SCALE
 
-		this.arrowTarget = new PIXI.Graphics()
-		this.arrowAvoid = new PIXI.Graphics()
-		Graphics.DrawArrow(this.arrowTarget, Tool.vec2(0,0), Tool.vec2(1,0), 50, 5, Color.TARGET_HEX)
-		Graphics.DrawArrow(this.arrowAvoid, Tool.vec2(0,0), Tool.vec2(1,0), 50, 5, Color.AVOID_HEX)
-		this.addChild(this.arrowTarget)
-		this.addChild(this.arrowAvoid)
-
 		this.update = function(moveX, moveY)
 		{
 			this.velocity.x += moveX
@@ -40,6 +33,18 @@ function(PIXI, Global, Settings, Render, Graphics, Tool, Color)
 
 			this.velocity.x *= this.friction
 			this.velocity.y *= this.friction
+		}
+
+		this.rumble = function ()
+		{
+			var randomAngle = Math.random() * Math.PI * 2
+			this.velocity.x += Math.cos(randomAngle)
+			this.velocity.y += Math.sin(randomAngle)
+		}
+
+		this.getSize = function ()
+		{
+			return this.size
 		}
 	}
 

@@ -23,6 +23,7 @@ function(Settings, Global, Tool, Boid, Symbol)
 				var rndAngle = Math.random() * Tool.PI2
 				symbol.x = this.x + Math.cos(rndAngle) * this.size * 2
 				symbol.y = this.y + Math.sin(rndAngle) * this.size * 2
+				symbol.updateDisplay()
 
 				symbol.isPlayer = this.isPlayer
 				symbol.phylactere = this
@@ -41,6 +42,7 @@ function(Settings, Global, Tool, Boid, Symbol)
 				var rndAngle = Math.random() * Tool.PI2
 				symbol.x = this.x + Math.cos(rndAngle) * this.size * 2
 				symbol.y = this.y + Math.sin(rndAngle) * this.size * 2
+				symbol.updateDisplay()
 
 				symbol.setColor(this.color)
 				symbol.setCharacter(' ')
@@ -80,7 +82,7 @@ function(Settings, Global, Tool, Boid, Symbol)
       var size = this.size
 			for (var i = 0; i < this.boidList.length; ++i)
 			{
-				size += this.boidList[i].size
+				size += this.boidList[i].getSize()
       }
       return size
     }

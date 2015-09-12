@@ -4,8 +4,8 @@ function(PIXI, Engine, Global, Render)
 {
   function init ()
   {
-    Render.init()
     Engine.init()
+    Render.init()
     animate()
   }
 

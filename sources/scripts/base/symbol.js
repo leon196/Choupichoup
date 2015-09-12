@@ -27,7 +27,7 @@ define(['../lib/pixi', '../core/global', '../settings', '../core/graphics',
 		this.textBlack.anchor.x = this.textBlack.anchor.y = 0.5
 		this.textWhite.anchor.x = this.textWhite.anchor.y = 0.5
 
-    this.update = function ()
+    this.updateDisplay = function ()
     {
       this.bubble.x = this.bubbleColor.x = this.textWhite.x = this.textBlack.x = this.x
       this.bubble.y = this.bubbleColor.y = this.textWhite.y = this.textBlack.y = this.y
@@ -49,7 +49,7 @@ define(['../lib/pixi', '../core/global', '../settings', '../core/graphics',
       this.bubble.alpha = this.textBlack.alpha = this.colorness
 		}
 
-		this.setSize = function (radius)
+		this.setSize = function (size)
 		{
 			this.size = size
   		this.bubble.resize(this.size)
