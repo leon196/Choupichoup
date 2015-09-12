@@ -4,7 +4,7 @@ define([], function()
   var Settings = {}
 
   Settings.MIN_RADIUS = 8
-  Settings.STEP_RADIUS = 8
+  Settings.STEP_RADIUS = 4
   Settings.RANGE_SCALE = 10
 
   Settings.COLORNESS_SPEED = 0.05
@@ -26,8 +26,8 @@ define([], function()
 
   // Boid animation
   Settings.DEFAULT_SPEED = 1
-  Settings.ORBIT_SCALE = 10
-  Settings.ORBIT_SPEED = 0.3
+  Settings.ORBIT_SCALE = 20
+  Settings.ORBIT_SPEED = 0.5
   Settings.TRANSITION_IMPULSE_SCALE = 200
   Settings.TRANSITION_UPDATE_SCALE = 100
   Settings.BOOGIE_SCALE = 0.1

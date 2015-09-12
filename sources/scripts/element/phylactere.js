@@ -10,13 +10,17 @@ function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
     Manager.layerThinker.addChild(this.textBack)
 		Manager.layerThinker.addChild(this.textFront)
 
-		this.SetCharacter(Symbol.hearth)
+		this.SetCharacter(' ')
+		// this.SetCharacter(Symbol.hearth)
 
 		this.boidList = []
 		this.color = "0xFCFCFC"
     this.hearthColor = "0xff0000"
     this.satisfied = false
 		this.revealed = false
+
+		this.boidTailList = []
+		this.tailAnchor = {x:0, y:0}
 
 		this.SpawnBubble = function (range)
 		{
@@ -52,9 +56,31 @@ function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
 				Manager.AddBoid(letter)
 			}
 		}
-
-		this.UpdateTargets = function ()
+		this.SpawnBoidTail = function (count)
 		{
+			for (var i = 0; i < count; ++i)
+			{
+				var letter = new Letter(' ')
+
+				letter.friction = 0.9
+				letter.SetSize(4 + i)
+
+				var rndAngle = Math.random() * Utils.PI2
+				letter.x = this.x + Math.cos(rndAngle) * this.size * 2
+				letter.y = this.y + Math.sin(rndAngle) * this.size * 2
+
+				letter.SetColor(this.hearthColor)
+				// letter.phylactere = this
+
+				this.boidTailList.push(letter)
+
+				Manager.AddBoid(letter)
+			}
+		}
+
+		this.UpdateTargets = function (orbitSpeedScale_)
+		{
+			var orbitSpeedScale = typeof orbitSpeedScale_ !== 'undefined' ? orbitSpeedScale_ : 1
 			// Orbit around phylactere root boid
 			for (var i = 0; i < this.boidList.length; ++i)
 			{
@@ -63,11 +89,17 @@ function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
 				var dist = p.magnitude()//Math.max(0, p.magnitude() - 60)
 				var norm = p.getNormal()
 				var right = { x: norm.y , y: -norm.x }
-				// var orbitScale = Utils.clamp(this.velocity.magnitude(), 0, 1) * Settings.ORBIT_SCALE
-				var orbitScale = Settings.ORBIT_SCALE
+				var orbitScale = Utils.clamp(this.velocity.magnitude(), 0, 1) * Settings.ORBIT_SCALE * orbitSpeedScale
 				boid.target.x = (right.x * orbitScale + norm.x * dist) * Settings.ORBIT_SPEED + boid.x
 				boid.target.y = (right.y * orbitScale + norm.y * dist) * Settings.ORBIT_SPEED + boid.y
+			}
 
+			for (var i = 0; i < this.boidTailList.length; ++i)
+			{
+				var boid = this.boidTailList[i]
+				var ratio = (i+1) / (this.boidTailList.length+2)
+				boid.target.x = Utils.mix(this.tailAnchor.x, this.x, ratio)
+				boid.target.y = Utils.mix(this.tailAnchor.y, this.y, ratio)
 			}
 		}
 

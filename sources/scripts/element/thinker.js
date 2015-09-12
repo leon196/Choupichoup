@@ -11,8 +11,9 @@ function(PIXI, Settings, renderer, Manager, Animation, Phylactere, Utils, Point,
 
     this.character = new PIXI.Sprite(PIXI.Texture.fromFrame(Settings.GetRandomCharacter()))
     this.character.anchor.x = 0.5
-    // this.character.anchor.y = 0.25
+    this.character.anchor.y = 1
     this.character.scale.x = this.character.scale.y = 0.5
+    this.character.y = renderer.height
     Manager.layerCharacter.addChild(this.character)
 
     this.Init = function ()
@@ -23,7 +24,10 @@ function(PIXI, Settings, renderer, Manager, Animation, Phylactere, Utils, Point,
       this.target.y = this.y
 
       this.character.x = this.x
-      this.character.y = this.y
+
+      this.tailAnchor.x = this.x
+      this.tailAnchor.y = this.character.y - this.character.height * 0.75
+      this.SpawnBoidTail(4)
 
       this.timeStart = Manager.timeElapsed
     }
@@ -61,10 +65,7 @@ function(PIXI, Settings, renderer, Manager, Animation, Phylactere, Utils, Point,
       }
       else if (this.revealed && this.satisfied)
       {
-        // if (this.bubbleBack.scale.x < 0.99)
-        // {
-          this.UpdateScale(1)
-        // }
+        this.UpdateScale(1)
       }
 
       // Reveal hearth color
@@ -77,6 +78,12 @@ function(PIXI, Settings, renderer, Manager, Animation, Phylactere, Utils, Point,
           function(ratio){
             self.bubbleFront.alpha = 1 - ratio
             self.textFront.alpha = 1 - ratio
+            for (var i = 0; i < self.boidTailList.length; ++i)
+            {
+              var boid = self.boidTailList[i]
+              boid.bubbleFront.alpha = 1 - ratio
+              boid.textFront.alpha = 1 - ratio
+            }
           }, function(){
             self.revealed = true
             self.boogieStart = Manager.timeElapsed

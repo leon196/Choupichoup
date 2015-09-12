@@ -46,12 +46,14 @@ function(PIXI, Settings, Manager, Phylactere, Letter, Point, Color){
 			this.target.x = Manager.mouse.x
 			this.target.y = Manager.mouse.y
 
-			for (var i = 0; i < this.boidList.length; ++i)
-			{
-				var boid = this.boidList[i]
-        boid.target.x = Manager.mouse.x
-        boid.target.y = Manager.mouse.y
-      }
+      this.UpdateTargets(0.5)
+
+			// for (var i = 0; i < this.boidList.length; ++i)
+			// {
+			// 	var boid = this.boidList[i]
+      //   boid.target.x = Manager.mouse.x
+      //   boid.target.y = Manager.mouse.y
+      // }
     }
 
   }

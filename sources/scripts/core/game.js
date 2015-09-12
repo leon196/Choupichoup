@@ -11,6 +11,14 @@ function(Settings, renderer, Manager, Logic, Keyboard,
 		this.gameState = Settings.GAME_STATE_INTRO
 		this.pause = false
 
+		this.InitQuiet = function ()
+		{
+			Manager.game.StartGame()
+			Manager.game.gameState = Settings.GAME_STATE_PLAY
+			Transition.StartIn()
+			Animation.Add(2, Transition.UpdateIn)
+		}
+
 		this.Init = function()
 		{
 			var messageTitle = new Message('CHOUPICHOUP', 30)

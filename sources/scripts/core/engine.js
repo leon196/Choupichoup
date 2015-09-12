@@ -30,11 +30,11 @@ function(PIXI, $, Settings, renderer, Manager, Game, Keyboard, Level,
 	{
 		// Interface
 		Engine.interface = new Interface()
-		Engine.interface.addButton("Debug View", function () { Manager.layerDebug.visible = !Manager.layerDebug.visible })
-		Engine.interface.addButton("Algo Boids", function () {}, "https://en.wikipedia.org/wiki/Boids")
-		Engine.interface.addButton("Pixi.js", function () {}, "http://www.pixijs.com")
-		Engine.interface.addButton("Code Sources", function () {}, "https://github.com/leon196/BubbleLetter")
-		Engine.interface.addButton("by Leon", function () {}, "http://leon196.github.io")
+		// Engine.interface.addButton("Debug View", function () { Manager.layerDebug.visible = !Manager.layerDebug.visible })
+		// Engine.interface.addButton("Algo Boids", function () {}, "https://en.wikipedia.org/wiki/Boids")
+		// Engine.interface.addButton("Pixi.js", function () {}, "http://www.pixijs.com")
+		// Engine.interface.addButton("Code Sources", function () {}, "https://github.com/leon196/BubbleLetter")
+		// Engine.interface.addButton("by Leon", function () {}, "http://leon196.github.io")
 		Manager.stage.addChild(Engine.interface)
 
 		Manager.layerDebug.visible = false
@@ -50,7 +50,7 @@ function(PIXI, $, Settings, renderer, Manager, Game, Keyboard, Level,
 		Manager.timeStarted = new Date() / 1000
 		Manager.timeElapsed = 0
 		Manager.game = new Game()
-		Manager.game.Init()
+		Manager.game.InitQuiet()
 
 		// Start Loop
 		Engine.Update()
@@ -58,8 +58,14 @@ function(PIXI, $, Settings, renderer, Manager, Game, Keyboard, Level,
 
 	Engine.Update = function()
 	{
-		renderer.render(Manager.stage)
+		if (Keyboard.Right.down)
+		{
+			Manager.game.StartWinning()
+			Keyboard.Right.down = false
+		}
+
 		Manager.game.Update()
+		renderer.render(Manager.stage)
 		requestAnimFrame(Engine.Update)
 	}
 
