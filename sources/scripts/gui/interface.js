@@ -1,26 +1,20 @@
 
-define(['../lib/pixi', '../base/point', '../core/renderer', '../core/manager', '../color',
- '../gui/button', '../gui/label'], function(PIXI, Point, renderer, Manager, Color, Button, Label)
+define(['../lib/pixi', '../core/global', '../core/render', '../utils/tool', '../color',
+ '../gui/button', '../gui/label'], function(PIXI, Global, Render, Tool, Color, Button, Label)
 {
 	var Interface = function ()
 	{
 		PIXI.Container.call(this)
 
-    // this.backgroundColor = new PIXI.Graphics()
-    // this.backgroundColor.beginFill(Color.Background)
-    // this.backgroundColor.drawRect(0,0,renderer.width,renderer.height)
-    // Manager.layerBackground.addChild(this.backgroundColor)
     this.background = new PIXI.Sprite(PIXI.Texture.fromImage('images/background.jpg'))
-    this.background.width = renderer.width
-    this.background.height = renderer.height
-    Manager.layerBackground.addChild(this.background)
-
+    this.background.width = Global.width
+    this.background.height = Global.height
 
 		this.buttonList = []
 		this.labelFontSize = 24
 
 		this.margin = 4
-		this.labelAnchor = new Point(this.margin, this.margin)
+		this.labelAnchor = Tool.vec2(this.margin, this.margin)
 
 		this.addButton = function (text, callback, url)
 		{
@@ -55,5 +49,5 @@ define(['../lib/pixi', '../base/point', '../core/renderer', '../core/manager', '
 	Interface.prototype = Object.create(PIXI.Container.prototype)
 	Interface.prototype.constructor = Interface
 
-	return Interface
+	return new Interface()
 })

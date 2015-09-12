@@ -6,6 +6,8 @@ define([], function ()
   Tool.PI = Tool.PI2 = Math.PI
 	Tool.PI2 = Math.PI * 2
 
+	Tool.vec2 = function(xx,yy) { return {x:xx, y:yy} }
+
 	Tool.mix = function(a, b, ratio) { return a * (1 - ratio) + b * ratio }
 	Tool.clamp = function(v, min, max) { return Math.max(min, Math.min(v, max)) }
 	Tool.length = function(x, y) { return Math.sqrt(x*x+y*y) }

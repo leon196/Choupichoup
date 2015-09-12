@@ -1,95 +1,67 @@
 
-define(['../settings', '../core/renderer', '../core/manager', '../symbol',
-'../base/utils', '../base/point', '../base/boid', '../element/letter'],
-function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
+define(['../settings', '../core/global',
+'../utils/tool', '../base/boid', '../base/symbol'],
+function(Settings, Global, Tool, Boid, Symbol)
 {
 	var Phylactere = function()
 	{
-		Letter.call(this)
+		Symbol.call(this)
 
-    Manager.layerThinker.addChild(this.textBack)
-		Manager.layerThinker.addChild(this.textFront)
-
-		this.SetCharacter(' ')
-		// this.SetCharacter(Symbol.hearth)
+		this.setCharacter(' ')
+		this.color = "0xFCFCFC"
 
 		this.boidList = []
-		this.color = "0xFCFCFC"
-    this.hearthColor = "0xff0000"
-    this.satisfied = false
-		this.revealed = false
-
 		this.boidTailList = []
-		this.tailAnchor = {x:0, y:0}
+		this.tailAnchor = Tool.vec2(0,0)
 
-		this.SpawnBubble = function (range)
-		{
-			var letter = new Letter()
-
-			var rndAngle = Math.random() * Utils.PI2
-			letter.x = this.x + Math.cos(rndAngle) * this.size * 2
-			letter.y = this.y + Math.sin(rndAngle) * this.size * 2
-
-			letter.isPlayer = this.isPlayer
-			letter.phylactere = this
-			letter.SetColor(this.color)
-			letter.SetRange(range)
-			this.boidList.push(letter)
-
-			Manager.AddBoid(letter)
-		}
-		this.SpawnBubbleLetters = function (count)
+		this.spawnBubbles = function (count)
 		{
 			for (var i = 0; i < count; ++i)
 			{
-				var letter = new Letter()
+				var symbol = new Symbol()
 
-				var rndAngle = Math.random() * Utils.PI2
-				letter.x = this.x + Math.cos(rndAngle) * this.size * 2
-				letter.y = this.y + Math.sin(rndAngle) * this.size * 2
+				var rndAngle = Math.random() * Tool.PI2
+				symbol.x = this.x + Math.cos(rndAngle) * this.size * 2
+				symbol.y = this.y + Math.sin(rndAngle) * this.size * 2
 
-				letter.isPlayer = this.isPlayer
-				letter.phylactere = this
-				letter.SetColor(this.color)
-				this.boidList.push(letter)
+				symbol.isPlayer = this.isPlayer
+				symbol.phylactere = this
+				symbol.setColor(this.color)
 
-				Manager.AddBoid(letter)
+				this.boidList.push(symbol)
 			}
 		}
-		this.SpawnBoidTail = function (count)
+
+		this.spawnTail = function (count)
 		{
 			for (var i = 0; i < count; ++i)
 			{
-				var letter = new Letter(' ')
+				var symbol = new Symbol()
 
-				letter.friction = 0.9
-				letter.SetSize(4 + i)
+				var rndAngle = Math.random() * Tool.PI2
+				symbol.x = this.x + Math.cos(rndAngle) * this.size * 2
+				symbol.y = this.y + Math.sin(rndAngle) * this.size * 2
 
-				var rndAngle = Math.random() * Utils.PI2
-				letter.x = this.x + Math.cos(rndAngle) * this.size * 2
-				letter.y = this.y + Math.sin(rndAngle) * this.size * 2
+				symbol.setColor(this.color)
+				symbol.setCharacter(' ')
+				symbol.friction = 0.9
+				symbol.setSize(4 + i)
 
-				letter.SetColor(this.hearthColor)
-				// letter.phylactere = this
-
-				this.boidTailList.push(letter)
-
-				Manager.AddBoid(letter)
+				this.boidTailList.push(symbol)
 			}
 		}
 
-		this.UpdateTargets = function (orbitSpeedScale_)
+		this.updateTargets = function ()
 		{
-			var orbitSpeedScale = typeof orbitSpeedScale_ !== 'undefined' ? orbitSpeedScale_ : 1
 			// Orbit around phylactere root boid
 			for (var i = 0; i < this.boidList.length; ++i)
 			{
 				var boid = this.boidList[i]
-				var p = new Point(this.x - boid.x, this.y - boid.y)
-				var dist = p.magnitude()//Math.max(0, p.magnitude() - 60)
-				var norm = p.getNormal()
-				var right = { x: norm.y , y: -norm.x }
-				var orbitScale = Utils.clamp(this.velocity.magnitude(), 0, 1) * Settings.ORBIT_SCALE * orbitSpeedScale
+				var p = Tool.vec2(this.x - boid.x, this.y - boid.y)
+				var dist = Tool.length(p.x, p.y)//Math.max(0, p.magnitude() - 60)
+				var norm = Tool.normalize(p.y, p.y)
+				var right = Tool.vec2(norm.y, -norm.x)
+				var orbitScale = Tool.clamp(Tool.length(this.velocity.x, this.velocity.y), 0, 1) * Settings.ORBIT_SCALE
 				boid.target.x = (right.x * orbitScale + norm.x * dist) * Settings.ORBIT_SPEED + boid.x
 				boid.target.y = (right.y * orbitScale + norm.y * dist) * Settings.ORBIT_SPEED + boid.y
 			}
@@ -98,31 +70,23 @@ function(Settings, renderer, Manager, Symbol, Utils, Point, Boid, Letter)
 			{
 				var boid = this.boidTailList[i]
 				var ratio = (i+1) / (this.boidTailList.length+2)
-				boid.target.x = Utils.mix(this.tailAnchor.x, this.x, ratio)
-				boid.target.y = Utils.mix(this.tailAnchor.y, this.y, ratio)
+				boid.target.x = Tool.mix(this.tailAnchor.x, this.x, ratio)
+				boid.target.y = Tool.mix(this.tailAnchor.y, this.y, ratio)
 			}
 		}
 
-    this.GetRange = function ()
+    this.getSize = function ()
     {
-      var range = this.range
+      var size = this.size
 			for (var i = 0; i < this.boidList.length; ++i)
 			{
-				range += this.boidList[i].range
+				size += this.boidList[i].size
       }
-      return range
+      return size
     }
-
-		this.Clear = function ()
-		{
-			for (var i = 0; i < this.boidList.length; ++i)
-			{
-				Manager.RemoveBoid(this.boidList[i], Manager.boidList.indexOf(this.boidList[i]))
-			}
-		}
 	}
 
-	Phylactere.prototype = Object.create(Letter.prototype)
+	Phylactere.prototype = Object.create(Symbol.prototype)
 	Phylactere.prototype.constructor = Phylactere
 
 	return Phylactere

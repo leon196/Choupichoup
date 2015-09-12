@@ -44,11 +44,31 @@ define([], function()
 	Settings.GAME_STATE_OVER = 2
 	Settings.GAME_STATE_TRANSITION = 3
 
-  //
+  // Characters
   Settings.characterNames = ['Lou', 'Toto', 'Tom', 'Lucie', 'Hely', 'Raoul', 'Chou', 'Poupou', 'Mya', 'Bea', 'Nini']
   Settings.GetRandomCharacter = function ()
   {
     return Settings.characterNames[Math.floor(Math.random() * Settings.characterNames.length)]
+  }
+
+  // Symbols
+  Settings.allSymbol = '▣▤▥▦▧▨▩▲◆◈◉◍◐◑◒◓◔◕◧◨◩◪◭◮\
+  ☻✎✐✒︎✂︎✇✈︎⚓︎♂♀☍✙✧✚☤⚔☸☯☮⚒☭☪☬\
+  ☎☣☢☭➸✓✕\
+  ❣✚✪✣✤✥✦❉❥❦❧❃❂❁❀\
+  ♥♠♣◆♬♪♫☀☂☁☮☻♂♀❤!#$%↨↑↓●†✈\
+  ☂☃★♚♛♜♝♞♟'
+
+  Settings.GetRandomSymbol = function () {
+    var symbol = Settings.GetSymbol()
+    while (symbol == '︎' || symbol == ' ') {
+      symbol = Settings.GetSymbol()
+    }
+    return symbol
+  }
+
+  Settings.GetSymbol = function () {
+    return Settings.allSymbol[Math.floor(Settings.allSymbol.length*Math.random())]
   }
 
   return Settings

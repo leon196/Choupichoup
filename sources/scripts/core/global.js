@@ -1,7 +1,9 @@
 
-define([], function()
+define(['../settings'], function(Settings)
 {
   var Global = {}
+
+  Global.boidList = []
 
   Global.pause = false
   Global.timeStarted = 0
@@ -10,6 +12,8 @@ define([], function()
   Global.width = window.innerWidth
   Global.height = window.innerHeight
   Global.canvas = document.getElementById('container')
+
+  Global.textStyle = { font: Settings.FONT_SIZE + 'px ' + Settings.FONT_NAME, fill: '#fcfcfc', align: 'left' }
 
   return Global
 })

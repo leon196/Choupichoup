@@ -1,14 +1,31 @@
 
 define(['../lib/pixi', '../core/render',
 '../control/mouse', '../control/keyboard',
-'../utils/tool', '../core/global', '../utils/animation'],
-function(PIXI, Render, Mouse, Keyboard, Tool, Global, Animation)
+'../utils/tool', '../core/global', '../utils/animation',
+'../base/phylactere'],
+function(PIXI, Render, Mouse, Keyboard, Tool, Global, Animation, Phylactere)
 {
   var Engine = function ()
   {
+    this.thinkerList = []
+
     this.init = function ()
     {
+      this.addThinker()
   	}
+
+    this.addThinker = function ()
+    {
+      var phylactere = new Phylactere()
+      this.thinkerList.push(phylactere)
+    }
+
+    this.addPhylactere = function (phylactere)
+    {
+      for (var i = 0; i < phylactere.boidTailList.length; ++i) { Render.addSymbol(phylactere.boidTailList[i]) }
+      for (var i = 0; i < phylactere.boidList.length; ++i) { Render.addSymbol(phylactere.boidList[i]) }
+      Render.addSymbol(phylactere)
+    }
 
     this.update = function ()
     {
@@ -22,5 +39,5 @@ function(PIXI, Render, Mouse, Keyboard, Tool, Global, Animation)
     }
   }
 
-  return Engine
+  return new Engine()
 })

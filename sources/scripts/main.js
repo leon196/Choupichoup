@@ -1,7 +1,6 @@
 
-define(['../lib/pixi', '../core/engine', '../core/global',
-'../core/loader', '../core/render'],
-function(PIXI, Engine, Global, Loader, Render)
+define(['lib/pixi', 'core/engine', 'core/global', 'core/render'],
+function(PIXI, Engine, Global, Render)
 {
   function init ()
   {
@@ -12,9 +11,12 @@ function(PIXI, Engine, Global, Loader, Render)
 
   function animate ()
 	{
-    // Animation.update()
     Engine.update()
     Render.update()
 		requestAnimFrame(animate)
 	}
+
+	var assetToLoad = [ 'images/background.jpg', 'images/characters.png', 'images/characters.json', ]
+	for (var i = 0; i < assetToLoad.length; ++i) { PIXI.loader.add(assetToLoad[i]) }
+	PIXI.loader.once('complete', init).load();
 })

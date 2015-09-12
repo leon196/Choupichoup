@@ -1,7 +1,7 @@
 
-define(['../core/renderer', '../core/manager',
-'../settings', '../base/boid', '../element/letter', '../base/utils'],
-function(renderer, Manager, Settings, Boid, Letter, Utils)
+define(['../core/render',
+'../settings', '../base/boid', '../element/letter', '../utils/tool'],
+function(renderer, Settings, Boid, Letter, Utils)
 {
 	var Message = function(text, size, color)
 	{

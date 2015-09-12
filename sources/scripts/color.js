@@ -1,5 +1,5 @@
 
-define(['../scripts/base/utils'], function(Utils)
+define(['../scripts/utils/tool'], function(Utils)
 {
   var Color = {}
 
