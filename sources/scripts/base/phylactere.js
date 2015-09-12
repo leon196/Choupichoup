@@ -27,6 +27,7 @@ function(Settings, Global, Tool, Boid, Symbol)
 
 				symbol.isPlayer = this.isPlayer
 				symbol.phylactere = this
+				symbol.setColorness(this.colorness)
 				symbol.setColor(this.color)
 				symbol.setSize(Settings.MIN_SIZE + Settings.MAX_SIZE * Math.random())
 
@@ -45,6 +46,7 @@ function(Settings, Global, Tool, Boid, Symbol)
 				symbol.y = this.y + Math.sin(rndAngle) * this.size * 2
 				symbol.updateDisplay()
 
+				symbol.setColorness(this.colorness)
 				symbol.setColor(this.color)
 				symbol.setCharacter(' ')
 				symbol.friction = 0.9

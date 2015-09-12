@@ -4,8 +4,8 @@ define([], function()
   var Settings = {}
 
   Settings.MIN_SIZE = 8
-  Settings.MAX_SIZE = 8
-
+  Settings.MAX_SIZE = 16
+  Settings.SYMBOL_COUNT_TO_JUMP = 20
   Settings.COLORNESS_SPEED = 0.05
 
   // Boid ratio rules
@@ -14,7 +14,7 @@ define([], function()
   Settings.DEFAULT_GLOBAL_SCALE = 0.0001
   Settings.DEFAULT_NEAR_SCALE = 0.0001
 
-  Settings.THINKER_AVOID_SCALE = 0.01
+  Settings.THINKER_AVOID_SCALE = 0.05
 
   // Boid condition rules
   Settings.MIN_DIST_TO_FOLLOW = 30
@@ -27,14 +27,14 @@ define([], function()
   Settings.DEFAULT_SPEED = 1
   Settings.ORBIT_SCALE = 10
   Settings.ORBIT_SPEED = 0.2
-  Settings.TRANSITION_IMPULSE_SCALE = 200
+  Settings.TRANSITION_IMPULSE_SCALE = 60
   Settings.TRANSITION_UPDATE_SCALE = 100
   Settings.BOOGIE_SCALE = 0.1
   Settings.BOOGIE_SPEED = 15
 
   // Boid display
   Settings.BUBBLE_OUTLINE = 2
-  Settings.LETTER_FONT_SCALE = 1
+  Settings.LETTER_FONT_SCALE = 2
   Settings.FONT_SIZE = 32
   Settings.FONT_NAME = 'dk_liquid_embraceregular'
 

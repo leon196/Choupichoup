@@ -10,7 +10,8 @@ function(PIXI, Global, Interface)
     // Layers
     this.layerRoot = new PIXI.Container()
     this.layerCharacter = new PIXI.Container()
-    this.layerBubble = new PIXI.Container()
+    this.layerBubbleWhite = new PIXI.Container()
+    this.layerBubbleBlack = new PIXI.Container()
     this.layerBubbleColor = new PIXI.Container()
     this.layerDebug = new PIXI.Container()
     this.layerSymbol = new PIXI.Container()
@@ -18,17 +19,28 @@ function(PIXI, Global, Interface)
     // The stack order
     this.layerRoot.addChild(Interface.background)
     this.layerRoot.addChild(this.layerCharacter)
-    this.layerRoot.addChild(this.layerBubble)
+    this.layerRoot.addChild(this.layerBubbleBlack)
+    this.layerRoot.addChild(this.layerBubbleWhite)
     this.layerRoot.addChild(this.layerDebug)
     this.layerRoot.addChild(this.layerBubbleColor)
     this.layerRoot.addChild(this.layerSymbol)
 
     this.addSymbol = function (symbol)
     {
-      this.layerBubble.addChild(symbol.bubble)
+      this.layerBubbleBlack.addChild(symbol.bubbleBlack)
+      this.layerBubbleWhite.addChild(symbol.bubbleWhite)
   		this.layerBubbleColor.addChild(symbol.bubbleColor)
       this.layerSymbol.addChild(symbol.textBlack)
   		this.layerSymbol.addChild(symbol.textWhite)
+    }
+
+    this.removeSymbol = function (symbol)
+    {
+      this.layerBubbleBlack.removeChild(symbol.bubbleBlack)
+      this.layerBubbleWhite.removeChild(symbol.bubbleWhite)
+  		this.layerBubbleColor.removeChild(symbol.bubbleColor)
+      this.layerSymbol.removeChild(symbol.textBlack)
+  		this.layerSymbol.removeChild(symbol.textWhite)
     }
 
     this.init = function ()

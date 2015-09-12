@@ -12,10 +12,14 @@ define(['../lib/pixi', '../core/global', '../settings', '../core/graphics',
     this.color = '0xfcfcfc'
 		this.colorness = 0
     this.scaleInitial = 1
+    this.disapearing = false
 
 		// The PIXI Bubble display
-		this.bubble = Graphics.Circle(this.size)
+		this.bubbleBlack = Graphics.Circle(this.size)
+		this.bubbleWhite = Graphics.Circle(this.size)
 		this.bubbleColor = Graphics.Circle(this.size)
+    this.bubbleBlack.tint = '0x0c0c0c'
+    this.bubbleWhite.tint = '0xfcfcfc'
     this.bubbleColor.tint = this.color
     this.bubbleColor.blendMode = PIXI.BLEND_MODES.ADD
 
@@ -24,14 +28,13 @@ define(['../lib/pixi', '../core/global', '../settings', '../core/graphics',
 		this.textWhite = new PIXI.Text(this.character, Global.textStyle)
 		this.textBlack.tint = '0x0c0c0c'
 		this.textWhite.tint = '0xfcfcfc'
-    this.textWhite.alpha = 0
 		this.textBlack.anchor.x = this.textBlack.anchor.y = 0.5
 		this.textWhite.anchor.x = this.textWhite.anchor.y = 0.5
 
     this.updateDisplay = function ()
     {
-      this.bubble.x = this.bubbleColor.x = this.textWhite.x = this.textBlack.x = this.x
-      this.bubble.y = this.bubbleColor.y = this.textWhite.y = this.textBlack.y = this.y
+      this.bubbleWhite.x = this.bubbleBlack.x = this.bubbleColor.x = this.textWhite.x = this.textBlack.x = this.x
+      this.bubbleWhite.y = this.bubbleBlack.y = this.bubbleColor.y = this.textWhite.y = this.textBlack.y = this.y
     }
 
     this.setCharacter = function(character)
@@ -47,31 +50,35 @@ define(['../lib/pixi', '../core/global', '../settings', '../core/graphics',
 		this.setColorness = function (colorness)
 		{
       this.colorness = Tool.clamp(colorness, 0, 1)
-      this.bubble.alpha = this.textBlack.alpha = 1 - this.colorness
+      this.bubbleBlack.alpha = this.textWhite.alpha = this.colorness
+      this.textBlack.alpha = this.bubbleWhite.alpha = 1 - this.colorness
 		}
 
 		this.setSize = function (size)
 		{
 			this.size = size
-  		this.bubble.resize(this.size)
+  		this.bubbleWhite.resize(this.size)
+  		this.bubbleBlack.resize(this.size)
   		this.bubbleColor.resize(this.size)
 
 			var textStyle = this.textBlack.style
 			textStyle.font = size * Settings.LETTER_FONT_SCALE + 'px ' + Settings.FONT_NAME
-			this.textWhite.style = this.textBlack.style = textStyle
+			this.textWhite.style = textStyle
+      this.textBlack.style = textStyle
 		}
 
     this.updateScale = function (ratio)
     {
       this.textWhite.scale.x = this.textBlack.scale.x = this.scaleInitial * ratio
       this.textWhite.scale.y = this.textBlack.scale.y = this.scaleInitial * ratio
-      this.bubble.scale.x = this.bubbleColor.scale.x = this.scaleInitial * ratio
-      this.bubble.scale.y = this.bubbleColor.scale.y = this.scaleInitial * ratio
+      this.bubbleBlack.scale.x = this.bubbleWhite.scale.x = this.bubbleColor.scale.x = this.scaleInitial * ratio
+      this.bubbleBlack.scale.y = this.bubbleWhite.scale.y = this.bubbleColor.scale.y = this.scaleInitial * ratio
     }
 
     this.setBubbleVisible = function (show)
     {
-      this.bubble.visible = show
+      this.bubbleWhite.visible = show
+      this.bubbleBlack.visible = show
       this.bubbleColor.visible = show
     }
 	}

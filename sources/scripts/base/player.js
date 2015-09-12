@@ -1,59 +1,84 @@
 
-define(['../lib/pixi', '../settings', '../core/manager',
-'../element/phylactere', '../element/letter', '../base/point', '../color'],
-function(PIXI, Settings, Manager, Phylactere, Letter, Point, Color){
+define(['../lib/pixi', '../settings', '../control/mouse', '../core/global',
+'../base/phylactere', '../color', '../utils/animation', '../utils/tool'],
+function(PIXI, Settings, Mouse, Global, Phylactere, Color, Animation, Tool){
   var Player = function ()
   {
     Phylactere.call(this)
 
-    this.Init = function ()
+    this.learnedNewSymbols = false
+    this.learnedSymbolLists = []
+
+    this.init = function ()
     {
-      this.x = Manager.mouse.x
-      this.y = Manager.mouse.y
+      this.x = Mouse.x
+      this.y = Mouse.y
       this.isPlayer = true
-      this.SetColorness(1)
-      this.SetColor(Color.Player)
+      this.setColor(Color.Player)
+      this.setSize(Settings.MIN_SIZE + Settings.MAX_SIZE + 1)
+      this.setColorness(1)
       this.avoidScale = 0.05
       this.friction = 0.8
       this.targetScale = 1
-      Manager.AddBoid(this)
-
-      // this.SpawnBubbleLetters(8)
-      for (var i = 0; i < this.boidList.length; ++i)
-      {
-        this.boidList[i].SetColorness(1)
-        this.boidList[i].avoidScale = this.avoidScale
-      }
+      this.learnedSymbolLists = []
     }
 
-		this.Absorb = function (boid)
+		this.absorb = function (boid)
 		{
       boid.isPlayer = true
 			boid.phylactere = this
-			boid.unknown = false
 			this.boidList.push(boid)
+
+      if (this.boidList.length >= Settings.SYMBOL_COUNT_TO_JUMP)
+      {
+        var learnedSymbol = this.boidList.slice(0)
+        this.learnedSymbolLists.push(learnedSymbol)
+        this.boidList = []
+        for (var i = 0; i < learnedSymbol.length; ++i) {
+          var boid = learnedSymbol[i]
+          var angle = Math.random() * Tool.PI2
+          boid.velocity.x = Math.cos(angle) * Settings.TRANSITION_IMPULSE_SCALE
+          boid.velocity.y = Math.sin(angle) * Settings.TRANSITION_IMPULSE_SCALE
+          boid.disapearing = true
+        }
+
+        var self = this
+        Animation.add(true, 5, function(ratio) {
+          for (var i = 0; i < learnedSymbol.length; ++i) {
+            var boid = learnedSymbol[i]
+            var ratio2 = Math.min(ratio * 10, 1)
+            var ratio3 = Math.min(ratio * 4, 1)
+            boid.updateScale((1 - ratio) + Math.sin(ratio3 * Math.PI))
+            var targetX = Tool.mix(boid.x - Mouse.x, Mouse.x - boid.x, ratio2)
+            var targetY = Tool.mix(boid.y - Mouse.y, Mouse.y - boid.y, ratio2)
+            var angle = Math.atan2(targetY, targetX)
+            boid.target.x = boid.x + Math.cos(angle) * Settings.TRANSITION_UPDATE_SCALE
+            boid.target.y = boid.y + Math.sin(angle) * Settings.TRANSITION_UPDATE_SCALE
+          }
+        }, function () {
+          self.learnedNewSymbols = true
+        }).start()
+      }
 		}
 
-    this.Resorb = function (boid)
+    this.resorb = function (boid)
     {
       boid.isPlayer = false
       this.boidList.splice(this.boidList.indexOf(boid), 1)
     }
 
-    this.Update = function ()
+    this.update = function ()
     {
 			// Move to mouse
-			this.target.x = Manager.mouse.x
-			this.target.y = Manager.mouse.y
+			this.target.x = Mouse.x
+			this.target.y = Mouse.y
 
-      this.UpdateTargets(0.5)
-
-			// for (var i = 0; i < this.boidList.length; ++i)
-			// {
-			// 	var boid = this.boidList[i]
-      //   boid.target.x = Manager.mouse.x
-      //   boid.target.y = Manager.mouse.y
-      // }
+			for (var i = 0; i < this.boidList.length; ++i)
+			{
+				var boid = this.boidList[i]
+        boid.target.x = Mouse.x
+        boid.target.y = Mouse.y
+      }
     }
 
   }

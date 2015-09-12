@@ -1,12 +1,13 @@
 
-define(['../lib/pixi', '../core/render', '../settings',
+define(['../lib/pixi', '../core/render', '../settings', '../core/logic',
 '../control/mouse', '../control/keyboard',
 '../utils/tool', '../core/global', '../utils/animation',
-'../base/thinker'],
-function(PIXI, Render, Settings, Mouse, Keyboard, Tool, Global, Animation, Thinker)
+'../base/thinker', '../base/player'],
+function(PIXI, Render, Settings, Logic, Mouse, Keyboard, Tool, Global, Animation, Thinker, Player)
 {
   var Engine = function ()
   {
+    this.player
     this.boidList = []
     this.thinkerList = []
 
@@ -18,8 +19,17 @@ function(PIXI, Render, Settings, Mouse, Keyboard, Tool, Global, Animation, Think
     this.init = function ()
     {
       Global.timeStarted = new Date() / 1000
+      this.addPlayer()
       this.addThinker()
   	}
+
+    this.addPlayer = function ()
+    {
+      this.player = new Player()
+      this.player.init()
+      this.player.updateDisplay()
+      this.addPhylactere(this.player)
+    }
 
     this.addThinker = function ()
     {
@@ -27,9 +37,6 @@ function(PIXI, Render, Settings, Mouse, Keyboard, Tool, Global, Animation, Think
       thinker.x = Global.width / 2
       thinker.y = Global.height / 4
       thinker.init()
-      thinker.updateDisplay()
-      thinker.spawnBubbles(16)
-      thinker.spawnTail(8)
       this.thinkerList.push(thinker)
       this.addPhylactere(thinker)
       Render.layerCharacter.addChild(thinker.character)
@@ -46,7 +53,21 @@ function(PIXI, Render, Settings, Mouse, Keyboard, Tool, Global, Animation, Think
         this.boidList.push(phylactere.boidList[i])
       }
       Render.addSymbol(phylactere)
-      // this.boidList.push(phylactere)
+      this.boidList.push(phylactere)
+    }
+
+    this.removePhylactere = function (phylactere)
+    {
+      for (var i = 0; i < phylactere.boidTailList.length; ++i) {
+        Render.removeSymbol(phylactere.boidTailList[i])
+        this.boidList.splice(this.boidList.indexOf(phylactere.boidTailList[i]), 1)
+      }
+      for (var i = 0; i < phylactere.boidList.length; ++i) {
+        Render.removeSymbol(phylactere.boidList[i])
+        this.boidList.splice(this.boidList.indexOf(phylactere.boidList[i]), 1)
+      }
+      Render.removeSymbol(phylactere)
+      this.boidList.splice(this.boidList.indexOf(phylactere), 1)
     }
 
     this.update = function ()
@@ -59,10 +80,37 @@ function(PIXI, Render, Settings, Mouse, Keyboard, Tool, Global, Animation, Think
         Keyboard.P.down = false
       }
 
+      this.player.update()
+      if (this.player.learnedNewSymbols) {
+        var learnedSymbol = this.player.learnedSymbolLists[0]
+        for (var i = 0; i < learnedSymbol.length; ++i) {
+          var symbol = learnedSymbol[i]
+          Render.removeSymbol(symbol)
+          this.boidList.splice(this.boidList.indexOf(symbol), 1)
+        }
+        this.player.learnedSymbolLists.splice(0, 1)
+        this.player.learnedNewSymbols = false
+      }
+
+      var nearest
       for (var i = 0; i < this.thinkerList.length; ++i)
       {
         var thinker = this.thinkerList[i]
         thinker.update()
+
+        if (thinker.disapeared) {
+          this.removePhylactere(thinker)
+          this.thinkerList.splice(this.thinkerList.indexOf(thinker), 1)
+          Render.layerCharacter.removeChild(thinker.character)
+          this.addThinker()
+          break
+        }
+
+        if (!nearest) { nearest = thinker }
+        else if (Tool.distance(thinker.x, thinker.y, this.player.x, this.player.y)
+        < Tool.distance(nearest.x, nearest.y, this.player.x, this.player.y)) {
+          nearest = thinker
+        }
       }
 
       for (var current = 0; current < this.boidList.length; ++current)
@@ -75,11 +123,8 @@ function(PIXI, Render, Settings, Mouse, Keyboard, Tool, Global, Animation, Think
         this.vectorTarget.x = boid.target.x - boid.x
         this.vectorTarget.y = boid.target.y - boid.y
 
-        var boidBiggerAndNear = boid;
         var globalCount = 0
         var nearCount = 0
-        var neighborColorness = 0
-        var neighborColornessCount = 0
         for (var other = 0; other < this.boidList.length; ++other) {
           if (current != other) {
             var boidOther = this.boidList[other]
@@ -107,24 +152,24 @@ function(PIXI, Render, Settings, Mouse, Keyboard, Tool, Global, Animation, Think
             this.vectorGlobal.y += boidOther.y
             ++globalCount
 
-            // Absorb
-            // var shouldAbsorb = (boid.isPlayer && !boidOther.isPlayer) || (!boid.isPlayer && boidOther.isPlayer)
-            if (dist < Settings.MIN_DIST_TO_ABSORB)// && boid.size < boidOther.size)
+            if (dist < Settings.MIN_DIST_TO_ABSORB && boid.disapearing == false && boidOther.disapearing == false)
             {
-              // Logic.balanceOfPower(boid, boidOther)
+              Logic.balanceOfPower(boid, boidOther)
             }
           }
         }
 
-        if (boid.isPlayer && boid.colorness <= 0 && boid.phylactere) {
-          // if (nearestThinker) {
-          //   Manager.player.Resorb(boid)
-          //   nearestThinker.Absorb(boid)
-          // }
-        }
-        else if (boid.isPlayer == false && boid.colorness >= 1 && boid.phylactere) {
-          // boid.phylactere.Resorb(boid)
-          // Manager.player.Absorb(boid)
+        if (boid.disapearing == false) {
+          if (boid.isPlayer && boid.colorness <= 0 && boid.phylactere) {
+            if (nearest) {
+              this.player.resorb(boid)
+              nearest.absorb(boid)
+            }
+          }
+          else if (boid.isPlayer == false && boid.colorness >= 1 && boid.phylactere) {
+            boid.phylactere.resorb(boid)
+            this.player.absorb(boid)
+          }
         }
 
         if (globalCount != 0) {
