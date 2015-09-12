@@ -1,84 +1,26 @@
 
-define(['../lib/pixi', '../lib/jquery', '../settings', '../core/renderer',
-'../core/manager', '../core/game', '../core/keyboard', '../core/level',
-'../base/point', '../base/utils', '../color', '../base/boid', '../gui/button', '../gui/interface',
-'../element/letter', '../element/phylactere', '../element/thinker', '../element/player'],
-function(PIXI, $, Settings, renderer, Manager, Game, Keyboard, Level,
-	Point, Utils, Color, Boid, Button, Interface,
-	Letter, Phylactere, Thinker, Player)
+define(['../lib/pixi', '../core/render',
+'../control/mouse', '../control/keyboard',
+'../utils/tool', '../core/global', '../utils/animation'],
+function(PIXI, Render, Mouse, Keyboard, Tool, Global, Animation)
 {
-	var Engine = {}
+  var Engine = function ()
+  {
+    this.init = function ()
+    {
+  	}
 
-	Engine.assetToLoad = [
-		// Images
-		'images/background.jpg',
-		'images/characters.png', 'images/characters.json',
-		'images/bubbles.png', 'images/bubbles.json',
-		// Json
-		'scripts/levels.json'	]
+    this.update = function ()
+    {
+      Global.timeElapsed = new Date() / 1000 - Global.timeStarted
 
-	// Asset loader
-	for (var i = 0; i < Engine.assetToLoad.length; ++i) { PIXI.loader.add(Engine.assetToLoad[i]) }
-	PIXI.loader.once('complete', function () {
-		$.getJSON( "scripts/levels.json", function( data ) {
-			Level.data = data
-			Engine.Init()
-		});
-	}).load();
+      if (Keyboard.P.down)
+      {
+        Global.pause = !Global.pause
+        Keyboard.P.down = false
+      }
+    }
+  }
 
-	Engine.Init = function ()
-	{
-		// Interface
-		Engine.interface = new Interface()
-		// Engine.interface.addButton("Debug View", function () { Manager.layerDebug.visible = !Manager.layerDebug.visible })
-		// Engine.interface.addButton("Algo Boids", function () {}, "https://en.wikipedia.org/wiki/Boids")
-		// Engine.interface.addButton("Pixi.js", function () {}, "http://www.pixijs.com")
-		// Engine.interface.addButton("Code Sources", function () {}, "https://github.com/leon196/BubbleLetter")
-		// Engine.interface.addButton("by Leon", function () {}, "http://leon196.github.io")
-		Manager.stage.addChild(Engine.interface)
-
-		Manager.layerDebug.visible = false
-
-		// Interactivity
-		Manager.stage.interactive = true
-		Manager.stage.on('mousedown', Engine.onClic).on('touchstart', Engine.onClic)
-		Manager.stage.on('mousemove', Engine.onMove).on('touchmove', Engine.onMove)
-		document.addEventListener('keydown', Keyboard.OnKeyDown)
-		document.addEventListener('keyup', Keyboard.OnKeyUp)
-
-		// Setup
-		Manager.timeStarted = new Date() / 1000
-		Manager.timeElapsed = 0
-		Manager.game = new Game()
-		Manager.game.InitQuiet()
-
-		// Start Loop
-		Engine.Update()
-	}
-
-	Engine.Update = function()
-	{
-		if (Keyboard.Right.down)
-		{
-			Manager.game.StartWinning()
-			Keyboard.Right.down = false
-		}
-
-		Manager.game.Update()
-		renderer.render(Manager.stage)
-		requestAnimFrame(Engine.Update)
-	}
-
-	// Mouse input
-	Engine.onMove = function(event)
-	{
-		Manager.mouse = event.data.global
-	}
-
-	Engine.onClic = function(event)
-	{
-		Manager.mouse = event.data.global
-	}
-
-	return Engine
+  return Engine
 })
