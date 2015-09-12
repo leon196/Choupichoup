@@ -28,6 +28,7 @@ function(Settings, Global, Tool, Boid, Symbol)
 				symbol.isPlayer = this.isPlayer
 				symbol.phylactere = this
 				symbol.setColor(this.color)
+				symbol.setSize(Settings.MIN_SIZE + Settings.MAX_SIZE * Math.random())
 
 				this.boidList.push(symbol)
 			}
@@ -61,7 +62,7 @@ function(Settings, Global, Tool, Boid, Symbol)
 				var boid = this.boidList[i]
 				var p = Tool.vec2(this.x - boid.x, this.y - boid.y)
 				var dist = Tool.length(p.x, p.y)//Math.max(0, p.magnitude() - 60)
-				var norm = Tool.normalize(p.y, p.y)
+				var norm = Tool.normalize(p.x, p.y)
 				var right = Tool.vec2(norm.y, -norm.x)
 				var orbitScale = Tool.clamp(Tool.length(this.velocity.x, this.velocity.y), 0, 1) * Settings.ORBIT_SCALE
 				boid.target.x = (right.x * orbitScale + norm.x * dist) * Settings.ORBIT_SPEED + boid.x
@@ -72,8 +73,13 @@ function(Settings, Global, Tool, Boid, Symbol)
 			{
 				var boid = this.boidTailList[i]
 				var ratio = (i+1) / (this.boidTailList.length+2)
+				var dir = Tool.vec2(this.x - this.tailAnchor.x, this.y - this.tailAnchor.y)
+				var norm = Tool.normalize(dir.x, dir.y)
+				var right = Tool.vec2(norm.y, -norm.x)
 				boid.target.x = Tool.mix(this.tailAnchor.x, this.x, ratio)
 				boid.target.y = Tool.mix(this.tailAnchor.y, this.y, ratio)
+				boid.target.x += right.x * Math.sin(ratio * Tool.PI2) * 20
+				boid.target.y += right.y * Math.sin(ratio * Tool.PI2) * 20
 			}
 		}
 

@@ -1,7 +1,7 @@
 
-define(['../lib/pixi', '../settings', '../core/render', '../core/manager', '../core/animation',
-'../element/phylactere', '../utils/tool', '../base/point', '../color'],
-function(PIXI, Settings, renderer, Manager, Animation, Phylactere, Utils, Point, Color){
+define(['../lib/pixi', '../settings', '../core/global',
+'../base/phylactere', '../utils/tool'],
+function(PIXI, Settings, Global, Phylactere, Utils, Point){
   var Thinker = function ()
   {
     Phylactere.call(this)
@@ -13,13 +13,10 @@ function(PIXI, Settings, renderer, Manager, Animation, Phylactere, Utils, Point,
     this.character.anchor.x = 0.5
     this.character.anchor.y = 1
     this.character.scale.x = this.character.scale.y = 0.5
-    this.character.y = renderer.height
-    Manager.layerCharacter.addChild(this.character)
+    this.character.y = Global.height
 
-    this.Init = function ()
+    this.init = function ()
     {
-      Manager.AddBoid(this)
-
       this.target.x = this.x
       this.target.y = this.y
 
@@ -27,68 +24,22 @@ function(PIXI, Settings, renderer, Manager, Animation, Phylactere, Utils, Point,
 
       this.tailAnchor.x = this.x
       this.tailAnchor.y = this.character.y - this.character.height * 0.75
-      this.SpawnBoidTail(4)
-
-      this.timeStart = Manager.timeElapsed
     }
 
-		this.Absorb = function (boid)
+		this.absorb = function (boid)
 		{
 			boid.phylactere = this
 			this.boidList.push(boid)
-      if (this.revealed && !this.satisfied) {
-        for (var i = 0; i < this.boidList.length; ++i) {
-          var boid = this.boidList[i]
-          if (boid.color == this.hearthColor) {
-            this.satisfied = true
-            break
-          }
-        }
-      }
 		}
 
-    this.Resorb = function (boid)
+    this.resorb = function (boid)
     {
       this.boidList.splice(this.boidList.indexOf(boid), 1)
-      if (this.boidList.length == 0) {
-        this.satisfied = false
-      }
     }
 
-    this.Update = function ()
+    this.update = function ()
     {
-      this.UpdateTargets()
-
-      if (!this.satisfied && this.revealed)
-      {
-        this.Boogie()
-      }
-      else if (this.revealed && this.satisfied)
-      {
-        this.UpdateScale(1)
-      }
-
-      // Reveal hearth color
-      if (this.unknown && this.boidList.length == 0)
-      {
-        this.unknown = false
-        this.bubbleColor.tint = this.hearthColor
-        var self = this
-        Animation.Add(3,
-          function(ratio){
-            self.bubbleFront.alpha = 1 - ratio
-            self.textFront.alpha = 1 - ratio
-            for (var i = 0; i < self.boidTailList.length; ++i)
-            {
-              var boid = self.boidTailList[i]
-              boid.bubbleFront.alpha = 1 - ratio
-              boid.textFront.alpha = 1 - ratio
-            }
-          }, function(){
-            self.revealed = true
-            self.boogieStart = Manager.timeElapsed
-          })
-      }
+      this.updateTargets()
     }
   }
 

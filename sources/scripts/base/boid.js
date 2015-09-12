@@ -23,7 +23,7 @@ function(PIXI, Global, Settings, Render, Tool, Color)
 		this.nearScale = Settings.DEFAULT_NEAR_SCALE
 		this.globalScale = Settings.DEFAULT_GLOBAL_SCALE
 
-		this.update = function(moveX, moveY)
+		this.move = function(moveX, moveY)
 		{
 			this.velocity.x += moveX
 			this.velocity.y += moveY

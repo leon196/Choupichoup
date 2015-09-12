@@ -2,8 +2,8 @@
 define(['../lib/pixi', '../core/render', '../settings',
 '../control/mouse', '../control/keyboard',
 '../utils/tool', '../core/global', '../utils/animation',
-'../base/phylactere'],
-function(PIXI, Render, Settings, Mouse, Keyboard, Tool, Global, Animation, Phylactere)
+'../base/thinker'],
+function(PIXI, Render, Settings, Mouse, Keyboard, Tool, Global, Animation, Thinker)
 {
   var Engine = function ()
   {
@@ -23,14 +23,16 @@ function(PIXI, Render, Settings, Mouse, Keyboard, Tool, Global, Animation, Phyla
 
     this.addThinker = function ()
     {
-      var phylactere = new Phylactere()
-      phylactere.x = Global.width / 2
-      phylactere.y = Global.height / 2
-      phylactere.updateDisplay()
-      phylactere.spawnBubbles(8)
-      phylactere.spawnTail(4)
-      this.thinkerList.push(phylactere)
-      this.addPhylactere(phylactere)
+      var thinker = new Thinker()
+      thinker.x = Global.width / 2
+      thinker.y = Global.height / 4
+      thinker.init()
+      thinker.updateDisplay()
+      thinker.spawnBubbles(16)
+      thinker.spawnTail(8)
+      this.thinkerList.push(thinker)
+      this.addPhylactere(thinker)
+      Render.layerCharacter.addChild(thinker.character)
     }
 
     this.addPhylactere = function (phylactere)
@@ -44,7 +46,7 @@ function(PIXI, Render, Settings, Mouse, Keyboard, Tool, Global, Animation, Phyla
         this.boidList.push(phylactere.boidList[i])
       }
       Render.addSymbol(phylactere)
-      this.boidList.push(phylactere)
+      // this.boidList.push(phylactere)
     }
 
     this.update = function ()
@@ -55,6 +57,12 @@ function(PIXI, Render, Settings, Mouse, Keyboard, Tool, Global, Animation, Phyla
       {
         Global.pause = !Global.pause
         Keyboard.P.down = false
+      }
+
+      for (var i = 0; i < this.thinkerList.length; ++i)
+      {
+        var thinker = this.thinkerList[i]
+        thinker.update()
       }
 
       for (var current = 0; current < this.boidList.length; ++current)
@@ -136,7 +144,7 @@ function(PIXI, Render, Settings, Mouse, Keyboard, Tool, Global, Animation, Phyla
         this.vectorTarget.y *= boid.targetScale
 
         // Apply to Boid
-        boid.update(
+        boid.move(
           this.vectorTarget.x + this.vectorNear.x + this.vectorGlobal.x + this.vectorAvoid.x,
           this.vectorTarget.y + this.vectorNear.y + this.vectorGlobal.y + this.vectorAvoid.y)
 

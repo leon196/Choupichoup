@@ -9,6 +9,7 @@ function(PIXI, Global, Interface)
 
     // Layers
     this.layerRoot = new PIXI.Container()
+    this.layerCharacter = new PIXI.Container()
     this.layerBubble = new PIXI.Container()
     this.layerBubbleColor = new PIXI.Container()
     this.layerDebug = new PIXI.Container()
@@ -16,6 +17,7 @@ function(PIXI, Global, Interface)
 
     // The stack order
     this.layerRoot.addChild(Interface.background)
+    this.layerRoot.addChild(this.layerCharacter)
     this.layerRoot.addChild(this.layerBubble)
     this.layerRoot.addChild(this.layerDebug)
     this.layerRoot.addChild(this.layerBubbleColor)

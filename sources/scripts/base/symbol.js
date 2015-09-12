@@ -8,14 +8,14 @@ define(['../lib/pixi', '../core/global', '../settings', '../core/graphics',
 		Boid.call(this)
 
     this.character = Settings.GetRandomSymbol()
-		this.radius = Settings.MIN_RADIUS
+		this.size = Settings.MIN_SIZE
     this.color = '0xfcfcfc'
 		this.colorness = 0
     this.scaleInitial = 1
 
 		// The PIXI Bubble display
-		this.bubble = Graphics.Circle(this.radius)
-		this.bubbleColor = Graphics.Circle(this.radius)
+		this.bubble = Graphics.Circle(this.size)
+		this.bubbleColor = Graphics.Circle(this.size)
     this.bubbleColor.tint = this.color
     this.bubbleColor.blendMode = PIXI.BLEND_MODES.ADD
 
@@ -24,6 +24,7 @@ define(['../lib/pixi', '../core/global', '../settings', '../core/graphics',
 		this.textWhite = new PIXI.Text(this.character, Global.textStyle)
 		this.textBlack.tint = '0x0c0c0c'
 		this.textWhite.tint = '0xfcfcfc'
+    this.textWhite.alpha = 0
 		this.textBlack.anchor.x = this.textBlack.anchor.y = 0.5
 		this.textWhite.anchor.x = this.textWhite.anchor.y = 0.5
 
@@ -45,8 +46,8 @@ define(['../lib/pixi', '../core/global', '../settings', '../core/graphics',
 
 		this.setColorness = function (colorness)
 		{
-      this.colorness = 1 - Tool.clamp(colorness, 0, 1)
-      this.bubble.alpha = this.textBlack.alpha = this.colorness
+      this.colorness = Tool.clamp(colorness, 0, 1)
+      this.bubble.alpha = this.textBlack.alpha = 1 - this.colorness
 		}
 
 		this.setSize = function (size)
@@ -60,7 +61,7 @@ define(['../lib/pixi', '../core/global', '../settings', '../core/graphics',
 			this.textWhite.style = this.textBlack.style = textStyle
 		}
 
-    this.UpdateScale = function (ratio)
+    this.updateScale = function (ratio)
     {
       this.textWhite.scale.x = this.textBlack.scale.x = this.scaleInitial * ratio
       this.textWhite.scale.y = this.textBlack.scale.y = this.scaleInitial * ratio
