@@ -23,6 +23,8 @@ function(PIXI, Settings, Global, Animation, Sound, Phylactere, Tool, Color){
     this.disapearTimeDelay = 5
     this.disapeared = false
     this.alone = true
+    this.readyToBoogie = false
+    this.muet = false
 
     this.init = function ()
     {
@@ -36,8 +38,6 @@ function(PIXI, Settings, Global, Animation, Sound, Phylactere, Tool, Color){
 
       this.setColorness(0)
   		this.setColor(Color.GetRandomColor())
-      this.spawnBubbles(Settings.MIN_BUBBLE + Math.floor(Settings.MAX_BUBBLE * Math.random()))
-      this.spawnTail(8)
 
       this.stateTimeStart = Global.timeElapsed
     }
@@ -63,7 +63,8 @@ function(PIXI, Settings, Global, Animation, Sound, Phylactere, Tool, Color){
       self.setSymbolIndex(Settings.symbolIndexHearth)
       self.state = Settings.STATE_STANDING
       self.stateTimeStart = Global.timeElapsed
-			Animation.add(true, 10, function(ratio)
+      self.standTimeDelay = 5
+			Animation.add(true, 7, function(ratio)
 			{
 				self.setColorness(ratio)
 				for (var i = 0; i < self.boidTailList.length; ++i)
@@ -72,8 +73,10 @@ function(PIXI, Settings, Global, Animation, Sound, Phylactere, Tool, Color){
 				}
 			}, function()
       {
-        self.state = Settings.STATE_DISAPPEARING
-        self.stateTimeStart = Global.timeElapsed
+        if (self.state != Settings.STATE_DISAPPEARING) {
+          self.state = Settings.STATE_DISAPPEARING
+          self.stateTimeStart = Global.timeElapsed
+        }
         self.disapearing = true
       }).start()
     }
@@ -85,12 +88,19 @@ function(PIXI, Settings, Global, Animation, Sound, Phylactere, Tool, Color){
           var ratio = Tool.clamp((Global.timeElapsed - this.stateTimeStart) / this.appearTimeDelay, 0, 1)
           this.target.y = Global.height - ratio * (this.character.height * 1.25) + (1 - ratio) * this.character.height
           this.character.y = Global.height + (1 - ratio) * this.character.height
+          if (this.readyToBoogie) {
+            this.boogie()
+          }
           if (ratio >= 1) {
             this.state = Settings.STATE_STANDING;
             this.stateTimeStart = Global.timeElapsed }
           break
         case Settings.STATE_STANDING:
           var ratio = Tool.clamp((Global.timeElapsed - this.stateTimeStart) / this.standTimeDelay, 0, 1)
+          if (this.readyToBoogie) {
+            this.character.y = Global.height
+            this.boogie()
+          }
           if (ratio >= 1) {
             this.state = Settings.STATE_DISAPPEARING;
             this.stateTimeStart = Global.timeElapsed }
@@ -99,6 +109,9 @@ function(PIXI, Settings, Global, Animation, Sound, Phylactere, Tool, Color){
           var ratio = Tool.clamp((Global.timeElapsed - this.stateTimeStart) / this.appearTimeDelay, 0, 1)
           this.target.y = Global.height - (1 - ratio) * (this.character.height * 1.25) + ratio * this.character.height
           this.character.y = Global.height + ratio * this.character.height
+          if (this.readyToBoogie) {
+            this.boogie()
+          }
           if (ratio >= 1) {
             this.disapear() }
           break
@@ -109,6 +122,11 @@ function(PIXI, Settings, Global, Animation, Sound, Phylactere, Tool, Color){
       this.character.scale.x = this.characterScale + Math.cos(Global.timeElapsed * 10.0) * 0.01
       this.character.scale.y = this.characterScale - Math.cos(Global.timeElapsed * 10.0) * 0.01
       this.tailAnchor.y = this.character.y - this.character.height * 0.75
+    }
+
+    this.boogie = function ()
+    {
+      this.character.y += Math.sin(Global.timeElapsed * 4 + this.character.x / 2) * 32
     }
 
     this.disapear = function ()

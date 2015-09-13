@@ -32,7 +32,7 @@ function(PIXI, Settings, Mouse, Global, Sound, Phylactere, Color, Animation, Too
 			boid.phylactere = this
 			this.boidList.push(boid)
 
-      if (this.boidList.length >= Settings.SYMBOL_COUNT_TO_JUMP || phylacterFrom.boidList.length == 0)
+      if (this.boidList.length >= Settings.SYMBOL_COUNT_TO_JUMP || (phylacterFrom && phylacterFrom.boidList.length == 0))
       {
         Sound.yeah.play()
 
@@ -48,7 +48,7 @@ function(PIXI, Settings, Mouse, Global, Sound, Phylactere, Color, Animation, Too
           boid.setColorness(1)
         }
 
-        if (phylacterFrom.boidList.length == 0) {
+        if (phylacterFrom && phylacterFrom.boidList.length == 0) {
           phylacterFrom.fallInLove()
         }
 

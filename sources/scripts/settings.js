@@ -49,6 +49,8 @@ define(['utils/tool'], function(Tool)
   Settings.STATE_STANDING = 1
   Settings.STATE_DISAPPEARING = 2
 
+  Settings.defaultSpawnDelay = 10
+
   Settings.defaultVolumeSound = 0.5
   Settings.defaultVolumeMusic = 0.25
 
@@ -61,12 +63,13 @@ define(['utils/tool'], function(Tool)
   Settings.currentCharacter = 0
   Settings.GetRandomCharacter = function ()
   {
-    ++Settings.currentCharacter
     if (Settings.currentCharacter >= Settings.characterNames.length) {
       Tool.shuffle(Settings.characterNames)
       Settings.currentCharacter = 0
     }
-    return Settings.characterNames[Settings.currentCharacter]
+    var character = Settings.characterNames[Settings.currentCharacter]
+    ++Settings.currentCharacter
+    return character
   }
 
   Settings.symbolCount = 78

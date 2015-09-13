@@ -20,6 +20,14 @@ function(Howler, Settings, Global, Keyboard)
       onend: function() {}
     });
 
+    this.victory = new Howl({
+      urls: ['sounds/Yea\'s.wav'],
+      autoplay: false,
+      loop: true,
+      volume: Settings.defaultVolumeSound,
+      onend: function() {}
+    });
+
     this.update = function ()
     {
       if (Keyboard.M.down)

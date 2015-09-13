@@ -1,15 +1,21 @@
 
 define(['../lib/pixi', '../core/render', '../settings', '../core/logic',
-'../control/mouse', '../control/keyboard', '../core/sound',
+'../control/mouse', '../control/keyboard', '../core/sound', '../color',
 '../utils/tool', '../core/global', '../utils/animation',
-'../base/thinker', '../base/player'],
-function(PIXI, Render, Settings, Logic, Mouse, Keyboard, Sound, Tool, Global, Animation, Thinker, Player)
+'../base/thinker', '../base/player', '../base/symbol'],
+function(PIXI, Render, Settings, Logic, Mouse, Keyboard,
+  Sound, Color, Tool, Global, Animation, Thinker, Player, Symbol)
 {
   var Engine = function ()
   {
     this.player
     this.boidList = []
     this.thinkerList = []
+
+    this.spawnStart = 0
+    this.spawnDelay = Settings.defaultSpawnDelay
+    this.roundCount = 0
+    this.levelCount = 0
 
     this.vectorNear = Tool.vec2(0,0)
     this.vectorAvoid = Tool.vec2(0,0)
@@ -23,6 +29,30 @@ function(PIXI, Render, Settings, Logic, Mouse, Keyboard, Sound, Tool, Global, An
       this.addThinker()
   	}
 
+		this.addBubbles = function (x, y, count)
+		{
+			for (var i = 0; i < count; ++i)
+			{
+				var symbol = new Symbol()
+
+				symbol.x = x
+				symbol.y = y
+				symbol.target.x = x
+				symbol.target.y = y
+				symbol.updateDisplay()
+
+				symbol.setColor(Color.GetRandomColor())
+				symbol.setSize(Settings.MIN_SIZE + Settings.MAX_SIZE * Math.random())
+				symbol.setColorness(1)
+
+        symbol.avoidScale = 0.4
+        symbol.disapearing = true
+
+				this.boidList.push(symbol)
+        Render.addSymbol(symbol)
+			}
+		}
+
     this.addPlayer = function ()
     {
       this.player = new Player()
@@ -33,13 +63,87 @@ function(PIXI, Render, Settings, Logic, Mouse, Keyboard, Sound, Tool, Global, An
 
     this.addThinker = function ()
     {
-      var thinker = new Thinker()
-      thinker.x = Global.width / 2
-      thinker.y = Global.height / 4
-      thinker.init()
-      this.thinkerList.push(thinker)
-      this.addPhylactere(thinker)
-      Render.layerCharacter.addChild(thinker.character)
+      if (this.roundCount >= Settings.characterNames.length) {
+        this.roundCount = 0
+        ++this.levelCount
+        this.spawnDelay = 20000
+        Settings.currentCharacter = 0
+        Tool.shuffle(Settings.characterNames)
+        var self = this
+
+        Animation.add(true, 7, function(ratio) {
+        }, function(){
+          self.addBubbles(Global.width / 2, Global.height / 4, 64)
+          self.addBubbles(Global.width / 4, Global.height / 4, 64)
+          self.addBubbles(Global.width * 3 / 4, Global.height / 4, 64)
+
+          Sound.victory.play()
+          Sound.victory.fadeIn(1,1000)
+
+          var delayVictory = 30
+          var characters = []
+          for (var i = 0; i < Settings.characterNames.length; ++i) {
+            var thinker = new Thinker()
+            thinker.init()
+            thinker.character.x = Global.width * (i+2) / (Settings.characterNames.length + 3)
+            thinker.character.y = Global.height + thinker.character.height
+            thinker.standTimeDelay = delayVictory - thinker.appearTimeDelay - thinker.disapearTimeDelay
+            thinker.readyToBoogie = true
+            thinker.muet = true
+            self.thinkerList.push(thinker)
+            Render.layerCharacter.addChild(thinker.character)
+            characters.push(thinker)
+          }
+          Animation.add(true, delayVictory, function(ratio) {
+          }, function(){
+            Sound.victory.fadeOut(0,5000, function () { Sound.victory.stop() })
+            Animation.add(true, 10, function(ratio) {
+              for (var i = 0; i < self.boidList.length; ++i) {
+                var boid = self.boidList[i]
+                if (boid.isPlayer == false) {
+                  var ratio2 = Math.min(ratio * 10, 1)
+                  var ratio3 = Math.min(ratio * 4, 1)
+                  boid.updateScale((1 - ratio) + Math.sin(ratio3 * Math.PI))
+                  var targetX = Tool.mix(boid.x - Mouse.x, Mouse.x - boid.x, ratio2)
+                  var targetY = Tool.mix(boid.y - Mouse.y, Mouse.y - boid.y, ratio2)
+                  var angle = Math.atan2(targetY, targetX)
+                  boid.target.x = boid.x + Math.cos(angle) * Settings.TRANSITION_UPDATE_SCALE
+                  boid.target.y = boid.y + Math.sin(angle) * Settings.TRANSITION_UPDATE_SCALE
+                }
+              }
+            }, function () {
+              var boidList = []
+              for (var i = 0; i < self.boidList.length; ++i) {
+                var symbol = self.boidList[i]
+                if (symbol.isPlayer == false) {
+                  Render.removeSymbol(symbol)
+                } else {
+                  boidList.push(symbol)
+                }
+              }
+              self.boidList = boidList
+              self.spawnDelay = Settings.defaultSpawnDelay
+              self.addThinker()
+            }).start()
+          }).start()
+        }).start()
+      }
+      else {
+        var thinker = new Thinker()
+
+        ++this.roundCount;
+        if (this.roundCount % 3 == 0) { thinker.x = Global.width * 3 / 4 }
+        else if (this.roundCount % 2 == 0) { thinker.x = Global.width / 2 }
+        else { thinker.x = Global.width / 4 }
+        thinker.y = Global.height / 4
+        thinker.init()
+        thinker.spawnBubbles(Settings.MIN_BUBBLE + Math.floor(Settings.MAX_BUBBLE * Math.random()))
+        thinker.spawnTail(8)
+        this.thinkerList.push(thinker)
+        this.addPhylactere(thinker)
+        Render.layerCharacter.addChild(thinker.character)
+        this.spawnStart = Global.timeElapsed
+      }
     }
 
     this.addPhylactere = function (phylactere)
@@ -99,15 +203,12 @@ function(PIXI, Render, Settings, Logic, Mouse, Keyboard, Sound, Tool, Global, An
         thinker.update()
 
         if (thinker.disapeared) {
-          this.removePhylactere(thinker)
+          if (thinker.muet == false) {
+            this.removePhylactere(thinker)
+          }
           this.thinkerList.splice(this.thinkerList.indexOf(thinker), 1)
           Render.layerCharacter.removeChild(thinker.character)
           break
-        }
-
-        if (thinker.state == Settings.STATE_DISAPPEARING && thinker.alone) {
-          this.addThinker()
-          thinker.alone = false
         }
 
         if (!nearest) { nearest = thinker }
@@ -115,6 +216,11 @@ function(PIXI, Render, Settings, Logic, Mouse, Keyboard, Sound, Tool, Global, An
         < Tool.distance(nearest.x, nearest.y, this.player.x, this.player.y)) {
           nearest = thinker
         }
+      }
+
+      var ratioSpawn = Tool.clamp((Global.timeElapsed - this.spawnStart) / this.spawnDelay, 0, 1)
+      if (ratioSpawn >= 1) {
+        this.addThinker()
       }
 
       for (var current = 0; current < this.boidList.length; ++current)
