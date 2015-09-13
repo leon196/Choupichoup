@@ -40,6 +40,7 @@ function(PIXI, Settings, Mouse, Global, Phylactere, Color, Animation, Tool){
           boid.velocity.x = Math.cos(angle) * Settings.TRANSITION_IMPULSE_SCALE
           boid.velocity.y = Math.sin(angle) * Settings.TRANSITION_IMPULSE_SCALE
           boid.disapearing = true
+          boid.setColorness(1)
         }
 
         var self = this

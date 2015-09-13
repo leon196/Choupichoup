@@ -1,7 +1,7 @@
 
-define(['../settings', '../core/global',
+define(['../settings', '../core/global', '../color',
 '../utils/tool', '../base/boid', '../base/symbol'],
-function(Settings, Global, Tool, Boid, Symbol)
+function(Settings, Global, Color, Tool, Boid, Symbol)
 {
 	var Phylactere = function()
 	{
@@ -28,7 +28,7 @@ function(Settings, Global, Tool, Boid, Symbol)
 				symbol.isPlayer = this.isPlayer
 				symbol.phylactere = this
 				symbol.setColorness(this.colorness)
-				symbol.setColor(this.color)
+				symbol.setColor(Color.GetRandomColor())
 				symbol.setSize(Settings.MIN_SIZE + Settings.MAX_SIZE * Math.random())
 
 				this.boidList.push(symbol)

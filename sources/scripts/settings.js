@@ -1,5 +1,5 @@
 
-define([], function()
+define(['utils/tool'], function(Tool)
 {
   var Settings = {}
 
@@ -45,9 +45,15 @@ define([], function()
 
   // Characters
   Settings.characterNames = ['Lou', 'Toto', 'Tom', 'Lucie', 'Hely', 'Raoul', 'Chou', 'Poupou', 'Mya', 'Bea', 'Nini']
+  Settings.currentCharacter = 0
   Settings.GetRandomCharacter = function ()
   {
-    return Settings.characterNames[Math.floor(Math.random() * Settings.characterNames.length)]
+    ++Settings.currentCharacter
+    if (Settings.currentCharacter >= Settings.characterNames.length) {
+      Tool.shuffle(Settings.characterNames)
+      Settings.currentCharacter = 0
+    }
+    return Settings.characterNames[Settings.currentCharacter]
   }
 
   // Symbols
