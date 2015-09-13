@@ -168,7 +168,7 @@ function(PIXI, Render, Settings, Logic, Mouse, Keyboard, Tool, Global, Animation
           }
           else if (boid.isPlayer == false && boid.colorness >= 1 && boid.phylactere) {
             boid.phylactere.resorb(boid)
-            this.player.absorb(boid)
+            this.player.absorb(boid, boid.phylactere)
           }
         }
 

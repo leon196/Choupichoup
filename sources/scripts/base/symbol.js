@@ -7,7 +7,7 @@ define(['../lib/pixi', '../core/global', '../settings', '../core/graphics',
 	{
 		Boid.call(this)
 
-    this.character = Settings.GetRandomSymbol()
+    this.symbol = Settings.GetRandomSymbol()
 		this.size = Settings.MIN_SIZE
     this.color = '0xfcfcfc'
 		this.colorness = 0
@@ -24,8 +24,8 @@ define(['../lib/pixi', '../core/global', '../settings', '../core/graphics',
     this.bubbleColor.blendMode = PIXI.BLEND_MODES.ADD
 
 		// The PIXI Text display
-		this.textBlack = new PIXI.Text(this.character, Global.textStyle)
-		this.textWhite = new PIXI.Text(this.character, Global.textStyle)
+		this.textBlack = new PIXI.Text(this.symbol, Global.textStyle)
+		this.textWhite = new PIXI.Text(this.symbol, Global.textStyle)
 		this.textBlack.tint = '0x0c0c0c'
 		this.textWhite.tint = '0xfcfcfc'
 		this.textBlack.anchor.x = this.textBlack.anchor.y = 0.5
@@ -37,9 +37,9 @@ define(['../lib/pixi', '../core/global', '../settings', '../core/graphics',
       this.bubbleWhite.y = this.bubbleBlack.y = this.bubbleColor.y = this.textWhite.y = this.textBlack.y = this.y
     }
 
-    this.setCharacter = function(character)
+    this.setSymbol = function(symbol)
     {
-      this.textBlack.text = this.textWhite.text = this.character = character
+      this.textBlack.text = this.textWhite.text = this.symbol = symbol
     }
 
     this.setColor = function (color)

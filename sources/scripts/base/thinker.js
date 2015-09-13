@@ -1,7 +1,7 @@
 
-define(['../lib/pixi', '../settings', '../core/global',
-'../base/phylactere', '../utils/tool'],
-function(PIXI, Settings, Global, Phylactere, Tool){
+define(['../lib/pixi', '../settings', '../core/global', '../utils/animation',
+'../base/phylactere', '../utils/tool', '../color'],
+function(PIXI, Settings, Global, Animation, Phylactere, Tool, Color){
   var Thinker = function ()
   {
     Phylactere.call(this)
@@ -22,9 +22,9 @@ function(PIXI, Settings, Global, Phylactere, Tool){
 
     this.state = STATE_APPEARING
     this.stateTimeStart = 0
-    this.appearTimeDelay = 3
-    this.standTimeDelay = 3
-    this.disapearTimeDelay = 3
+    this.appearTimeDelay = 5
+    this.standTimeDelay = 10
+    this.disapearTimeDelay = 5
     this.disapeared = false
 
     this.init = function ()
@@ -38,7 +38,7 @@ function(PIXI, Settings, Global, Phylactere, Tool){
       this.setSize(Settings.MIN_SIZE + Settings.MAX_SIZE + 1)
 
       this.setColorness(0)
-      this.setColor('0x2FE42F')
+  		this.setColor(Color.GetRandomColor())
       this.spawnBubbles(16)
       this.spawnTail(8)
 
@@ -54,6 +54,27 @@ function(PIXI, Settings, Global, Phylactere, Tool){
     this.resorb = function (boid)
     {
       this.boidList.splice(this.boidList.indexOf(boid), 1)
+    }
+
+		this.fallInLove = function ()
+		{
+			var self = this
+      self.textBlack.visible = false
+      self.setSymbol('♥')
+      self.state = STATE_STANDING
+      self.stateTimeStart = Global.timeElapsed
+			Animation.add(true, 5, function(ratio)
+			{
+				self.setColorness(ratio)
+				for (var i = 0; i < self.boidTailList.length; ++i)
+				{
+					self.boidTailList[i].setColorness(ratio)
+				}
+			}, function()
+      {
+        self.state = STATE_DISAPPEARING
+        self.stateTimeStart = Global.timeElapsed
+      }).start()
     }
 
     this.update = function ()

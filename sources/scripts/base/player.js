@@ -23,13 +23,13 @@ function(PIXI, Settings, Mouse, Global, Phylactere, Color, Animation, Tool){
       this.learnedSymbolLists = []
     }
 
-		this.absorb = function (boid)
+		this.absorb = function (boid, phylacterFrom)
 		{
       boid.isPlayer = true
 			boid.phylactere = this
 			this.boidList.push(boid)
 
-      if (this.boidList.length >= Settings.SYMBOL_COUNT_TO_JUMP)
+      if (this.boidList.length >= Settings.SYMBOL_COUNT_TO_JUMP || phylacterFrom.boidList.length == 0)
       {
         var learnedSymbol = this.boidList.slice(0)
         this.learnedSymbolLists.push(learnedSymbol)
@@ -42,6 +42,10 @@ function(PIXI, Settings, Mouse, Global, Phylactere, Color, Animation, Tool){
           boid.disapearing = true
           boid.setColorness(1)
         }
+        
+        if (phylacterFrom.boidList.length == 0) {
+          phylacterFrom.fallInLove()
+        }
 
         var self = this
         Animation.add(true, 5, function(ratio) {
@@ -50,8 +54,13 @@ function(PIXI, Settings, Mouse, Global, Phylactere, Color, Animation, Tool){
             var ratio2 = Math.min(ratio * 10, 1)
             var ratio3 = Math.min(ratio * 4, 1)
             boid.updateScale((1 - ratio) + Math.sin(ratio3 * Math.PI))
-            var targetX = Tool.mix(boid.x - Mouse.x, Mouse.x - boid.x, ratio2)
-            var targetY = Tool.mix(boid.y - Mouse.y, Mouse.y - boid.y, ratio2)
+            if (i % 2 == 0) {
+              var targetX = Tool.mix(boid.x - Mouse.x, Mouse.x - boid.x, ratio2)
+              var targetY = Tool.mix(boid.y - Mouse.y, Mouse.y - boid.y, ratio2)
+            } else if (phylacterFrom) {
+              var targetX = Tool.mix(boid.x - phylacterFrom.x, phylacterFrom.x - boid.x, ratio2)
+              var targetY = Tool.mix(boid.y - phylacterFrom.y, phylacterFrom.y - boid.y, ratio2)
+            }
             var angle = Math.atan2(targetY, targetX)
             boid.target.x = boid.x + Math.cos(angle) * Settings.TRANSITION_UPDATE_SCALE
             boid.target.y = boid.y + Math.sin(angle) * Settings.TRANSITION_UPDATE_SCALE
