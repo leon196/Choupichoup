@@ -14,6 +14,7 @@ function(PIXI, Global, Interface)
     this.layerBubbleBlack = new PIXI.Container()
     this.layerBubbleColor = new PIXI.Container()
     this.layerDebug = new PIXI.Container()
+    this.layerButton = new PIXI.Container()
     this.layerSymbol = new PIXI.Container()
 
     // The stack order
@@ -24,6 +25,7 @@ function(PIXI, Global, Interface)
     this.layerRoot.addChild(this.layerDebug)
     this.layerRoot.addChild(this.layerBubbleColor)
     this.layerRoot.addChild(this.layerSymbol)
+    this.layerRoot.addChild(this.layerButton)
 
     this.addSymbol = function (symbol)
     {

@@ -86,7 +86,7 @@ function(PIXI, Settings, Global, Animation, Sound, Phylactere, Tool, Color){
       switch (this.state) {
         case Settings.STATE_APPEARING:
           var ratio = Tool.clamp((Global.timeElapsed - this.stateTimeStart) / this.appearTimeDelay, 0, 1)
-          this.target.y = Global.height - ratio * (this.character.height * 1.25) + (1 - ratio) * this.character.height
+          this.target.y = Global.height - ratio * Global.height * 3 / 4 + (1 - ratio) * this.character.height
           this.character.y = Global.height + (1 - ratio) * this.character.height
           if (this.readyToBoogie) {
             this.boogie()
@@ -107,7 +107,7 @@ function(PIXI, Settings, Global, Animation, Sound, Phylactere, Tool, Color){
           break
         case Settings.STATE_DISAPPEARING:
           var ratio = Tool.clamp((Global.timeElapsed - this.stateTimeStart) / this.appearTimeDelay, 0, 1)
-          this.target.y = Global.height - (1 - ratio) * (this.character.height * 1.25) + ratio * this.character.height
+          this.target.y = Global.height - (1 - ratio) * Global.height * 3 / 4 + ratio * this.character.height
           this.character.y = Global.height + ratio * this.character.height
           if (this.readyToBoogie) {
             this.boogie()
