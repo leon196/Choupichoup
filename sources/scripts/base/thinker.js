@@ -1,7 +1,7 @@
 
-define(['../lib/pixi', '../settings', '../core/global', '../utils/animation',
+define(['../lib/pixi', '../settings', '../core/global', '../utils/animation', '../core/sound',
 '../base/phylactere', '../utils/tool', '../color'],
-function(PIXI, Settings, Global, Animation, Phylactere, Tool, Color){
+function(PIXI, Settings, Global, Animation, Sound, Phylactere, Tool, Color){
   var Thinker = function ()
   {
     Phylactere.call(this)
@@ -16,16 +16,13 @@ function(PIXI, Settings, Global, Animation, Phylactere, Tool, Color){
     this.character.scale.x = this.character.scale.y = this.characterScale
     this.character.y = Global.height + this.character.height
 
-    var STATE_APPEARING = 0
-    var STATE_STANDING = 1
-    var STATE_DISAPPEARING = 2
-
-    this.state = STATE_APPEARING
+    this.state = Settings.STATE_APPEARING
     this.stateTimeStart = 0
     this.appearTimeDelay = 5
     this.standTimeDelay = 10
     this.disapearTimeDelay = 5
     this.disapeared = false
+    this.alone = true
 
     this.init = function ()
     {
@@ -39,7 +36,7 @@ function(PIXI, Settings, Global, Animation, Phylactere, Tool, Color){
 
       this.setColorness(0)
   		this.setColor(Color.GetRandomColor())
-      this.spawnBubbles(16)
+      this.spawnBubbles(Settings.MIN_BUBBLE + Math.floor(Settings.MAX_BUBBLE * Math.random()))
       this.spawnTail(8)
 
       this.stateTimeStart = Global.timeElapsed
@@ -58,11 +55,13 @@ function(PIXI, Settings, Global, Animation, Phylactere, Tool, Color){
 
 		this.fallInLove = function ()
 		{
+      Sound.yeah.play()
+
 			var self = this
       self.symbolBlack.visible = false
       self.symbolWhite.visible = true
       self.setSymbolIndex(Settings.symbolIndexHearth)
-      self.state = STATE_STANDING
+      self.state = Settings.STATE_STANDING
       self.stateTimeStart = Global.timeElapsed
 			Animation.add(true, 10, function(ratio)
 			{
@@ -73,29 +72,35 @@ function(PIXI, Settings, Global, Animation, Phylactere, Tool, Color){
 				}
 			}, function()
       {
-        self.state = STATE_DISAPPEARING
+        self.state = Settings.STATE_DISAPPEARING
         self.stateTimeStart = Global.timeElapsed
+        self.disapearing = true
       }).start()
     }
 
     this.update = function ()
     {
       switch (this.state) {
-        case STATE_APPEARING:
+        case Settings.STATE_APPEARING:
           var ratio = Tool.clamp((Global.timeElapsed - this.stateTimeStart) / this.appearTimeDelay, 0, 1)
           this.target.y = Global.height - ratio * (this.character.height * 1.25) + (1 - ratio) * this.character.height
           this.character.y = Global.height + (1 - ratio) * this.character.height
-          if (ratio >= 1) { this.state = STATE_STANDING; this.stateTimeStart = Global.timeElapsed }
+          if (ratio >= 1) {
+            this.state = Settings.STATE_STANDING;
+            this.stateTimeStart = Global.timeElapsed }
           break
-        case STATE_STANDING:
+        case Settings.STATE_STANDING:
           var ratio = Tool.clamp((Global.timeElapsed - this.stateTimeStart) / this.standTimeDelay, 0, 1)
-          if (ratio >= 1) { this.state = STATE_DISAPPEARING; this.stateTimeStart = Global.timeElapsed }
+          if (ratio >= 1) {
+            this.state = Settings.STATE_DISAPPEARING;
+            this.stateTimeStart = Global.timeElapsed }
           break
-        case STATE_DISAPPEARING:
+        case Settings.STATE_DISAPPEARING:
           var ratio = Tool.clamp((Global.timeElapsed - this.stateTimeStart) / this.appearTimeDelay, 0, 1)
           this.target.y = Global.height - (1 - ratio) * (this.character.height * 1.25) + ratio * this.character.height
           this.character.y = Global.height + ratio * this.character.height
-          if (ratio >= 1) { this.disapear() }
+          if (ratio >= 1) {
+            this.disapear() }
           break
         default:
       }

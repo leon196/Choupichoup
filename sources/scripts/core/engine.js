@@ -1,9 +1,9 @@
 
 define(['../lib/pixi', '../core/render', '../settings', '../core/logic',
-'../control/mouse', '../control/keyboard',
+'../control/mouse', '../control/keyboard', '../core/sound',
 '../utils/tool', '../core/global', '../utils/animation',
 '../base/thinker', '../base/player'],
-function(PIXI, Render, Settings, Logic, Mouse, Keyboard, Tool, Global, Animation, Thinker, Player)
+function(PIXI, Render, Settings, Logic, Mouse, Keyboard, Sound, Tool, Global, Animation, Thinker, Player)
 {
   var Engine = function ()
   {
@@ -102,8 +102,12 @@ function(PIXI, Render, Settings, Logic, Mouse, Keyboard, Tool, Global, Animation
           this.removePhylactere(thinker)
           this.thinkerList.splice(this.thinkerList.indexOf(thinker), 1)
           Render.layerCharacter.removeChild(thinker.character)
-          this.addThinker()
           break
+        }
+
+        if (thinker.state == Settings.STATE_DISAPPEARING && thinker.alone) {
+          this.addThinker()
+          thinker.alone = false
         }
 
         if (!nearest) { nearest = thinker }

@@ -13,6 +13,7 @@ define([], function()
   Keyboard.Space = new Key(32)
   Keyboard.Left = new Key(37)
   Keyboard.Right = new Key(39)
+  Keyboard.M = new Key(77)
 
   Keyboard.onKeyDown = function (event)
   {

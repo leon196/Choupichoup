@@ -1,5 +1,5 @@
 
-define(['../scripts/utils/tool'], function(Utils)
+define(['utils/tool'], function(Tool)
 {
   var Color = {}
 
@@ -14,17 +14,17 @@ define(['../scripts/utils/tool'], function(Utils)
 
   Color.GetGrayHex = function (ratio)
   {
-    return Color.grayListHex[Utils.clamp(Math.floor(Color.grayListHex.length*ratio), 0, Color.grayListHex.length - 1)]
+    return Color.grayListHex[Tool.clamp(Math.floor(Color.grayListHex.length*ratio), 0, Color.grayListHex.length - 1)]
   }
 
   Color.GetGraySharp = function (ratio)
   {
-    return Color.grayListSharp[Utils.clamp(Math.floor(Color.grayListSharp.length*ratio), 0, Color.grayListSharp.length - 1)]
+    return Color.grayListSharp[Tool.clamp(Math.floor(Color.grayListSharp.length*ratio), 0, Color.grayListSharp.length - 1)]
   }
 
   Color.GetRandomColor = function ()
   {
-    return Color.colorListHext[Utils.clamp(Math.floor(Color.colorListHext.length*Math.random()), 0, Color.colorListHext.length - 1)]
+    return Color.colorListHext[Tool.clamp(Math.floor(Color.colorListHext.length*Math.random()), 0, Color.colorListHext.length - 1)]
   }
 
   return Color

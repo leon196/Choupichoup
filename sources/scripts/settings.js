@@ -6,6 +6,8 @@ define(['utils/tool'], function(Tool)
   Settings.MIN_SIZE = 8
   Settings.MAX_SIZE = 16
   Settings.SYMBOL_COUNT_TO_JUMP = 20
+  Settings.MIN_BUBBLE = 8
+  Settings.MAX_BUBBLE = 16
   Settings.COLORNESS_SPEED = 0.05
 
   // Boid ratio rules
@@ -42,6 +44,13 @@ define(['utils/tool'], function(Tool)
 	Settings.GAME_STATE_PLAY = 1
 	Settings.GAME_STATE_OVER = 2
 	Settings.GAME_STATE_TRANSITION = 3
+
+  Settings.STATE_APPEARING = 0
+  Settings.STATE_STANDING = 1
+  Settings.STATE_DISAPPEARING = 2
+
+  Settings.defaultVolumeSound = 0.5
+  Settings.defaultVolumeMusic = 0.25
 
   // Characters
   Settings.characterNames = ['Lou', 'Toto', 'Tom', 'Lucie',

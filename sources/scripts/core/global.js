@@ -4,6 +4,7 @@ define(['../settings'], function(Settings)
   var Global = {}
 
   Global.pause = false
+  Global.mute = false
   Global.timeStarted = 0
   Global.timeElapsed = 0
 

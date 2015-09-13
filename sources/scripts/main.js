@@ -1,7 +1,7 @@
 
-define(['lib/pixi', 'core/engine', 'core/global', 'core/render',
+define(['lib/pixi', 'core/engine', 'core/global', 'core/render', 'core/sound',
 'control/mouse', 'control/keyboard', 'utils/animation', 'utils/frame'],
-function(PIXI, Engine, Global, Render, Mouse, Keyboard, Animation, Frame)
+function(PIXI, Engine, Global, Render, Sound, Mouse, Keyboard, Animation, Frame)
 {
   function init ()
   {
@@ -22,6 +22,7 @@ function(PIXI, Engine, Global, Render, Mouse, Keyboard, Animation, Frame)
 	{
     Engine.update()
     Animation.update()
+    Sound.update()
     Render.update()
 		requestAnimFrame(animate)
 	}

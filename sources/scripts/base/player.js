@@ -1,13 +1,16 @@
 
-define(['../lib/pixi', '../settings', '../control/mouse', '../core/global',
+define(['../lib/pixi', '../settings', '../control/mouse', '../core/global', '../core/sound',
 '../base/phylactere', '../color', '../utils/animation', '../utils/tool'],
-function(PIXI, Settings, Mouse, Global, Phylactere, Color, Animation, Tool){
+function(PIXI, Settings, Mouse, Global, Sound, Phylactere, Color, Animation, Tool){
   var Player = function ()
   {
     Phylactere.call(this)
 
     this.learnedNewSymbols = false
     this.learnedSymbolLists = []
+
+    this.setSymbolIndex(Settings.symbolIndexHearth)
+		this.setSymbolVisible(true)
 
     this.init = function ()
     {
@@ -31,6 +34,8 @@ function(PIXI, Settings, Mouse, Global, Phylactere, Color, Animation, Tool){
 
       if (this.boidList.length >= Settings.SYMBOL_COUNT_TO_JUMP || phylacterFrom.boidList.length == 0)
       {
+        Sound.yeah.play()
+
         var learnedSymbol = this.boidList.slice(0)
         this.learnedSymbolLists.push(learnedSymbol)
         this.boidList = []
