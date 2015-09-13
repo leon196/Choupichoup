@@ -30,8 +30,8 @@ function(PIXI, Global, Interface)
       this.layerBubbleBlack.addChild(symbol.bubbleBlack)
       this.layerBubbleWhite.addChild(symbol.bubbleWhite)
   		this.layerBubbleColor.addChild(symbol.bubbleColor)
-      this.layerSymbol.addChild(symbol.textBlack)
-  		this.layerSymbol.addChild(symbol.textWhite)
+      this.layerSymbol.addChild(symbol.symbolBlack)
+  		this.layerSymbol.addChild(symbol.symbolWhite)
     }
 
     this.removeSymbol = function (symbol)
@@ -39,8 +39,8 @@ function(PIXI, Global, Interface)
       this.layerBubbleBlack.removeChild(symbol.bubbleBlack)
       this.layerBubbleWhite.removeChild(symbol.bubbleWhite)
   		this.layerBubbleColor.removeChild(symbol.bubbleColor)
-      this.layerSymbol.removeChild(symbol.textBlack)
-  		this.layerSymbol.removeChild(symbol.textWhite)
+      this.layerSymbol.removeChild(symbol.symbolBlack)
+  		this.layerSymbol.removeChild(symbol.symbolWhite)
     }
 
     this.init = function ()

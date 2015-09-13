@@ -1,7 +1,7 @@
 
 define(['lib/pixi', 'core/engine', 'core/global', 'core/render',
-'control/mouse', 'control/keyboard', 'utils/animation'],
-function(PIXI, Engine, Global, Render, Mouse, Keyboard, Animation)
+'control/mouse', 'control/keyboard', 'utils/animation', 'utils/frame'],
+function(PIXI, Engine, Global, Render, Mouse, Keyboard, Animation, Frame)
 {
   function init ()
   {
@@ -10,6 +10,8 @@ function(PIXI, Engine, Global, Render, Mouse, Keyboard, Animation)
     Render.layerRoot.on('mousemove', Mouse.onMove).on('touchmove', Mouse.onMove)
     document.addEventListener('keydown', Keyboard.onKeyDown)
     document.addEventListener('keyup', Keyboard.onKeyUp)
+
+    //Frame.SayFramesFor(13, 6, 128)
 
     Engine.init()
     Render.init()
@@ -24,7 +26,8 @@ function(PIXI, Engine, Global, Render, Mouse, Keyboard, Animation)
 		requestAnimFrame(animate)
 	}
 
-	var assetToLoad = [ 'images/background.jpg', 'images/characters.png', 'images/characters.json', ]
+	var assetToLoad = [ 'images/background.jpg', 'images/characters.png', 'images/characters.json',
+  'images/symbols.png', 'images/symbols.json' ]
 	for (var i = 0; i < assetToLoad.length; ++i) { PIXI.loader.add(assetToLoad[i]) }
 	PIXI.loader.once('complete', init).load();
 })

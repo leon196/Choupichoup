@@ -42,13 +42,13 @@ function(PIXI, Settings, Mouse, Global, Phylactere, Color, Animation, Tool){
           boid.disapearing = true
           boid.setColorness(1)
         }
-        
+
         if (phylacterFrom.boidList.length == 0) {
           phylacterFrom.fallInLove()
         }
 
         var self = this
-        Animation.add(true, 5, function(ratio) {
+        Animation.add(true, 10, function(ratio) {
           for (var i = 0; i < learnedSymbol.length; ++i) {
             var boid = learnedSymbol[i]
             var ratio2 = Math.min(ratio * 10, 1)

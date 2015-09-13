@@ -44,7 +44,11 @@ define(['utils/tool'], function(Tool)
 	Settings.GAME_STATE_TRANSITION = 3
 
   // Characters
-  Settings.characterNames = ['Lou', 'Toto', 'Tom', 'Lucie', 'Hely', 'Raoul', 'Chou', 'Poupou', 'Mya', 'Bea', 'Nini']
+  Settings.characterNames = ['Lou', 'Toto', 'Tom', 'Lucie',
+  'Hely', 'Raoul', 'Chou', 'Poupou', 'Mya', 'Bea', 'Nini',
+  'Foufou', 'Lili'
+  ]
+  Tool.shuffle(Settings.characterNames)
   Settings.currentCharacter = 0
   Settings.GetRandomCharacter = function ()
   {
@@ -56,25 +60,41 @@ define(['utils/tool'], function(Tool)
     return Settings.characterNames[Settings.currentCharacter]
   }
 
-  // Symbols
-  Settings.allSymbol = '▣▤▥▦▧▨▩▲◆◈◉◍◐◑◒◓◔◕◧◨◩◪◭◮\
-  ☻✎✐✒︎✂︎✇✈︎⚓︎♂♀☍✙✧✚☤⚔☸☯☮⚒☭☪☬\
-  ☎☣☢☭➸✓✕\
-  ❣✚✪✣✤✥✦❉❥❦❧❃❂❁❀\
-  ♥♠♣◆♬♪♫☀☂☁☮☻♂♀❤!#$%↨↑↓●†✈\
-  ☂☃★♚♛♜♝♞♟'
-
-  Settings.GetRandomSymbol = function () {
-    var symbol = Settings.GetSymbol()
-    while (symbol == '︎' || symbol == ' ') {
-      symbol = Settings.GetSymbol()
+  Settings.symbolCount = 78
+  Settings.symbolIndexHearth = 1
+  Settings.symbolScale = 2
+  Settings.symbolSequence = []
+  Settings.symbolCurrent = 0
+  for (var i = 0; i < Settings.symbolCount; ++i) { Settings.symbolSequence.push(i) }
+  Tool.shuffle(Settings.symbolSequence)
+  Settings.GetRandomSymbolIndex = function () {
+    ++Settings.symbolCurrent
+    if (Settings.symbolCurrent >= Settings.symbolSequence.length) {
+      Tool.shuffle(Settings.symbolSequence)
+      Settings.symbolCurrent = 0
     }
-    return symbol
+    return Settings.symbolSequence[Settings.symbolCurrent]
   }
 
-  Settings.GetSymbol = function () {
-    return Settings.allSymbol[Math.floor(Settings.allSymbol.length*Math.random())]
-  }
+  // Symbols
+  // Settings.allSymbol = '▣▤▥▦▧▨▩▲◆◈◉◍◐◑◒◓◔◕◧◨◩◪◭◮\
+  // ☻✎✐✒︎✂︎✇✈︎⚓︎♂♀☍✙✧✚☤⚔☸☯☮⚒☭☪☬\
+  // ☎☣☢☭➸✓✕\
+  // ❣✚✪✣✤✥✦❉❥❦❧❃❂❁❀\
+  // ♥♠♣◆♬♪♫☀☂☁☮☻♂♀❤!#$%↨↑↓●†✈\
+  // ☂☃★♚♛♜♝♞♟'
+  //
+  // Settings.GetRandomSymbol = function () {
+  //   var symbol = Settings.GetSymbol()
+  //   while (symbol == '︎' || symbol == ' ') {
+  //     symbol = Settings.GetSymbol()
+  //   }
+  //   return symbol
+  // }
+  //
+  // Settings.GetSymbol = function () {
+  //   return Settings.allSymbol[Math.floor(Settings.allSymbol.length*Math.random())]
+  // }
 
   return Settings
 })

@@ -59,11 +59,12 @@ function(PIXI, Settings, Global, Animation, Phylactere, Tool, Color){
 		this.fallInLove = function ()
 		{
 			var self = this
-      self.textBlack.visible = false
-      self.setSymbol('♥')
+      self.symbolBlack.visible = false
+      self.symbolWhite.visible = true
+      self.setSymbolIndex(Settings.symbolIndexHearth)
       self.state = STATE_STANDING
       self.stateTimeStart = Global.timeElapsed
-			Animation.add(true, 5, function(ratio)
+			Animation.add(true, 10, function(ratio)
 			{
 				self.setColorness(ratio)
 				for (var i = 0; i < self.boidTailList.length; ++i)

@@ -65,13 +65,25 @@
 	"rotated": false, "trimmed": false,
 	"spriteSourceSize": {"x":4352,"y":0,"w":640,"h":896},
 	"sourceSize": {"w":640,"h":896}
+},
+"Foufou": {
+	"frame": {"x":4992,"y":0,"w":640,"h":896},
+	"rotated": false, "trimmed": false,
+	"spriteSourceSize": {"x":4992,"y":0,"w":640,"h":896},
+	"sourceSize": {"w":640,"h":896}
+},
+"Lili": {
+	"frame": {"x":5632,"y":0,"w":384,"h":896},
+	"rotated": false, "trimmed": false,
+	"spriteSourceSize": {"x":5632,"y":0,"w":384,"h":896},
+	"sourceSize": {"w":384,"h":896}
 }
 },
 "meta": {
 	"version": "1.0",
 	"image": "characters.png",
 	"format": "RGBA8888",
-	"size": {"w":4992,"h":896},
+	"size": {"w":6016,"h":896},
 	"scale": "1"
 }
 }

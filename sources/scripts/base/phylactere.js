@@ -7,7 +7,7 @@ function(Settings, Global, Color, Tool, Boid, Symbol)
 	{
 		Symbol.call(this)
 
-		this.setSymbol(' ')
+		this.setSymbolVisible(false)
 
 		this.boidList = []
 		this.boidTailList = []
@@ -47,7 +47,7 @@ function(Settings, Global, Color, Tool, Boid, Symbol)
 
 				symbol.setColorness(this.colorness)
 				symbol.setColor(this.color)
-				symbol.setSymbol(' ')
+				symbol.setSymbolVisible(false)
 				symbol.friction = 0.9
 				symbol.setSize(4 + i)
 
