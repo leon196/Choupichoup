@@ -15,6 +15,8 @@ function(PIXI, Engine, Global, Render, Sound, Mouse, Keyboard, Animation, Frame)
 
     Engine.init()
     Render.init()
+    Sound.init()
+    Render.layerButton.addChild(Sound.buttonMute)
     animate()
   }
 

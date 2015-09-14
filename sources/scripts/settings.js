@@ -74,6 +74,7 @@ define(['utils/tool'], function(Tool)
 
   Settings.symbolCount = 78
   Settings.symbolIndexHearth = 1
+  Settings.symbolIndexNote = 29
   Settings.symbolScale = 2
   Settings.symbolSequence = []
   Settings.symbolCurrent = 0

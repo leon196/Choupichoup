@@ -1,6 +1,6 @@
 
-define(['../lib/howler', '../settings', '../core/global', '../control/keyboard'],
-function(Howler, Settings, Global, Keyboard)
+define(['../lib/pixi', '../lib/howler', '../settings', '../core/global', '../control/keyboard'],
+function(PIXI, HowlerLib, Settings, Global, Keyboard)
 {
   var Sound = function ()
   {
@@ -28,22 +28,38 @@ function(Howler, Settings, Global, Keyboard)
       onend: function() {}
     });
 
+    this.init = function ()
+    {
+      this.buttonMute = new PIXI.Sprite(PIXI.Texture.fromFrame(Settings.symbolIndexNote))
+      this.buttonMute.interactive = true
+      this.buttonMute.buttonMode = true
+      this.buttonMute.scale.x = this.buttonMute.scale.y = 0.5
+      var self = this
+      this.buttonMute.on('mousedown', function(){self.toggleMute()}).on('touchstart', function(){self.toggleMute()})
+    }
+
     this.update = function ()
     {
       if (Keyboard.M.down)
       {
         Keyboard.M.down = false
-
-        Global.mute = !Global.mute
-
-        if (Global.mute) {
-          this.music.mute()
-        }
-        else {
-          this.music.unmute()
-        }
+        this.toggleMute()
       }
     }
+
+    this.toggleMute = function ()
+    {
+      Global.mute = !Global.mute
+      if (Global.mute) {
+        Howler.mute()
+        this.buttonMute.alpha = 0.5
+      }
+      else {
+        Howler.unmute()
+        this.buttonMute.alpha = 1
+      }
+    }
+
   }
 
   return new Sound()
