@@ -1,0 +1,42 @@
+
+Game Dev Story :
+
+The first idea for a game concept was a system of floating entities.
+Entities was following a bigger entity with a concept, a moral symbol or a social subject.
+I've remembered about a class by Alain Lioret about the IA behavior called boids or flocking,
+and I really wanted to develop further this algorithm.
+(boids pseudocode : http://www.kfish.org/boids/pseudocode.html)
+
+[image concepts]
+
+Later, the Ludum Dare #33 was starting soon, the warmup weekend was open.
+(about Ludum Dare : http://ludumdare.com/compo/about-ludum-dare/)
+(about the warmup weekend : http://ludumdare.com/compo/2015/08/13/warmup-weekend-for-ludum-dare-33/)
+
+[Ludum Dare image]
+
+I decided to code early on the boids engine, so I could have time to make more illustrations.
+I finally made a boids prototype that could display a message and had collisions
+(try prototype : http://leon196.github.io/Boids/)
+(demo video : https://youtu.be/s-yLMrPfK4c)
+
+[gifs prototype]
+
+Then ! The game jam start and I'm starting to have a new idea :
+Like in horizontal scroller, you control the character's thoughts, and have to avoid rectangular signs.
+The game would take place in a subway for example,
+and the signs would be oppressive ads like the movie They Live ('obey', 'buy', ...)
+But I was in vacation at the country-side,
+and I already work all the week at the office, coding iPhone apps and Oculus 360 players.
+(where I work : http://www.dvmobile.fr/)
+
+So after failing at rewriting a rectangular collision system (something already done in the past!)
+I focused on the actual game mechanic and was inspired by Osmos (http://www.osmos-game.com/)
+Big bubbles can absorb little ones. Absorbing make the bubble grow and split when too large.
+
+[gifs prototype divisions]
+
+I've quickly saw that the rhythm and the speed of the boids did not fit with a relaxed puzzle game.
+And there was no real balance of anything so the bubbles multipy themself indefinilety
+
+I accepted to not finish it, because the real thing was the Oujevipo Contest #2.
