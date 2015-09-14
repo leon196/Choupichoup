@@ -1,4 +1,5 @@
-# [Play]  
+# Choupichoup
+# [PLAY]  
 # Game Dev Story
 
 ![boids debug view][boids debug view]
@@ -46,7 +47,7 @@ so I've tried something with sad and depressing thoughts.
 I've tried an aesthetic of black and white with inspirations like  
 Idées Noires of Franquin or the stories of Robert Crumb and Gotlib.  
 
-![Franquin][Franquin]![Crumb][Crumb]![Gotlib][Gotlib]
+![Crumb][Crumb]![Franquin][Franquin]
 
 But then the time runs out like wooow! And the 72h of game jam was over.  
 So I accepted to not finish it, because the real thing was the Oujevipo Contest #2.  
@@ -54,10 +55,10 @@ So I accepted to not finish it, because the real thing was the Oujevipo Contest 
 
 ![LDJam version gif 1][LDJam version gif 1]
 
-    
+
 [Ludum Dare]: <http://ludumdare.com/compo/about-ludum-dare/>
 [warmup weekend]: <http://ludumdare.com/compo/2015/08/13/warmup-weekend-for-ludum-dare-33/>
-[Play]: <http://leon.itch.io/choupichoup>
+[PLAY]: <http://leon.itch.io/choupichoup>
 [boids pseudocode]: <http://www.kfish.org/boids/pseudocode.html>
 [boids prototype]: <http://leon196.github.io/Boids/>
 [demo video]: <https://youtu.be/s-yLMrPfK4c>
