@@ -1,5 +1,34 @@
 # Choupichoup
-# [PLAY]  
+##[PLAY] on itch.io
+##PLAY [Fullscreen]
+![poster][poster]
+## About
+Choupichoup is a game about **learning**, **sharing** and **loving**.
+
+You can learn symbols by getting close to them, and reveal the color of ideas.  
+Once you learned enough, you will share together all the thoughts.  
+Symbols generation is procedural and random. There is no meanings behind any combinations of symbols.
+
+The project was originally started with [Ludum Dare] #33 (theme : You are the monster)  
+But it was not finished on time ([my submission for Ludum Dare #33])  
+This is a very special version made with love for [Oujevipo Contest #2]
+
+## Credits
+### Audio
+**Music** is from **Jassummisko**, it's called [Temping]  
+Thanks **Ben** for the sound of children laughs
+
+### Frameworks
+Canvas/WebGL : [Pixi.js]  
+Audio : [howler.js]  
+Dependencies : [require.js]  
+Loading json : [jQuery.js]
+
+
+### Code and illustrations
+by [Leon]
+
+
 # Game Dev Story
 
 ## The beginning
@@ -37,7 +66,7 @@ You would had to collect letter on the road to discover a message a the end of t
 
 After failing at rewriting a rectangular collision system (something already done in the past!)  
 I focused on the actual game mechanic and was inspired by [Osmos]  
-Big bubbles can absorb little ones. Absorbing make the bubble grow and split when too large.  
+Big bubbles can absorb little ones. Absorbing make the bubble grows and splits when large enough.  
 
 ![gifs prototype divisions][gifs prototype divisions]
 
@@ -86,8 +115,8 @@ With a goal, levels, scores, sounds, musics and all the rest.
 ## The [Oujevipo Contest #2]
 
 #### About
-> The Oujevipo Contest #2 is a game jam organized by **Pierre Corbinais** and **Xavier Girard**.  
-It succeeds the No Future Contest which took place in 2013 and whom games were exhibited during the Retro (no) Future Festival in Cergy (France)  
+> The Oujevipo Contest #2 is a game jam organized by [Pierre Corbinais] and [Xavier Girard].  
+It succeeds the [No Future Contest] which took place in 2013 and whom games were exhibited during the [Retro (no) Future Festival] in Cergy (France)  
 
 > For this edition, the 10 best games will be exhibited on **custom made arcade cabinets** in various locations, starting with La Minoterie in Dijon (France), and the very best (according to the jury) will earn a 800€ cash prize.  
 
@@ -97,7 +126,7 @@ It succeeds the No Future Contest which took place in 2013 and whom games were e
 From the many constraints, I've first choose :  
 >\#9 The Quiet Game: the game doesn't contains any text/voice (that includes title screen and instructions)  
 
-And when it was time to make a game, I've to make it a toy :
+And when it was time to make a game, I've made a toy :
 >\#10 Calvinball: the players fix the rules of the game themselves
 
 ### From a toy to a game
@@ -128,7 +157,7 @@ After seeing people playing the game without help and failing at understanding w
 [Oujevipo Contest #2] is for the KIDS !  
 It's already fun, why so complicate ?  
 So time to reboot the project ! The last one I swear !  
-The new game experience is easy and inspired by the satisfaction of absorbing in [Katamari Damacy]
+The new game experience is easy and inspired by the satisfaction of absorbing like in [Katamari Damacy]
 
 ![Choupichoup gif 1][Choupichoup gif 1]
 
@@ -139,10 +168,10 @@ And then we restart to show everybody again.
 This will happen no matter what you do, so you can do whatever you want without pressure or a slowing down.  
 
 There is still things that happen when you absorb all the thoughts of some one :  
-you will **celebrate together by sharing colorful ideas**.  
+you will **celebrate together by sharing colorful ideas**  
 
 There will be the same celebration when you absorb a certain amount of knowledge.  
-That threshold of maximum bubbles is because what you get is what you give. ![note][note]
+That threshold of maximum bubbles is because what you get is what you give. (and for the sake of the frame rate)  
 
 ## Illustration
 
@@ -150,13 +179,17 @@ So ! The code is in a good shape and the game is fun.   Finally I can focus on t
 
 Drawings are hand-made. I used a bic on a classic A4 paper.
 Colors are made with [Gimp].  
-I draw comics, I'm going to translate some of them, meanwhile if you read French here is [my fanzine]
+I draw comics, I'm going to translate some of them, meanwhile if you read French here is [my fanzine]  
+
+### Characters
 
 ![characters][characters]  
 
+### Symbols  
+
 ![symbols][symbols]
 
-![poster][poster]  
+![clyde][clyde]  
 
 ## Thanks
 
@@ -178,10 +211,24 @@ I draw comics, I'm going to translate some of them, meanwhile if you read French
 [Osmos]: <http://www.osmos-game.com/>
 [Katamari Damacy]: <https://www.youtube.com/watch?v=PVVW41iAu5A>
 [my submission for Ludum Dare #33]: <http://ludumdare.com/compo/ludum-dare-33/?action=preview&uid=11872>
+[my submission]: <http://leon.itch.io/choupichoup>
 [Oujevipo]: <http://oujevipo.fr/>
 [Oujevipo Contest #2]: <https://itch.io/jam/oujevipo-contest-2--kids>
 [Gimp]:<http://www.gimp.org/>
 [my fanzine]:<http://nocontrolstory.blogspot.fr/>
+[goodboy]:<http://www.goodboydigital.com/>
+[Pixi.js]:<http://www.pixijs.com/>
+[Temping]:<http://www.newgrounds.com/audio/listen/637897>
+[Leon]:<http://leon196.github.io/>
+[Fullscreen]: <http://leon196.github.io/Choupichoup/>
+[jQuery.js]: <https://jquery.com/>
+[require.js]: <http://requirejs.org/>
+[howler.js]: <https://github.com/goldfire/howler.js/>
+[Pierre Corbinais]: <http://oujevipo.fr/>
+[Xavier Girard]: <https://girxavier.wordpress.com/>
+[No Future Contest]: <http://retronofuture.fr/?cat=3>
+[Retro (no) Future Festival]: <http://oujevipo.fr/divers/1014-retro-no-future-games-festival-mon-compte-rendu/>
+
 [boids engine prototype]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/letter.gif
 [boids engine prototype 2]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/letter2.gif
 [boids debug view]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/debugview.gif
@@ -207,4 +254,4 @@ I draw comics, I'm going to translate some of them, meanwhile if you read French
 [character1]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/character1.gif
 [clyde]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/clyde.gif
 [celebration]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/celebration.gif
-[symbols]: https://raw.githubusercontent.com/leon196/Choupichoup/master/sources/images/symbols.png
+[symbols]: https://raw.githubusercontent.com/leon196/Choupichoup/master/sources/images/symbolsB.png
