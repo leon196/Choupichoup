@@ -185,18 +185,33 @@ I draw comics, I'm going to translate some of them, meanwhile if you read French
 
 ![characters][characters]  
 
+![drawings1][drawings1]
+
 ### Symbols  
+
+![drawings2][drawings2]
 
 ![symbols][symbols]
 
+### Animations
+
+Toto :  
+![character1][character1]  
+
+Clyde :  
 ![clyde][clyde]  
 
 ## Thanks
 
-#### [Ludum Dare]
-#### [Oujevipo Contest #2]
-#### [goodboy] for [Pixi.js]
-[TODO:FINISH]
+- [Mike Kasprzak] and every ludum darers for [Ludum Dare] #33
+- [Pierre Corbinais] and [Xavier Girard] and everybody involved in [Oujevipo Contest #2]
+- [goodboy] and other contributors for [Pixi.js]  
+- [Khronos] for [WebGL]  
+- [GitHub] and everybody that contribute to open source  
+- **Jassummisko** for the music [Temping]  
+- **Ben** for the sound of children laughs
+- **Simon** for the playtests
+- and **YOU** for reading, playing and dancing ![note][note]
 
 ![celebration][celebration]  
 
@@ -228,6 +243,10 @@ I draw comics, I'm going to translate some of them, meanwhile if you read French
 [Xavier Girard]: <https://girxavier.wordpress.com/>
 [No Future Contest]: <http://retronofuture.fr/?cat=3>
 [Retro (no) Future Festival]: <http://oujevipo.fr/divers/1014-retro-no-future-games-festival-mon-compte-rendu/>
+[Mike Kasprzak]: <https://twitter.com/mikekasprzak>
+[Khronos]: <https://www.khronos.org/about>
+[WebGL]:<https://github.com/KhronosGroup/WebGL>
+[GitHub]:<https://github.com/>
 
 [boids engine prototype]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/letter.gif
 [boids engine prototype 2]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/letter2.gif
@@ -255,3 +274,5 @@ I draw comics, I'm going to translate some of them, meanwhile if you read French
 [clyde]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/clyde.gif
 [celebration]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/celebration.gif
 [symbols]: https://raw.githubusercontent.com/leon196/Choupichoup/master/sources/images/symbolsB.png
+[drawings1]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/drawings1.png
+[drawings2]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/drawings2.png
