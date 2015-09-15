@@ -95,7 +95,7 @@ and you know what the character wants.
 So I've started a game logic base on distribution,  
 It is about **learning** (absorption), **sharing** (giving) and **loving** (distribute what one wants)  
 
-![Choupichoup gif 1][Choupichoup gif 1]
+![Choupichoup screen 1][Choupichoup screen 1]
 
 Also, when you try to absorb bigger thoughts than you, it won't work.  
 But if your avatar got thoughts that follow him,
@@ -103,19 +103,32 @@ they will give the avatar more size to absorb bigger than him.
 It is about **the power of knowledge**, of **culture**.  
 
 It was actually fun, challenging and the message of learning, sharing and loving was deeply connected to the game mechanics.
-
 But the mechanic of giving and the balance of power was too subtle to explain without text (because of a chosen constraint) and making excellent level design, that makes you learn basics and shows progressions and variations is really hard and was too much work for the time left.
 
-
-
-After seeing people playing the game withouth notices and failing at understanding what to do, I've decided to let it as a toy !  
-
-Because the public is a child of 6 to 13 years old.  
-[TODO: talk about Oujevipo Constest, jeu pour les enfants, choix des contraintes]
+After seeing people playing the game without help and failing at understanding what to do, I've decided to let it as a toy !
 
 ### From a game to a toy
 
-[TODO:its already fun, why complicate?]
+[Oujevipo Contest #2] is for the KIDS !  
+It's already fun, why so complicate ?  
+So time to reboot the project ! The last one I swear !  
+The new game experience is easy and inspired by the satisfaction of absorbing in [Katamari Damacy]
+
+![Choupichoup gif 1][Choupichoup gif 1]
+
+There is no more an entity that is waiting and wanting for something in particular. Just people thinking about stuffs.  
+No levels, only characters. And when they all passed, a celebration screen appears.  
+And then we restart to show everybody again.  
+This will happen no matter what you do, so you can do whatever you want without pressure or a slowing down.  
+
+There is still things that happen when you absorb all the thoughts of some one :  
+you will **celebrate together by sharing colorful ideas**.  
+
+There will be the same celebration when you absorb a certain amount of knowledge.  
+That threshold of maximum bubbles is because what you get is what you have ![note][node]  
+
+
+
 
 [Ludum Dare]: <http://ludumdare.com/compo/about-ludum-dare/>
 [warmup weekend]: <http://ludumdare.com/compo/2015/08/13/warmup-weekend-for-ludum-dare-33/>
@@ -126,6 +139,7 @@ Because the public is a child of 6 to 13 years old.
 [prototype source]: <https://github.com/leon196/Choupichoup/tree/fbe9272b0a22967af8b4b49a69038714329f8fa2>
 [where I work]: <http://www.dvmobile.fr/>
 [Osmos]: <http://www.osmos-game.com/>
+[Katamari Damacy]: <https://www.youtube.com/watch?v=PVVW41iAu5A>
 [my submission for Ludum Dare #33]: <http://ludumdare.com/compo/ludum-dare-33/?action=preview&uid=11872>
 [Oujevipo]: <http://oujevipo.fr/>
 [Oujevipo Contest #2]: <https://itch.io/jam/oujevipo-contest-2--kids>
@@ -147,3 +161,4 @@ Because the public is a child of 6 to 13 years old.
 [PostJam menu gif]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/18b.gif
 [PostJam menu debug gif]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/19.gif
 [Choupichoup gif 1]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/choupichoup1.gif
+[Choupichoup screen 1]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/screen1.PNG
