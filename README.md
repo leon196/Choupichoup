@@ -26,7 +26,8 @@ Loading json : [jQuery.js]
 
 
 ### Code and illustrations
-by [Leon]
+by [Leon]  
+The paper texture in the background is from [CG Textures]
 
 
 # Game Dev Story
@@ -208,6 +209,7 @@ Clyde :
 - [goodboy] and other contributors for [Pixi.js]  
 - [Khronos] for [WebGL]  
 - [GitHub] and everybody that contribute to open source  
+- [CG Textures] for sharing great textures  
 - **Jassummisko** for the music [Temping]  
 - **Ben** for the sound of children laughs
 - **Simon** for the playtests
@@ -247,6 +249,7 @@ Clyde :
 [Khronos]: <https://www.khronos.org/about>
 [WebGL]:<https://github.com/KhronosGroup/WebGL>
 [GitHub]:<https://github.com/>
+[CG Textures]:<http://www.cgtextures.com/>
 
 [boids engine prototype]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/letter.gif
 [boids engine prototype 2]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/letter2.gif
