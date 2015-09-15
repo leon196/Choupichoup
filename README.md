@@ -83,7 +83,23 @@ I've even made a menu :
 But hey ! It's time to actually do a **game** !  
 With a goal, levels, scores, sounds, musics and all the rest.
 
-## Oujevipo Contest #2
+## The [Oujevipo Contest #2]
+
+#### About
+> The Oujevipo Contest #2 is a game jam organized by **Pierre Corbinais** and **Xavier Girard**.  
+It succeeds the No Future Contest which took place in 2013 and whom games were exhibited during the Retro (no) Future Festival in Cergy (France)  
+
+> For this edition, the 10 best games will be exhibited on **custom made arcade cabinets** in various locations, starting with La Minoterie in Dijon (France), and the very best (according to the jury) will earn a 800€ cash prize.  
+
+> The theme of this edition is **KIDS** (6-13 years old)
+
+#### Constraints
+From the many constraints, I've first choose :  
+>\#9 The Quiet Game: the game doesn't contains any text/voice (that includes title screen and instructions)  
+
+And when it was time to make a game, I've to make it a toy :
+>\#10 Calvinball: the players fix the rules of the game themselves
+
 ### From a toy to a game
 
 So this great boids engine has to find some purpose !  
@@ -92,8 +108,8 @@ Since you can absorb and resorb thoughts, may be the game could be a puzzle wher
 A character would appear and would think about ideas, those ideas have a certain color.  
 When you absorb all the thoughts, you reveal the personality of the character,  
 and you know what the character wants.  
-So I've started a game logic base on distribution,  
-It is about **learning** (absorption), **sharing** (giving) and **loving** (distribute what one wants)  
+So I've started a game logic based on distribution,  
+It's about **learning** (absorption), **sharing** (giving) and **loving** (distribute what one wants)  
 
 ![Choupichoup screen 1][Choupichoup screen 1]
 
@@ -116,7 +132,8 @@ The new game experience is easy and inspired by the satisfaction of absorbing in
 
 ![Choupichoup gif 1][Choupichoup gif 1]
 
-There is no more an entity that is waiting and wanting for something in particular. Just people thinking about stuffs.  
+There is no more an entity that is waiting and wanting for something in particular.  
+Just people appearing and thinking about stuffs.  
 No levels, only characters. And when they all passed, a celebration screen appears.  
 And then we restart to show everybody again.  
 This will happen no matter what you do, so you can do whatever you want without pressure or a slowing down.  
@@ -125,10 +142,30 @@ There is still things that happen when you absorb all the thoughts of some one :
 you will **celebrate together by sharing colorful ideas**.  
 
 There will be the same celebration when you absorb a certain amount of knowledge.  
-That threshold of maximum bubbles is because what you get is what you have ![note][node]  
+That threshold of maximum bubbles is because what you get is what you give. ![note][note]
 
+## Illustration
 
+So ! The code is in a good shape and the game is fun.   Finally I can focus on the illustrations !  
 
+Drawings are hand-made. I used a bic on a classic A4 paper.
+Colors are made with [Gimp].  
+I draw comics, I'm going to translate some of them, meanwhile if you read French here is [my fanzine]
+
+![characters][characters]  
+
+![symbols][symbols]
+
+![poster][poster]  
+
+## Thanks
+
+#### [Ludum Dare]
+#### [Oujevipo Contest #2]
+#### [goodboy] for [Pixi.js]
+[TODO:FINISH]
+
+![celebration][celebration]  
 
 [Ludum Dare]: <http://ludumdare.com/compo/about-ludum-dare/>
 [warmup weekend]: <http://ludumdare.com/compo/2015/08/13/warmup-weekend-for-ludum-dare-33/>
@@ -143,6 +180,8 @@ That threshold of maximum bubbles is because what you get is what you have ![not
 [my submission for Ludum Dare #33]: <http://ludumdare.com/compo/ludum-dare-33/?action=preview&uid=11872>
 [Oujevipo]: <http://oujevipo.fr/>
 [Oujevipo Contest #2]: <https://itch.io/jam/oujevipo-contest-2--kids>
+[Gimp]:<http://www.gimp.org/>
+[my fanzine]:<http://nocontrolstory.blogspot.fr/>
 [boids engine prototype]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/letter.gif
 [boids engine prototype 2]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/letter2.gif
 [boids debug view]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/debugview.gif
@@ -162,3 +201,10 @@ That threshold of maximum bubbles is because what you get is what you have ![not
 [PostJam menu debug gif]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/19.gif
 [Choupichoup gif 1]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/choupichoup1.gif
 [Choupichoup screen 1]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/screen1.PNG
+[note]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/note.png
+[poster]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/poster.png
+[characters]: https://raw.githubusercontent.com/leon196/Choupichoup/master/sources/images/characters.png
+[character1]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/character1.gif
+[clyde]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/clyde.gif
+[celebration]: https://raw.githubusercontent.com/leon196/Choupichoup/master/notes/celebration.gif
+[symbols]: https://raw.githubusercontent.com/leon196/Choupichoup/master/sources/images/symbols.png
